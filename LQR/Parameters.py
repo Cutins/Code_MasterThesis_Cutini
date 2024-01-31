@@ -13,11 +13,11 @@ class Parameters():
     lr = 0.8
     lf = 0.8
     Cd = 2.15               # aerodynamic drag coefficient
-    Croll = 80              # rolling resistance coefficient
+    Croll = 0 #80              # rolling resistance coefficient
     Cm1 = 920               # Drivetrain modeling coefficient
     Cm2 = 0                 # Drivetrain modeling coefficient
 
-    Cf = 30                # Friction coefficient [0.2,20]
+    Cf = 20                # Friction coefficient [0.2,20]
 
     # Linear affine model approximation - SS Matrices
     # xl = [xk, vk]

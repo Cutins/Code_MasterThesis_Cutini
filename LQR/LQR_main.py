@@ -50,6 +50,8 @@ def main():
     # Error variable [xk-xr]
     x_err = np.zeros((ns, num_steps))
 
+    mismatch = []
+
     ###### Initialize Controller ######
     LQR = LQRController(parameters=params)
     LQR.solve_LQR(Q=params.Qcatch, R=params.Rcatch)
@@ -87,7 +89,11 @@ def main():
         # xk[:,t+1] = kart_non_linear_dyn(xk[:,t], uk[:,t])
         real_xk = kart_non_linear_dyn(xk[:,t], uk[:,t])
         model_mismatch = xk[:,t+1] - real_xk
-        print(model_mismatch)
+        # print(model_mismatch)
+        mismatch.append(model_mismatch)
+
+    avg_model_mismatch = np.mean(mismatch)
+    print(avg_model_mismatch)
 
     time_hor = np.linspace(0, t_end, num=num_steps)
     time_hor_u = np.linspace(0, t_end-params.dt, num=num_steps-1)
