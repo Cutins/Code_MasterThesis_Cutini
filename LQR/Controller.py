@@ -12,11 +12,17 @@ class LQRController():
         """Computes P and K matrices given A, B, Q, R"""
         
         P = solve_discrete_are(self.params.A, self.params.B, Q, R)
-        K = np.linalg.solve(R + self.params.B.T @ P @ self.params.B, self.params.B.T @ P @ self.params.A)
+        K = np.linalg.inv(R + self.params.B.T @ P @ self.params.B) @ (self.params.B.T @ P @ self.params.A)
         self.K = K
         self.P = P
         print("Riccati Matrix", P)
         print("Regulator", K)
+
+        Ac = self.params.A - self.params.B @ self.K
+        print("Controlled Matrix Ac: ", Ac)
+        eigen = np.linalg.eigvals(Ac)
+        print("Eigenvalues: ", eigen)
+
 
     def track_LQR(self, Calculate_opt, u_opt, error, car_speed, input_limits):
         """Performs LQR tracking
