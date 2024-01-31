@@ -19,7 +19,7 @@ from LQR.Controller import *
 from LQR.Utils import *
 from LQR.Vehicle import *
 
-ns = 2 # xk = [1, xk, vk]
+ns = 2 # xk = [pk, vk]
 ni = 1 # uk = uak (drive-train acceleration)
 
 Calculate_opt = False # True, False
@@ -82,10 +82,10 @@ def main():
 
         speed_matched_before = speed_matched
 
-        ## Test on linear dynamics (no model mismatch)
+        ## Forward simulate on linear dynamics (no model mismatch)
         xk[:,t+1] = kart_linear_dyn(xk[:,t], uk[:,t])
 
-        ## Test on non linear dynamics (real plant)
+        ## Forward simulate on non linear dynamics (real plant)
         # xk[:,t+1] = kart_non_linear_dyn(xk[:,t], uk[:,t])
         real_xk = kart_non_linear_dyn(xk[:,t], uk[:,t])
         model_mismatch = xk[:,t+1] - real_xk

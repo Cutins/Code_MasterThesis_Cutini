@@ -1,7 +1,7 @@
 import numpy as np
 import math
 
-from LQR.Parameters import *
+from MPC.Parameters import *
 
 params = Parameters()
 
