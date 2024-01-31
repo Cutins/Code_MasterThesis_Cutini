@@ -12,8 +12,6 @@ class LQRController():
         """Computes P and K matrices given A, B, Q, R"""
 
         P = solve_discrete_are(self.params.A, self.params.B, Q, R)
-        # P = solve_discrete_are(Ap, Bp, Qp, Rp)
-
         K = np.linalg.solve(R + self.params.B.T @ P @ self.params.B, self.params.B.T @ P @ self.params.A)
         self.K = K
         self.P = P

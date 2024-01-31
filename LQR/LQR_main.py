@@ -19,7 +19,7 @@ from LQR.Controller import *
 from LQR.Utils import *
 from LQR.Vehicle import *
 
-ns = 3 # xk = [xk, vk, 1]
+ns = 2 # xk = [1, xk, vk]
 ni = 1 # uk = uak (drive-train acceleration)
 
 Calculate_opt = False # True, False
@@ -43,7 +43,6 @@ def main():
     xk = np.zeros((ns, num_steps))
     ak = np.zeros((ni, num_steps-1))
     xk[0,0] = params.offset_ref + init_distance
-    xk[2,:] = 1.0
 
     # Create reference for kart given the runner profile
     xk_ref = create_kart_reference(xr, params.dt, t_end)
@@ -72,7 +71,6 @@ def main():
 
         x_err[0,t] = xk[0,t] - xr[0,t] - params.offset_ref
         x_err[1,t] = xk[1,t] - xr[1,t]
-        x_err[2,t] = 0.0
 
         uk[:,t], speed_matched = LQR.track_LQR(Calculate_opt, u_opt=u_opt[t], error=x_err[:,t], car_speed=xk[1,t], input_limits=[u_min[t], u_max[t]])
 
@@ -87,6 +85,9 @@ def main():
 
         ## Test on non linear dynamics (real plant)
         # xk[:,t+1] = kart_non_linear_dyn(xk[:,t], uk[:,t])
+        real_xk = kart_non_linear_dyn(xk[:,t], uk[:,t])
+        model_mismatch = xk[:,t+1] - real_xk
+        print(model_mismatch)
 
     time_hor = np.linspace(0, t_end, num=num_steps)
     time_hor_u = np.linspace(0, t_end-params.dt, num=num_steps-1)
