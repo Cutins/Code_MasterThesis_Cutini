@@ -75,6 +75,7 @@ class MPCController():
         # Solve to find (xt,ut)
         AA = np.block([[self.Ap - np.eye(3), self.Bp], 
                        [self.C @ self.H, np.zeros_like(self.Bp)]])
+
         bb = np.concatenate((-self.Bd @ d_est, h_ref ))
 
         AA_inv = np.linalg.pinv(AA) # Moore-Penrose pseudo-inverse matrix

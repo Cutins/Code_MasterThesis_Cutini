@@ -1,9 +1,9 @@
 import numpy as np
 import math
 
-from MPC.Parameters import *
+from MPC_offset_free.Parameters import *
 
-params = Parameters()
+params = Params()
 
 def kart_linear_dyn(x_t, u_t):
     """ Updates kart state according to linear model approximation given actual state x_t and actual input u_t """

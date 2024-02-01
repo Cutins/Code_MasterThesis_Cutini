@@ -18,7 +18,7 @@ signal.signal(signal.SIGINT, signal.SIG_DFL)
 from MPC_offset_free.Parameters import *
 from MPC_offset_free.Controller import *
 from MPC_offset_free.Utils import *
-from MPC_offset_free.Observer import *
+from MPC_offset_free.Estimator import *
 from MPC_offset_free.Vehicle import *
 
 ns = 2
@@ -45,6 +45,8 @@ def main():
     # Initial conditions
     xk[0,0] = 2.5            # Initial position
     xk[1,0] = 0.0            # Initial velocity
+
+    mismatch = np.zeros((ns, num_steps))
 
     u_max = np.ones(num_steps-1)
     u_min = np.zeros(num_steps-1)
@@ -88,6 +90,10 @@ def main():
 
         ## Forward simulate on non linear dynamics (real plant)
         xk[:,t+1] = kart_non_linear_dyn(xk[:,t], uk[:,t])
+
+        ## Forward simulate on linear dynamics (no model mismatch)
+        xlin = kart_linear_dyn(xk[:,t], uk[:,t])
+        mismatch[:,t] = xk[:,t+1] - xlin
 
         x_est[:,t+1], d_est[:,t+1] = Est.estimate(x_est=x_est[:,t], d_est=d_est[:,t], ar=ar, h_meas=h_meas, u_t=uk[:,t])
         # print("Estimated disturbance at time", t, "is", d_est[:,t])
@@ -151,7 +157,8 @@ def main():
     plt.grid(True)
 
     plt.figure("Observed disturbance", figsize=(10,8))
-    plt.plot(time_hor, d_est[0], label='Disturbance', linewidth=2.0)
+    plt.plot(time_hor, mismatch[1], 'k-', label='MPM', linewidth=2.0)
+    plt.plot(time_hor, d_est[0], label='Estimated', linestyle='--', color='red', linewidth=1.5)
     plt.xlabel('Time[s]')
     plt.ylabel(r'Disturbance [$\frac{m}{s^2}$]')
     plt.legend()

@@ -21,7 +21,7 @@ class Params():
     Cm1 = 920               # Drivetrain modeling coefficient
     Cm2 = 0                 # Drivetrain modeling coefficient
 
-    Cf = 15                  
+    Cf = 0 #15                  
 
     # Linear prediction model with runner model
     # xp = [(pk-pr), (vk-vr), vk]

@@ -27,6 +27,8 @@ class Estimator():
 
         # desired_poles = [0.22, 0.23, 0.21, 0.1]
         desired_poles = [0.7, 0.6, 0.75, 0.8]
+        desired_poles = [0.5, 0.51, 0.52, 0.53]
+
 
         eigenAp = np.linalg.eigvals(self.Ap)
         # print("Eigenvalues Ap: ", eigenAp)
