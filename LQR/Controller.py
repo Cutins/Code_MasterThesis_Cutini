@@ -18,10 +18,13 @@ class LQRController():
         print("Riccati Matrix", P)
         print("Regulator", K)
 
+        eigenA = np.linalg.eigvals(self.params.A)
+        print("Eigenvalues A: ", eigenA)
+
         Ac = self.params.A - self.params.B @ self.K
         print("Controlled Matrix Ac: ", Ac)
-        eigen = np.linalg.eigvals(Ac)
-        print("Eigenvalues: ", eigen)
+        eigenAc = np.linalg.eigvals(Ac)
+        print("Eigenvalues Ac: ", eigenAc)
 
 
     def track_LQR(self, Calculate_opt, u_opt, error, car_speed, input_limits):

@@ -48,17 +48,20 @@ def main():
     u_max = np.ones(num_steps-1)
     u_min = np.zeros(num_steps-1)
 
-    # # Reference trajectory - Error variables # e = [(pk-pr)-2.5, vk-vr, 0]
+    # Reference trajectory - Error variables # e = [(pk-pr)-2.5, vk-vr, 0]
     h_ref = np.zeros((nsp, num_steps))
     h_ref[0] = params.offset_ref * np.ones(num_steps)
 
     # Measured error variables from lidar + acceleration runner estimated
     h_meas = np.zeros(nsp)
 
+    # Model Plant Mismatch 
+    mismatch = np.zeros((ns, num_steps))
+
     # speed_profile = [0, 5, 6, 7, 8, 9, 9]
     # time_profile = [0, 2, 4, 8, 10, 13, 16]
 
-    # # LQR profile
+    # LQR profile
     speed_profile = [0, 7, 8, 9, 9, 9, 9]  
     time_profile = [0, 2, 4, 8, 10, 13, 16]
     init_distance = 5
@@ -70,7 +73,7 @@ def main():
 
         h_meas[0] = xk[0,t] - position[t]
         h_meas[1] = xk[1,t] - velocity[t]
-        h_meas[2] = velocity[t]
+        h_meas[2] = xk[1,t]
 
         ar = acceleration[t]
 
@@ -89,6 +92,9 @@ def main():
         ## Forward simulate on non linear dynamics (real plant)
         # xk[:,t+1] = kart_non_linear_dyn(xk[:,t], uk[:,t])
         real_xk = kart_non_linear_dyn(xk[:,t], uk[:,t])
+        model_mismatch = xk[:,t+1] - real_xk
+        # print("At velocity", xk[1,t] , "model mismatch is: ", model_mismatch)
+        mismatch[:,t] = model_mismatch
 
         time_hor_mpc = np.linspace(t, t+int(t_hor/params.dt), num=int(t_hor/params.dt))
         time_hor_mpc_u = np.linspace(t, t+int(t_hor/params.dt)-params.dt, num=int(t_hor/params.dt)-1)
@@ -140,6 +146,9 @@ def main():
         # plt.xlabel('Time[s]')
         # plt.ylabel(r'Slack variable [N]')
         # plt.grid(True)
+            
+    avg_model_mismatch = np.mean(mismatch)
+    print("Average model mismatch", avg_model_mismatch)
 
     time_hor = np.linspace(0, t_end, num=num_steps)
     time_hor_u = np.linspace(0, t_end-params.dt, num=num_steps-1)
@@ -197,6 +206,14 @@ def main():
     plt.fill_between(time_hor, 0, xk[1] - velocity, where=negative_mask_v, facecolor='red', alpha=0.2, label='Kart slower')
     plt.xlabel('Time[s]')
     plt.ylabel(r'Velocity [$\frac{m}{s}$]')
+    plt.legend()
+    plt.grid(True)
+
+    plt.figure("Model Plant Mismatch", figsize=(10,8))
+    plt.plot(time_hor, mismatch[0], label='MPM position')
+    plt.plot(time_hor, mismatch[1], label='MPM velocity')
+    plt.xlabel('Time[s]')
+    plt.ylabel('MPM')
     plt.legend()
     plt.grid(True)
 

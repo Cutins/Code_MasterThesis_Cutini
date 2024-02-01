@@ -2,7 +2,7 @@ import numpy as np
 
 
 
-class Parameters():
+class Params():
     # Reference distance between runner and Airshield
     offset_ref = 2.5 
     
@@ -34,6 +34,10 @@ class Parameters():
                   [dt*(Cm1/m)], 
                   [dt*(Cm1/m)]])
     
+        
+    Qo = np.diag([5, 5, 0]) 
+    Ro = np.array([[1e-2]])   
+    
     
     # Linear affine model approximation - SS Matrices
     # xl = [pk, vk]
@@ -43,9 +47,12 @@ class Parameters():
     
     B = np.array([[0], 
                   [dt*(Cm1/m)]])
-    
-    Qo = np.diag([5, 5, 0]) 
-    Ro = np.array([[1e-2]])    
+ 
+
+    Bd = np.array([[0],
+                   [1],
+                   [1]])
 
 
-    
+    C = np.eye(3)
+    H = np.eye(3)
