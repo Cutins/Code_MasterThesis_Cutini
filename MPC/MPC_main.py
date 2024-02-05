@@ -64,7 +64,7 @@ def main():
     # LQR profile
     speed_profile = [0, 7, 8, 9, 9, 9, 9]  
     time_profile = [0, 2, 4, 8, 10, 13, 16]
-    init_distance = 5
+    init_distance = 8 #5
     xk[0,0] = params.offset_ref + init_distance
 
     position, velocity, acceleration = create_runner_profile(speed_profile, time_profile, params.dt, t_end)
@@ -77,22 +77,23 @@ def main():
 
         ar = acceleration[t]
 
-        # print("\nMeasured variables:\n"
-        #       "Relative distance: {:.2f}\n"
-        #       "Relative velocity: {:.2f}\n"
-        #       "Actual runner acceleration: {:.2f}".format(h_meas[0], h_meas[1], h_meas[2]))
+        print("\nMeasured variables:\n"
+              "Relative distance: {:.2f}\n"
+              "Relative velocity: {:.2f}\n"
+              "Absolute kart velocity: {:.2f}\n"
+              "Actual runner acceleration: {:.2f}".format(h_meas[0], h_meas[1], h_meas[2], acceleration[t]))
 
-        h_opt, uk_opt = MPC.solve_optcon_problem(x_meas=h_meas, ar = ar, x_tar=h_ref[:,t], u_max=u_max[t], u_min=u_min[t])
+        h_opt, uk_opt = MPC.solve_optcon_problem(x_meas=h_meas, ar = ar, x_tar=h_ref[:,t])
 
         uk[:,t] = uk_opt[:,0] # Drive-train acceleration
+        print("Optimal input: ", uk[:,t], "\n\n")
 
         ## Forward simulate on linear dynamics (no model mismatch)
-        xk[:,t+1] = kart_linear_dyn(xk[:,t], uk[:,t])
+        xklin = kart_linear_dyn(xk[:,t], uk[:,t])
 
         ## Forward simulate on non linear dynamics (real plant)
-        # xk[:,t+1] = kart_non_linear_dyn(xk[:,t], uk[:,t])
-        real_xk = kart_non_linear_dyn(xk[:,t], uk[:,t])
-        model_mismatch = xk[:,t+1] - real_xk
+        xk[:,t+1] = kart_non_linear_dyn(xk[:,t], uk[:,t])
+        model_mismatch = xklin - xk[:,t+1]
         # print("At velocity", xk[1,t] , "model mismatch is: ", model_mismatch)
         mismatch[:,t] = model_mismatch
 
@@ -214,6 +215,13 @@ def main():
     plt.plot(time_hor, mismatch[1], label='MPM velocity')
     plt.xlabel('Time[s]')
     plt.ylabel('MPM')
+    plt.legend()
+    plt.grid(True)
+
+    plt.figure("Runner acceleration", figsize=(10,8))
+    plt.plot(time_hor, acceleration, label='ar')
+    plt.xlabel('Time[s]')
+    plt.ylabel(r'Acceleration [$\frac{m}{s^2}$]')
     plt.legend()
     plt.grid(True)
 

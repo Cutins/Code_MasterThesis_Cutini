@@ -13,15 +13,15 @@ class Params():
     safe_distance = 1.2
         
     # Vehicle Parameters 
-    m = 300  
+    m = 470 #300  
     lr = 0.8
     lf = 0.8
-    Cd = 2.15               # aerodynamic drag coefficient
-    Croll = 0 #80           # rolling resistance coefficient
-    Cm1 = 920               # Drivetrain modeling coefficient
+    Cd = 3.2 #2.15               # aerodynamic drag coefficient
+    Croll = 111 #0 #80           # rolling resistance coefficient
+    Cm1 = 1312 #920               # Drivetrain modeling coefficient
     Cm2 = 0                 # Drivetrain modeling coefficient
 
-    Cf = 0 #15                  
+    Cf = 15 #15                  
 
     # Linear prediction model with runner model
     # xp = [(pk-pr), (vk-vr), vk]

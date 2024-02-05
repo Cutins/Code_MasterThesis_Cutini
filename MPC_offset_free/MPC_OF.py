@@ -66,7 +66,7 @@ def main():
     # LQR profile
     speed_profile = [0, 7, 8, 9, 9, 9, 9]  
     time_profile = [0, 2, 4, 8, 10, 13, 16]
-    init_distance = 5
+    init_distance = 7 #5
     xk[0,0] = params.offset_ref + init_distance
 
     position, velocity, acceleration = create_runner_profile(speed_profile, time_profile, params.dt, t_end)

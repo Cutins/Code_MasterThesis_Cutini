@@ -13,17 +13,17 @@ class Parameters():
     safe_distance = 1.2
         
     # Vehicle Parameters 
-    m = 300  
+    m = 470 #300 # 470
     lr = 0.8
     lf = 0.8
-    Cd = 2.15               # aerodynamic drag coefficient
-    Croll = 0 #80           # rolling resistance coefficient
-    Cm1 = 920               # Drivetrain modeling coefficient
+    Cd = 3.2 #2.15  # 3.2              # aerodynamic drag coefficient
+    Croll = 111 #0 #80  # 111          # rolling resistance coefficient
+    Cm1 = 1312 #920 # 1312            # Drivetrain modeling coefficient
     Cm2 = 0                 # Drivetrain modeling coefficient
 
-    Cf = 15                  
+    Cf = 15 #0 #15 #15                  
 
-    # Linear prediction model with runner model
+    # Linear model with runner model
     # xp = [(pk-pr), (vk-vr), vk]
     # up = ua
     Ap = np.array([[1, dt, 0], 

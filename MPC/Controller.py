@@ -26,8 +26,6 @@ class MPCController():
         self.d = cp.Parameter(ns, name='Affine_term')
 
         self.tar = cp.Parameter(ns, name='target')
-        self.u_max = cp.Parameter(name='u_max')
-        self.u_min = cp.Parameter(name='u_min')
 
         constraints = []
         cost = 0.0
@@ -39,8 +37,8 @@ class MPCController():
             constraints += [self.x[:,t+1] == self.params.Ap @ self.x[:,t] + self.params.Bp @ self.uk[:,t] + self.d]
 
             # Input constraints            
-            constraints += [self.uk[0,t] <= self.u_max,
-                            self.uk[0,t] >= self.u_min]
+            constraints += [self.uk[0,t] <= 1.0,
+                            self.uk[0,t] >= 0.0]
 
             # Safe-distance constraint
             # constraints += [self.x[0,t] >= self.params.safe_distance]
@@ -51,14 +49,12 @@ class MPCController():
         self.prob = cp.Problem(cp.Minimize(cost), constraints)
 
 
-    def solve_optcon_problem(self, x_meas, ar, x_tar, u_max, u_min):
+    def solve_optcon_problem(self, x_meas, ar, x_tar):
         """ Solves optimal control problem for given initial condition """
 
         self.x0.value = x_meas
         
         self.tar.value = x_tar
-        self.u_max.value = u_max
-        self.u_min.value = u_min
 
         affine_term = np.array([0, -self.params.dt*ar, 0])
 
