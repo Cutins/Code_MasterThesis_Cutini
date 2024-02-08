@@ -32,7 +32,7 @@ def main():
     num_steps = int(t_end/params.dt)
     
     # Create profile for runner position and velocity
-    speed_profile = [0, 7, 8, 9, 9, 9, 9]  
+    speed_profile = [0, 7, 8, 9, 10, 10, 10]  
     time_profile = [0, 2, 4, 8, 10, 13, 16]
     init_distance = 5
     pr, vr, ar = create_runner_profile(speed_profile, time_profile, params.dt, t_end)
@@ -83,17 +83,24 @@ def main():
         speed_matched_before = speed_matched
 
         ## Forward simulate on linear dynamics (no model mismatch)
-        xk[:,t+1] = kart_linear_dyn(xk[:,t], uk[:,t])
+        lin = kart_linear_dyn(xk[:,t], uk[:,t])
 
         ## Forward simulate on non linear dynamics (real plant)
         # xk[:,t+1] = kart_non_linear_dyn(xk[:,t], uk[:,t])
-        real_xk = kart_non_linear_dyn(xk[:,t], uk[:,t])
-        model_mismatch = xk[:,t+1] - real_xk
+        xk[:,t+1] = kart_non_linear_dyn(xk[:,t], uk[:,t])
+        model_mismatch = xk[:,t+1] - lin
         # print(model_mismatch)
         mismatch.append(model_mismatch)
 
     avg_model_mismatch = np.mean(mismatch)
     print(avg_model_mismatch)
+
+    ### Save trajectories for comparison
+    x_err[0,-1] = xk[0,-1] - xr[0,-1] - params.offset_ref
+    x_err[1,-1] = xk[1,-1] - xr[1,-1]
+    Path = 'LQR/'
+    np.save(Path+'Error_traj_LQR.npy', np.vstack([x_err[0]+2.5, x_err[1]]).squeeze())
+    np.save(Path+'Input_traj_LQR.npy', uk)
 
     time_hor = np.linspace(0, t_end, num=num_steps)
     time_hor_u = np.linspace(0, t_end-params.dt, num=num_steps-1)

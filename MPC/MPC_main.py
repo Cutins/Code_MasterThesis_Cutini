@@ -58,13 +58,10 @@ def main():
     # Model Plant Mismatch 
     mismatch = np.zeros((ns, num_steps))
 
-    # speed_profile = [0, 5, 6, 7, 8, 9, 9]
-    # time_profile = [0, 2, 4, 8, 10, 13, 16]
-
     # LQR profile
-    speed_profile = [0, 7, 8, 9, 9, 9, 9]  
+    speed_profile = [0, 7, 8, 9, 10, 10, 10]  
     time_profile = [0, 2, 4, 8, 10, 13, 16]
-    init_distance = 8 #5
+    init_distance = 5
     xk[0,0] = params.offset_ref + init_distance
 
     position, velocity, acceleration = create_runner_profile(speed_profile, time_profile, params.dt, t_end)
@@ -150,6 +147,11 @@ def main():
             
     avg_model_mismatch = np.mean(mismatch)
     print("Average model mismatch", avg_model_mismatch)
+
+    ### Save trajectories for comparison
+    Path = 'MPC/'
+    np.save(Path+'Error_traj_MPC.npy', np.vstack([xk[0]-position, xk[1]-velocity]).squeeze())
+    np.save(Path+'Input_traj_MPC.npy', uk)
 
     time_hor = np.linspace(0, t_end, num=num_steps)
     time_hor_u = np.linspace(0, t_end-params.dt, num=num_steps-1)

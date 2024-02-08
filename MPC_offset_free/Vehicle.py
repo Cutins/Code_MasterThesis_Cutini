@@ -20,7 +20,7 @@ def kart_non_linear_dyn(x_t, u_t):
         sign_C_roll = -1
 
 
-    Fx = params.Cm1 * u_t[0] - params.Cd * x_t[1]**2 - (params.Croll*sign_C_roll)
+    Fx = params.Cm1 * u_t[0] - params.Cd * x_t[1]**2 - params.Cf * x_t[1] - (params.Croll*sign_C_roll) 
 
     x_plus = x_t[0] + params.dt * x_t[1]
     v_plus = x_t[1] + (params.dt/params.m) * Fx

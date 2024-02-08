@@ -58,16 +58,17 @@ def main():
     # Measured error variables from lidar + acceleration runner estimated
     h_meas = np.zeros(nsp)
 
-    # Initialize State and Disturbance Estimator
+    # LQR profile
+    speed_profile = [0, 7, 8, 9, 10, 10, 10]  
+    time_profile = [0, 2, 4, 8, 10, 13, 16]
+    init_distance = 5
+    xk[0,0] = params.offset_ref + init_distance
+
+        # Initialize State and Disturbance Estimator
     Est = Estimator(parameters=params)
     x_est = np.zeros((nsp, num_steps)) # Estimated state
+    x_est[0,0] = init_distance + params.offset_ref
     d_est = np.zeros((1, num_steps)) # Estimated disturbance
-
-    # LQR profile
-    speed_profile = [0, 7, 8, 9, 9, 9, 9]  
-    time_profile = [0, 2, 4, 8, 10, 13, 16]
-    init_distance = 7 #5
-    xk[0,0] = params.offset_ref + init_distance
 
     position, velocity, acceleration = create_runner_profile(speed_profile, time_profile, params.dt, t_end)
 
@@ -97,6 +98,11 @@ def main():
 
         x_est[:,t+1], d_est[:,t+1] = Est.estimate(x_est=x_est[:,t], d_est=d_est[:,t], ar=ar, h_meas=h_meas, u_t=uk[:,t])
         # print("Estimated disturbance at time", t, "is", d_est[:,t])
+
+    ### Save trajectories for comparison
+    Path = 'MPC_offset_free/'
+    np.save(Path+'Error_traj_MPCOF.npy', np.vstack([xk[0]-position, xk[1]-velocity]).squeeze())
+    np.save(Path+'Input_traj_MPCOF.npy', uk)
 
     time_hor = np.linspace(0, t_end, num=num_steps)
     time_hor_u = np.linspace(0, t_end-params.dt, num=num_steps-1)

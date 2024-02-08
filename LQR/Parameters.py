@@ -12,12 +12,12 @@ class Parameters():
     m = 300   # including trailer
     lr = 0.8
     lf = 0.8
-    Cd = 2.15               # aerodynamic drag coefficient
-    Croll = 0 #80           # rolling resistance coefficient
-    Cm1 = 920               # Drivetrain modeling coefficient
+    Cd = 1.5                # aerodynamic drag coefficient
+    Croll = 73 #80           # rolling resistance coefficient
+    Cm1 = 930               # Drivetrain modeling coefficient
     Cm2 = 0                 # Drivetrain modeling coefficient
 
-    Cf = 20                
+    Cf = 10               
 
     # Linear affine model approximation - SS Matrices
     # xl = [pk, vk]
