@@ -45,9 +45,9 @@ class Estimator():
 
         # t = np.linspace(0,2*np.pi, 401)
         # plt.plot(np.cos(t), np.sin(t), 'k--') # unit circle
-        # plt.plot(eigenAp, np.zeros(eigenAp.shape), 'bx', label='Ap poles')
-        # plt.plot(eigenAaug, np.zeros(eigenAaug.shape), 'rx', label='Ae poles')
-        # plt.plot(eigenControlled, np.zeros(eigenControlled.shape), 'mx', label='ACrtl poles')
+        # plt.plot(eigenAp, np.zeros(eigenAp.shape), 'bx', label='A poles')
+        # plt.plot(eigenAaug, np.zeros(eigenAaug.shape), 'rx', label='A_e poles')
+        # plt.plot(eigenControlled, np.zeros(eigenControlled.shape), 'mx', label='A_{est} poles')
         # plt.grid()
         # # plt.axis([-1.1, 1.1, -1.1, 1.1])
         # plt.legend(loc="lower left")
