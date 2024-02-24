@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from tabulate import tabulate
+from scipy.integrate import simps
 
 
 Path_LQR = 'LQR/'
@@ -15,7 +16,7 @@ Input_traj_LQR = np.load(Path_LQR+'Input_traj_LQR.npy')
 Input_traj_MPC = np.load(Path_MPC+'Input_traj_MPC.npy')
 Input_traj_MPCOF = np.load(Path_MPC_offset_free+'Input_traj_MPCOF.npy')
 
-t_end = 18.0
+t_end = 12.0
 dt = 0.05
 num_steps = Error_traj_LQR.shape[1]
 
@@ -25,6 +26,21 @@ time_hor_u = np.linspace(0, t_end-dt, num=num_steps-1)
 u_max = np.ones(num_steps-1)
 u_min = np.zeros(num_steps-1)
 
+#### Find rising time = time needed to reach d_des
+t_rise_LQR = 0
+t_rise_MPC = 0
+t_rise_MPCOF = 0
+
+for t in range(0,int(t_end/dt)):
+    print("Time:", t,Error_traj_LQR[0,t])
+    if Error_traj_LQR[0,t] < 2.6 and t_rise_LQR==0:
+       print("ciaooo")
+       t_rise_LQR = t*dt
+    if Error_traj_MPC[0,t] < 2.6 and t_rise_MPC==0:
+       t_rise_MPC = t*dt
+    if Error_traj_MPCOF[0,t] < 2.6 and t_rise_MPCOF==0:
+       t_rise_MPCOF = t*dt
+        
 
 #### Evaluate errors
 ref_pos = 2.5 * np.ones(num_steps)
@@ -46,11 +62,25 @@ Input_consump_LQR = np.mean(Input_traj_LQR)
 Input_consump_MPC = np.mean(Input_traj_MPC)
 Input_consump_MPCOF = np.mean(Input_traj_MPCOF)
 
-d = [["LQR", Mean_err_LQR_pos, Mean_err_LQR_vel, Mean_err_LQR, Input_consump_LQR], 
-     ["MPC", Mean_err_MPC_pos, Mean_err_MPC_vel, Mean_err_MPC, Input_consump_MPC], 
-     ["MPC Offset Free", Mean_err_MPCOF_pos, Mean_err_MPCOF_vel, Mean_err_MPCOF, Input_consump_MPCOF]]
+IAE_LQR_pos= simps(np.abs(Error_traj_LQR[0]-ref_pos), dx=dt)
+IAE_MPC_pos= simps(np.abs(Error_traj_MPC[0]-ref_pos), dx=dt)
+IAE_MPCOF_pos= simps(np.abs(Error_traj_MPCOF[0]-ref_pos), dx=dt)
 
-print(tabulate(d, headers=["Name", "Avg position error", "Avg velocity error", "Avg error", "Input consumption"]))
+IAE_LQR_vel= simps(np.abs(Error_traj_LQR[1]), dx=dt)
+IAE_MPC_vel= simps(np.abs(Error_traj_MPC[1]), dx=dt)
+IAE_MPCOF_vel= simps(np.abs(Error_traj_MPCOF[1]), dx=dt)
+
+peak_LQR = np.min(Error_traj_LQR[0]-ref_pos)
+peak_MPC = np.min(Error_traj_MPC[0]-ref_pos)
+peak_MPCOF = np.min(Error_traj_MPCOF[0]-ref_pos)
+
+
+
+d = [["LQR", Mean_err_LQR_pos, Mean_err_LQR_vel, Mean_err_LQR, Input_consump_LQR, t_rise_LQR], 
+     ["MPC", Mean_err_MPC_pos, Mean_err_MPC_vel, Mean_err_MPC, Input_consump_MPC, t_rise_MPC], 
+     ["MPC Offset Free", Mean_err_MPCOF_pos, Mean_err_MPCOF_vel, Mean_err_MPCOF, Input_consump_MPCOF, t_rise_MPCOF]]
+
+print(tabulate(d, headers=["Name", "Avg position error", "Avg velocity error", "Avg error", "Input consumption", "Rise time"]))
 
 print("\n\n -----------------------------------")
 print("Mean position error for LQR: ", Mean_err_LQR_pos)
@@ -69,37 +99,53 @@ print("Mean energy consumption for LQR: ", Input_consump_LQR)
 print("Mean energy consumption for MPC: ", Input_consump_MPC)
 print("Mean energy consumption for MPCOF: ", Input_consump_MPCOF)
 print()
-
-
+print("Time needed to reach desired distance for LQR: ", t_rise_LQR)
+print("Time needed to reach desired distance for MPC: ", t_rise_MPC)
+print("Time needed to reach desired distance for MPCOF: ", t_rise_MPCOF)
+print()
+print("IAE position for LQR: ", IAE_LQR_pos)
+print("IAE position for MPC: ", IAE_MPC_pos)
+print("IAE position for MPCOF: ", IAE_MPCOF_pos)
+print()
+print("IAE velocity for LQR: ", IAE_LQR_vel)
+print("IAE velocity for MPC: ", IAE_MPC_vel)
+print("IAE velocity for MPCOF: ", IAE_MPCOF_vel)
+print()
+print("Peak value for LQR: ", peak_LQR)
+print("Peak value for MPC: ", peak_MPC)
+print("Peak value for MPCOF: ", peak_MPCOF)
 
 
 plt.figure("Position and velocity errors", figsize=(10,5.5))
 plt.subplot(2,1,1)
-plt.plot(time_hor, Error_traj_LQR[0], 'b', label='LQR', linewidth=2.0)
-plt.plot(time_hor, Error_traj_MPC[0], 'g', label='MPC', linewidth=2.0)
-plt.plot(time_hor, Error_traj_MPCOF[0], 'r', label='MPC Offset Free', linewidth=2.0)
-plt.plot(time_hor, 2.5 * np.ones(num_steps), label='Reference', linestyle='--', color='black', linewidth=1.5)
+plt.plot(time_hor, 2.5 * np.ones(num_steps), label='Reference', linestyle='--', color='black', linewidth=1.0)
+plt.plot(time_hor, Error_traj_LQR[0], 'b', label='LQR', linewidth=1.0)
+plt.plot(time_hor, Error_traj_MPC[0], 'g', label='MPC', linewidth=1.0)
+plt.plot(time_hor, Error_traj_MPCOF[0], 'r', label='MPC Offset Free', linewidth=1.0)
+plt.scatter(t_rise_LQR, 2.6, marker='o', color='b', label='Rise time LQR')
+plt.scatter(t_rise_MPC, 2.6, marker='o', color='g', label='Rise time MPC')
+plt.scatter(t_rise_MPCOF, 2.6, marker='o', color='r', label='Rise time MPC Offset Free')
 plt.xlabel('Time[s]')
 plt.ylabel('Distance [m]')
 plt.legend(loc="upper right")
 plt.grid(True)
 
 plt.subplot(2,1,2)
-plt.plot(time_hor, Error_traj_LQR[1], 'b', label='LQR', linewidth=2.0)
-plt.plot(time_hor, Error_traj_MPC[1], 'g', label='MPC', linewidth=2.0)
-plt.plot(time_hor, Error_traj_MPCOF[1], 'r', label='MPC Offset Free', linewidth=2.0)
-plt.plot(time_hor, np.zeros(num_steps), label='Reference', linestyle='--', color='black', linewidth=1.5)
+plt.plot(time_hor, np.zeros(num_steps), label='Reference', linestyle='--', color='black', linewidth=1.0)
+plt.plot(time_hor, Error_traj_LQR[1], 'b', label='LQR', linewidth=1.0)
+plt.plot(time_hor, Error_traj_MPC[1], 'g', label='MPC', linewidth=1.0)
+plt.plot(time_hor, Error_traj_MPCOF[1], 'r', label='MPC Offset Free', linewidth=1.0)
 plt.xlabel('Time[s]')
 plt.ylabel(r'Velocity [$\frac{m}{s}$]')
 plt.legend()
 plt.grid(True)
 
 plt.figure("Input (Energy consuption)", figsize=(10,4))
-plt.plot(time_hor_u, Input_traj_LQR[0], 'b', label='LQR', linewidth=2.0)
-plt.plot(time_hor_u, Input_traj_MPC[0], 'g', label='MPC', linewidth=2.0)
-plt.plot(time_hor_u, Input_traj_MPCOF[0], 'r', label='MPC Offset Free', linewidth=2.0)
-plt.plot(time_hor_u, u_max, label='Acceleration limits', linestyle='--', color='black', linewidth=1.5)
-plt.plot(time_hor_u, u_min, linestyle='-.', color='black', linewidth=1.5)
+plt.plot(time_hor_u, u_max, label='Input limits', linestyle='--', color='black', linewidth=1.0)
+plt.plot(time_hor_u, u_min, linestyle='--', color='black', linewidth=1.0)
+plt.plot(time_hor_u, Input_traj_LQR[0], 'b', label='LQR', linewidth=1.0)
+plt.plot(time_hor_u, Input_traj_MPC[0], 'g', label='MPC', linewidth=1.0)
+plt.plot(time_hor_u, Input_traj_MPCOF[0], 'r', label='MPC Offset Free', linewidth=1.0)
 plt.xlabel('Time[s]')
 plt.ylabel(r'Acceleration [$\frac{m}{s^2}$]')
 plt.legend(loc='upper right')

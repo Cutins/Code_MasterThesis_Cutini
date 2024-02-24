@@ -28,7 +28,7 @@ nsp = 3
 
 def main():
     params = Params()
-    t_end = 18.0
+    t_end = 12.0
     t_hor = 1.0
     num_steps = int(t_end/params.dt)
     num_steps_mpc = int(t_hor/params.dt)
@@ -67,7 +67,7 @@ def main():
         # Initialize State and Disturbance Estimator
     Est = Estimator(parameters=params)
     x_est = np.zeros((nsp, num_steps)) # Estimated state
-    x_est[0,0] = init_distance + params.offset_ref
+    # x_est[0,0] = init_distance + params.offset_ref
     d_est = np.zeros((1, num_steps)) # Estimated disturbance
 
     position, velocity, acceleration = create_runner_profile(speed_profile, time_profile, params.dt, t_end)

@@ -27,7 +27,7 @@ nsp = 3
 
 def main():
     params = Parameters()
-    t_end = 18.0
+    t_end = 12.0
     t_hor = 1.0
     num_steps = int(t_end/params.dt)
     num_steps_mpc = int(t_hor/params.dt)

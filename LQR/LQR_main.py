@@ -28,7 +28,7 @@ Save_animation = False # True, False
 
 def main():
     params = Parameters()
-    t_end = 18
+    t_end = 12
     num_steps = int(t_end/params.dt)
     
     # Create profile for runner position and velocity

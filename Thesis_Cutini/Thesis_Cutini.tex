@@ -19,6 +19,7 @@
 \usepackage[font=small,labelfont=bf]{caption} % caption belle alle figure
 \usepackage{algorithm}
 \usepackage{algpseudocode}
+\setcounter{tocdepth}{5}
 
 \usepackage[
 backend=bibtex,
@@ -31,7 +32,6 @@ sorting=none
 \newtheorem{theorem}{Theorem}
 
 
-\setcounter{tocdepth}{1}
 \raggedbottom
 
 \graphicspath{{figs/}}
@@ -214,7 +214,7 @@ This demonstrate the effectiveness of the proposed methodologies.
 \chapter{Theoretical Background}
 %\addcontentsline{toc}{chapter}{Theoretical Background}
 \markboth{}{THEORETICAL BACKGROUND}
-\label{chapter:Theoretical_Background}
+%\label{chapter:Theoretical_Background}
 In this chapter the aim is to provide the necessary theoretical background for thoroughly understand the design process and the main peculiarities and limitations of the designed controllers: the Linear Quadratic Regulator (LQR) and the Model Predictive Control (MPC).
 
 Optimal control theory provides a mathematical framework for addressing control theory problems by optimizing control laws with respect to given cost functions. The primary goal is to find a control strategy for a given system while penalizing deviations of the system's states or inputs from desired values.
@@ -303,6 +303,7 @@ Cost function quantifies the controlled system's performance, defined as a weigh
 In the context of tracking piece-wise affine desired state behaviour the optimal feedback control law is modified in the following way:
 \begin{equation}
     u_t^* = K (x_t - x_{t,\text{des}})
+\label{Closed-loop_control_law}
 \end{equation}
 where the term $x_t - x_{t,\text{des}}$ is the tracking error at time $t$.
 
@@ -344,7 +345,7 @@ For this reason usually MPC formulations optimize only on a finite horizon $N$, 
 \begin{equation}
 \begin{alignedat}{2}
 	\min_{\substack{\boldsymbol{x}, \boldsymbol{u}}}\quad J &= \sum_{i=t}^{t+N-1} (x_{i|t} - x_{t,\text{des}}) ^T \, Q \, (x_{i|t} - x_{t,\text{des}}) +  u_{i|t}^T \, R \, u_{i|t} &&   \\
-	\text{subj. to} & \quad x_{i+1|t}  = A x_{i|t} + B u_{i|t}  &&  \\
+	\text{subj. to} & \quad x_{i+1|t}  = A x_{i|t} + B u_{i|t}   \hspace{2cm} t = 0, 1 \ldots. &&  \\
      &\quad x_{i|t} \in \mathcal{X} && \\
     &\quad u_{i|t} \in \mathcal{U} && \\
     &\quad x_{t|t} = x_{\text{meas}} && 
@@ -388,7 +389,7 @@ Consider a discrete-time, time-invariant system describing the plant:
 \end{equation}
 where $x_p \in \mathbb{R}^n$, $u \in \mathbb{R}^m$ and $y_p \in \mathbb{R}^p$ are the state, input and plant measured output respectively. 
 
-The aim of the offset-free model predictive controller is to have $y_p$ tracking a certain reference signal $y_{\text{ref}} \in \mathbb{R}^p$ that is assumed to asymptotically converge to a constant.
+The aim of the offset-free model predictive controller is to have $y_p$ tracking a certain reference signal $y_{\text{des}} \in \mathbb{R}^p$ that is assumed to asymptotically converge to a constant.
 
 \bigskip
 Let $w \in \mathbb{R}^n$ and $v \in \mathbb{R}^p$ be defined as:
@@ -479,15 +480,15 @@ where $\hat{x}$ and $\hat{d}$ are the state and disturbance estimates.
 Given the current estimates of the augmented state $(\hat{x}_t, \hat{d}_t)$ the MPC classical formulation is modified into an offset-free MPC algorithm as follows:
 \begin{equation}
 \begin{alignedat}{2}
-	\min_{\substack{\boldsymbol{x}, \boldsymbol{u}}}\quad J &= \sum_{i=t}^{t+N-1} (x_{i|t} - \bar{x}_t) ^T \, Q \, (x_{i|t} -  \bar{x}_t) +  u_{i|t}^T \, R \, u_{i|t} &&  \\
-	\text{subj. to} & \quad x_{i+1|t}  = A x_{i|t} + B u_{i|t} + B_d d_{i|t} &&  \\
+	\min_{\substack{\boldsymbol{x}, \boldsymbol{u}}}\quad J &= \sum_{i=t}^{t+N-1} (x_{i|t} - \bar{x}_t) ^T \, Q \, (x_{i|t} -  \bar{x}_t) +  (u_{i|t} - \bar{u}_t)^T \, R \, (u_{i|t} - \bar{u}_t) &&  \\
+	\text{subj. to} & \quad x_{i+1|t}  = A x_{i|t} + B u_{i|t} + B_d d_{i|t} \hspace{1.5cm} t = 0, 1 \ldots. &&  \\
     & \quad d_{i+1|t}  = d_{i|t} && \\
     &\quad x_{i|t} \in \mathcal{X} &&  \\
     &\quad u_{i|t} \in \mathcal{U} && \\
     &\quad x_{t|t} = \hat{x}_t && \\
     &\quad d_{t|t} = \hat{d}_t && 
 \end{alignedat}
-\label{MPC2}
+\label{MPC:offset-free}
 \end{equation}
 where $\bar{x}_t$ and $\bar{u}_t$ are solution of the following system:
 
@@ -503,13 +504,15 @@ where $\bar{x}_t$ and $\bar{u}_t$ are solution of the following system:
     =
     \begin{bmatrix}
     -B_d \hat{d}_t\\
-    y_{\text{ref}} - C_d \hat{d}_t
+    y_{\text{des}} - C_d \hat{d}_t
 	\end{bmatrix}
 \end{equation}
 
 This optimization cancels the estimated disturbances $\hat{d}_t$ and thanks to this action is able to track the given feasible setpoint with the controlled variables.
 
 \subsection{Observer design}
+%\addcontentsline{toc}{section}{Observer design}
+
 In this formulation the nominal augmented state $(x,d)$ needs to be estimated at each time instant, given the plant output measurement $y_p$.
 
 The $L_x \in \mathbb{R}^{n \times p}$ and $L_d \in \mathbb{R}^{n \times n_d} $ observer gain matrices in \ref{eq:Estimator_and_observer} has to be designed in such a way the estimator to be stable, while the method doesn't matter for our purposes.
@@ -697,9 +700,9 @@ This linear model is the one used as basic for the controllers design in the fol
 
 \newpage
 \section{LQR design}
-Consider that at each time instant the information about the runner state $x_r =[p_r , v_r] ^T $ are known, with $p_r$ the absolute runner position and $v_r$ the absolute runner velocity.
+Consider that at each time instant the information about the runner state $x_r =[p_r , v_r] ^T $ is known, where $p_r$ represents the absolute runner position and $v_r$ indicates the absolute runner velocity.
 
-At each time instant $t$ the desired state for the go-kart is the following:
+At each time instant $t$ the desired state for the go-kart is given by:
 \begin{equation}
     x_{k,\text{des}} =
     \begin{bmatrix}
@@ -707,29 +710,36 @@ At each time instant $t$ the desired state for the go-kart is the following:
         v_r
     \end{bmatrix}
 \end{equation}
-where $d_{\text{des}}$ is the reference distance between kart and runner.
-Using this reference, the infinite horizon optimal control problem \ref{eq:LQR} is solved to obtain, in closed form, the optimal unconstrained solution $u^*$.
+where $d_{\text{des}}$ denotes the reference distance between the kart and the runner.
+Using this reference, the closed-form control law in \ref{Closed-loop_control_law} is applied to obtain the optimal unconstrained solution $u^*$ , at each time instant.
 
 \bigskip
 While MPC explicitly incorporates constraints into the optimization problem, LQR does not provide a direct mechanism for handling constraints.
-They can be indirectly addressed by penalizing their violation in the cost function, but it's still possible to deal with control actions that violate some physical limits like the ones in \ref{Input_limits}.
+They can be indirectly addressed by penalizing their violation in the cost function, but it's still possible to deal with control actions that violate certain physical limits, such as those described in \ref{Input_limits}.
 For this reason the unconstrained control actions generated by the LQR controller has been "clipped" as follows:
 \begin{equation}
     \Tilde{u}^* = \text{sat}_{[a_{min}, a_{max}]} (u^*)
 \end{equation}
 
-The value $\Tilde{u}^*$ can be referred as clipped-unconstrained optimal LQR control action.
-While clipping allows the controller to handle constraints in a simple manner, it can lead to suboptimal performances, as the controller may be forced to operate at the constraint boundaries.
+The value $\Tilde{u}^*$ can be referred to as the clipped-unconstrained optimal LQR control action.
+While clipping allows the controller to handle constraints in a straightforward  manner, it can lead to suboptimal performances, as the controller may be forced to operate at the constraint boundaries.
 Therefore, alternative approaches such as MPC may be preferred for systems with stringent constraint requirements.
 
 \subsection{Catch-up maneuver}
+\begin{figure}
+	\centering
+	\includegraphics[width=1.0\textwidth]{LQR_sim_scheme.png}
+	\caption{Linear Quadratic Regulator control scheme}
+	\label{image:LQR_sim_scheme}
+\end{figure}
+
 The most difficult part of the motion is the first couple of seconds where the runner has an acceleration bigger than the maximum one the kart is able to develop. 
 This phase has been called catch-up maneuver.
 For this reason, in order to avoid a crash between the airshield and the runner, this one is asked to start the sprint performance some meters farther from the kart with respect to the steady state desired distance $d_{\text{des}}$.
 
-For this reason the initial condition of the infinite time optimal control problem in \ref{eq:LQR} is 
+For this reason the initial condition for the kart state is set to be the following:
 \begin{equation}
-    x_{\text{init}} =
+    x_{k,\text{init}} =
     \begin{bmatrix}
         d_{\text{des}} + \bar{d} \\
         0
@@ -762,14 +772,10 @@ Once they are matched at 80\% the controller switches to $K_{\text{reg}}$ that g
     R_{\text{reg}} = [0.002]
 \end{equation}
 
-\begin{figure}
-	\centering
-	\includegraphics[width=1.0\textwidth]{LQR_scheme.png}
-	\caption{Linear Quadratic Regulator control scheme}
-	\label{image:LQR_scheme}
-\end{figure}
 
-\begin{algorithm}[!h]
+
+The overall control scheme is the one shown in \ref{image:LQR_sim_scheme}, while algorithm \ref{alg:LQR_sim_implementation} describes the points followed by the LQR algorithm while controlling the system.
+\begin{algorithm}
 \begin{algorithmic}[1]
 	\State catched = false;
 	\State Set initial runner position with a proper distance $\bar{d}$ from kart;
@@ -779,20 +785,21 @@ Once they are matched at 80\% the controller switches to $K_{\text{reg}}$ that g
 		\State Compute corresponding desired state for kart $x_{k,t,des} = [p_{r,t} + d_{\text{des}}, v_{r,t}]^T$;
 		\If{$v_{k,t} \geq 0.8 v_{r,t}$ \textbf{and} catched = false}
 			\State catched = true;
-			\State $u^* = - K_{\text{reg}} (x_{k,t} - x_{k,t,des}) $;
-		\Else 
+		\EndIf
+		\If{catched = false}
 			\State $u^* = - K_{\text{catch}} (x_{k,t} - x_{k,t,des}) $;
+		\Else 
+			\State $u^* = - K_{\text{reg}} (x_{k,t} - x_{k,t,des}) $;
 		\EndIf
 		\State Clip input according to limit saturation limits $\tilde{u}^* = \text{sat}_{[a_{\min}, a_{\max}]} (u^*)$;
 		\State Inject $\tilde{u}^*$ in the plant;
 	\EndFor
 \caption{LQR implementation}
-\label{alg:LQR_implementation}
+\label{alg:LQR_sim_implementation}
 \end{algorithmic}
 \end{algorithm}
 
-The overall control scheme is the one shown in \ref{image:LQR_scheme}, while algorithm \ref{alg:LQR_implementation} describes the points followed by the LQR algorithm while running real-time on the system.
-
+\newpage
 \newpage
 \section{MPC design}
 The main purpose of the Model Predictive Control scheme design lies in the possibility of including constraints, in the incorporation of a runner model inside the prediction one and in the simplification of the overall control scheme.
@@ -822,7 +829,7 @@ According to this assumption, the following augmented state has been used for th
         v_k
     \end{bmatrix}
 \end{equation}
-where $\Delta p := p_k - p_r$ and $\Delta v := v_k - v_r$ thus the relative distance and velocity between kart and runner at a given time, respectively.
+where $\Delta p := p_k - p_r$ and $\Delta v := v_k - v_r$, thus the relative distance and velocity between kart and runner at a given time, respectively.
 
 The overall prediction model, in discrete-time, state-space formulation can be written as follows:
 
@@ -859,7 +866,7 @@ The overall prediction model, in discrete-time, state-space formulation can be w
 \end{equation}
 
 The runner actual acceleration is considered to be known and introduced in the prediction model as a linear affine term that allows the predictions to better fit with the real future runner behaviour.
-The term relative to the actual runner acceleration can be seen as the introduction of a known disturbance in the system.
+This term relative to the actual runner acceleration can be seen as the introduction of a known disturbance in the system.
 
 \bigskip
 The optimal control problem solved at each discrete time instant, in a receiding horizon fashion, has the following formulation:
@@ -887,7 +894,7 @@ $N$ is the prediction horizon thus the number of control intervals the controlle
 This parameter must be chosen carefully since the complexity of solving the optimization problem increases when the prediction horizon increases. 
 This problem could have important consequences in systems having fast dynamics, where the number of prediction steps is limited by the processor power.
 At the same time the prediction horizon has to be chosen long enought to adequately capture the system dynamics.
-The optimal input sequence, found by repartively solving at each time step the optimizaton problem, is such that $\boldsymbol{u}^* \in \mathbb{R}^{m \times N}$.
+The optimal input sequence, found by repeatedly solving at each time step the optimizaton problem, is such that $\boldsymbol{u}^* \in \mathbb{R}^{m \times N}$.
 
 The weights in the cost function are much less sensible to changes with respect to the ones used in the LQR formulation and are chosen like:
 \begin{equation}
@@ -903,9 +910,9 @@ The weights in the cost function are much less sensible to changes with respect 
 
 \begin{figure}
 	\centering
-	\includegraphics[width=1.0\textwidth]{MPC_scheme.png}
+	\includegraphics[width=1.0\textwidth]{MPC_sim_scheme.png}
 	\caption{Model Predictive Control scheme}
-	\label{image:MPC_scheme}
+	\label{image:MPC_sim_scheme}
 \end{figure}
 
 \begin{algorithm}
@@ -918,18 +925,18 @@ The weights in the cost function are much less sensible to changes with respect 
 		\State Inject the first element of the optimal input sequence $u_0^*$ in the plant;
 	\EndFor
 \caption{MPC implementation}
-\label{alg:MPC_implementation}
+\label{alg:MPC_sim_implementation}
 \end{algorithmic}
 \end{algorithm}
 
-The overall MPC control scheme is shown in \ref{image:MPC_scheme}.
-It is easy to understand the semplification in the architecture achieved with the MPC, with respect to the LQR case shown in \ref{image:LQR_scheme}.
- Algorithm \ref{alg:MPC_implementation} describes the points of the MPC real-time implementation.
+The overall MPC control scheme is shown in \ref{image:MPC_sim_scheme}.
+It is easy to understand the semplification in the architecture achieved with the MPC, with respect to the LQR case shown in \ref{image:LQR_sim_scheme}.
+ Algorithm \ref{alg:MPC_sim_implementation} describes the points of the MPC implementation.
 
-\section{Offset-free MPC and estimator design}
+\section{Offset-free MPC and disturbance observer design}
 The MPC problem formulated in \ref{MPC_formulation} uses as prediction model a linear approximation of the kart model (see \ref{Linear_system}) incorporating the runner model in \ref{Runner_model}.
 
-This model does not take into account the non linear term due to the drag coefficient present in the identified kart dynamic equations in \ref{Plant_simplified}.
+This prediction model does not take into account the non linear term due to the drag coefficient present in the identified kart dynamic equations in \ref{Plant_simplified}.
 In particular the true non linear prediction model for the MPC should be the following one:
 
 \begin{equation}
@@ -968,35 +975,89 @@ In particular the true non linear prediction model for the MPC should be the fol
 \label{Non-lin_prediction_model_MPC}
 \end{equation}
 
-where the last term includes the non linear drag effect, non modelled in the prediction model, thus the $w$ in \ref{Plant_model_mismatch} representing the model-plant mismatch term in the offset-free MPC context.
+where the last term includes the non linear, non modelled drag effect, thus the $w$ in \ref{Plant_model_mismatch} representing the model-plant mismatch term in the offset-free MPC context.
 
+\bigskip
 Since MPC derives its solution based on the linear model in \ref{Prediction_model_MPC}, the performance of the controller are directly related to the magnitude of the non modeled effects and in general the MPC cannot achieve optimal closed-loop performances.
-
 On the contrary, data-driven control strategies, do not require models and can implicitly manage uncertainties in processes. However, pure data-driven approaches, without any prior assumptions about process require a huge amount of data and slow exploratory techniques.
 Some recently explored control techniques combine model-based techniques with data-drive approaches. 
 
-\bigskip
 The idea used in this thesis to compensate in the MPC formulation for the model-plant mismatch term, combines a predictive control based on the linear prediction model but it's able to estimate at run time, the non-modeled, non-linear term from the data and compensate for it using an offset-free approach.
-
 Even if the MPC in offset-free formulation can compensate for the model-plant mismatch, the estimation of the disturbance is obtained from the measurement error. 
 This introduces a delay in the estimation of the disturbance value and in its compensation.
 As a consequence, the disturbance term can be properly compensated only at steady-state and not during the transition state when that term varies at each time instant. 
 
-Scrivere la formulazione
+\bigskip
+Considering the problem statement presented in \ref{MPC:offset-free}, the affine term that takes into account the runner acceleration, has been added as done for the nominal MPC case.
+
+\bigskip
+The prediction model in \ref{Augmented_model} is applied and it results to be:
+\begin{equation}
+\begin{aligned}
+	x_{p,t+1} & =
+    \begin{bmatrix}
+        1 & dt & 0 \\
+        0 & 1 & -dt\frac{C_f}{m} \\
+        0 & 0 & 1-dt\frac{C_f}{m}
+    \end{bmatrix}
+    x_{p,t}
+    +
+    \begin{bmatrix}
+        0 \\
+        dt \frac{C_{m1}}{m} \\
+        dt \frac{C_{m1}}{m}
+    \end{bmatrix}
+    u_t + 
+    \begin{bmatrix}
+    0 \\
+    - dt a_{r,t} \\
+    0
+    \end{bmatrix} 
+    -
+    \begin{bmatrix}
+    0 \\
+    1 \\
+    1
+    \end{bmatrix}
+	d_t \\
+    d_{t+1} & = d_t
+\end{aligned}
+\label{Offset-free_prediction_model_MPC}
+\end{equation}
+
+Where $B_d = [0, 1, 1]^T$ means that the disturbance enters only in the second and third states while the prediction model for the relative position has no mismatch with the plant. 
+For the purposes of this thesis the state is considered to be fully observable (i.e. $C = I_3$) and, as a consequence, the reference for the measured plant output is translated in reference for the plant states, thus $y_{\text{des}} = x_{p,\text{des}} = [d_{\text{des}}, 0, 0] ^T$.
+Accordingly also $C_d = [0, 0, 0]^T$. 
+
+The observer design is very important for enhancing the robustness of the proposed control scheme
+The $L_x$ and $L_d$ observer gain matrices they have been designed in such a way the poles of $(A_e + L C_e)$ are placed in $\lambda=[0.5, 0.51, 0.52, 0.53]^T$ and the matrix results to be Hurwitz. 
+As weights the same $Q$ and $R$ matrices presented in the nominal MPC context, are used.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=1.0\textwidth]{MPC_of_scheme.png}
+	\caption{Offset-free Model Predictive Control scheme with disturbance observer}
+	\label{image:mpc_of_scheme}
+\end{figure}
+
+In image \ref{image:mpc_of_scheme} the block diagram of the proposed offset-free MPC implementation is represented. 
 
 
 
-
-
-
-\chapter{Simulations and results}
+\chapter{Simulation results and Hardware-in-the-loop validation}
 %\addcontentsline{toc}{chapter}{Simulations and Hardware results}
 \markboth{}{RESULTS}
-\label{chapter:Simulations_and_Hardware_results}
-The first purpose of this chapter is to provide an overview of the hardware structure and software tools used to develop tests on the go-kart.
+\label{chapter:Simulations_and_results}
+The first purpose of this chapter is to present and analyze the results of Python simulations.
 
-Later the results obtained in Python simulation environment are presented and analyzed.
+Later an overview of the hardware structure and sensors equipment of the system is provided together with the changes in the controllers formulations with respect to the simulation environment. 
+
 Finally, some test developed on the real hardware are presented and their results are compared with the simulation framework.
+
+\section{Simulation results}
+This section presents the results obtained carrying out a Python simulation of the go-kart non linear dynamical model.
+Two different velocity profiles for the runner are used as data and represented in figure (Plot solo profili velocità).
+The three controllers: Linear Quadratic Regulator, Model Predictive Control and Offset-Free Model Predictive Control have been tested and their performances are evaluated and compared.
 
 \section{System structure and hardware description}
 This part discuss the hardware components present in the system.
@@ -1008,7 +1069,7 @@ This part discuss the hardware components present in the system.
 
 The system comprises a fully electric-powered go-kart with an attached airshield structure via a fixed joint. According to the CIK-FIA (International Karting Commission Federation International Automobile), a go-kart is a land vehicle with four non-aligned wheels in contact with the ground, two of which control steering while the others transmit power. Go-karts emerged after the post-war period of the 1950s, originally created by airmen as a pastime. Typically, go-kart chassis are constructed from steel pipes that provide both stiffness and flexibility to compensate for the lack of a suspension system and a differential.
 
-\subsection{Electric-powered go-kart}
+\subsection*{Electric-powered go-kart}
 The kart is a SinusIon purchased from the German company RiMO (originally Richter + Mohn). 
 
 \bigskip
@@ -1024,7 +1085,7 @@ The gearbox has a gear ratio of 1:7.
 \bigskip
 The computer on board is a AMD Ryzen MinisForum EliteMini X500 with an AMD Ryzen 7 5700G processor (8 cores with nominal frequency of 3.8GHz) coupled with a 16GB DDR4 RAM.
 
-\subsection{Airshield}
+\subsection*{Airshield}
 
 \begin{figure}
 	\centering
@@ -1064,7 +1125,7 @@ The perception systems used in autonomous vehicles are usually categorized in tw
 \end{itemize}
 In this application the system is equipped with a LiDAR (Light Detection and Ranging), a camera, an inertial measurement unit and wheel encoders.
 
-\subsection{LiDAR}
+\subsection*{LiDAR}
 LiDAR (Light Detected and Ranging) is a remote sensing technology that measures distances to objects and surfaces using laser pulses. 
 The sensor consists of three main components: a laser emitter, a scanning mechanism, and a receiver.
 The laser emitter sends out short pulses of laser light, which travel towards surrounding objects. 
@@ -1078,7 +1139,7 @@ The field of view (angular extension of a scene that is projected by the laser b
 The range of the laser is up to 100 m. 
 Measures have an accuracy of +/- 3 cm and are acquired with a frequency of 20 Hz.
 
-\subsection{Camera}
+\subsection*{Camera}
 Cameras provide rich information about the surrounding environment and can be used in a variety of ways.
 On the airshield a ZED 2i Stereo Camera with polarized lens of 4mm is mounted.
 
@@ -1091,7 +1152,7 @@ It's powered with an NVIDIA Jetson embedded GPU.
 At the moment LiDAR measurement are prefered with respect to camera ones thanks to the higher accuracy.
 Camera remains responsible for the detection of the gesture to identify the moment in which the runner is able to start the performance. 
 
-\subsection{Wheel Encoder}
+\subsection*{Wheel Encoder}
 Rotary encoders are a type of sensor that measures the rotation of a mechanical shaft.
 Two wheel encoders, one for each wheel, are integrated in the PMS 100 motor as speed sensors providing the motor rotational speed.
 Then by knowing that the gear ratio is 1:7 and that the wheel diameter is $27.89$ cm the absolute go-kart speed can be evaluated as follows:
@@ -1103,7 +1164,7 @@ where avg rate is the average motor rate between left and right sides.
 
 
 
-\subsection{Inertial Measurement Unit}
+\subsection*{Inertial Measurement Unit}
 
 \begin{figure}[h!]
 	\centering
@@ -1117,14 +1178,103 @@ Thanks to the combination of accelerometers and gyroscopes the IMU is able to se
 The IMU used in the go-kart is the IRIMU-V2 from Izze-Racing that outputs data at 200Hz via CAN protocol and has an accuracy of less than 1\% of full scale for the acceleration and less than 1.5\% for the angular acceleration.
 The position with respect to the go-kart centre of gravity is showed in \ref{IMU_pose}.
 
-\subserction{State estimator e dati dei sensori usati}
-Mostrare che in LQR
-x error è uguale a h che esce dal lidar.
 
-\section{Simulation results}
-This section presents the results obtained carrying out a Python simulation of the go-kart non linear dynamical model.
-Two different velocity profiles for the runner are used as data and represented in figure (Plot solo profili velocità).
-The three controllers: Linear Quadratic Regulator, Model Predictive Control and Offset-Free Model Predictive Control have been tested and their performances are evaluated and compared.
+\subsection{Controller design changes for hardware integration}
+In the context of the hardware control implementation the available informations are the one coming from sensors and we cannot rely on a full state knowledge for both runner and kart as hypotized in Chapter 2.
+For this reason we have to take into account the sensor present in the system and the measurement provided by them to control the system properly. 
+
+\subsubsection{LQR}
+Differently from the simulation context, where all the state variables both for runner and kart have been considered to be fully known, in the hardware-in-the-loop context, absolute position of both kart and runner, as well as the runner absolute velocity, result to be unknown.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=1.0\textwidth]{LQR_hard_scheme.png}
+	\caption{Linear Quadratic Regulator scheme with sensors}
+	\label{image:LQR_hard_scheme}
+\end{figure}
+
+The LiDAR, as a range sensor, provides directly the measurement of the relative distance between runner and kart $\Delta p$, while the relative velocity can be estimated via finite differences:
+
+\begin{equation}
+	\Delta v_t = \frac{\Delta p_t - \Delta p_{t-1}} {dt}
+\end{equation}
+where $\Delta p_t := p_{k,t} - p_{r,t}$ and $\Delta v_t := v_{k,t} - v_ {r,t}$, and $dt$ is the sampling time.
+
+The third component of the prediction state, the kart absolute velocity, is obtained from the wheel encoders.
+
+\begin{algorithm}
+\begin{algorithmic}[1]
+	\State catched = false;
+	\State Set initial runner position with a proper distance $\bar{d}$ from kart;
+	\State Define desired system behaviour  $h_{\text{des}} = [d_{\text{des}}, 0]^T$;
+	\For{$t=0,1,2,...$};
+		\State Take LiDAR information $h_t = [\Delta p_t, \Delta v_t]^T$;
+		\State Take absolute kart velocity $v_{k,t}$ from wheel encoders;
+		\State Evaluate absolute runner velocity $v_{r,t} = v_{k,t} - \Delta v_t $;
+		\If{$v_{k,t} \geq 0.8 \, v_{r,t}$ \textbf{and} catched = false}
+			\State catched = true;
+		\EndIf
+		\If{catched = false}
+			\State $u^* = - K_{\text{catch}} (h_t - h_{\text{des}}) $;
+		\Else 
+			\State $u^* = - K_{\text{reg}} (h_t - h_{\text{des}}) $;
+		\EndIf
+		\State Clip input according to limit saturation limits $\tilde{u}^* = \text{sat}_{[a_{\min}, a_{\max}]} (u^*)$;
+		\State Inject $\tilde{u}^*$ in the plant;
+	\EndFor
+\caption{LQR implementation on hardware system}
+\label{alg:LQR_hard_implementation}
+\end{algorithmic}
+\end{algorithm}
+
+\bigskip
+The closed loop control law in \ref{Closed-loop_control_law} can be modified as follows to directly use the measurments provided by the LiDAR to evaluate the feedback error and compute the current control action:
+\begin{equation}
+    u_t^* = K (h_t - h_{\text{des}})
+\label{Closed-loop_control_law_sensors}
+\end{equation}
+
+where 
+\begin{equation}
+    h_t =
+    \begin{bmatrix}
+        \Delta p_t  \\
+        \Delta v_t
+    \end{bmatrix}
+	=
+    \begin{bmatrix}
+        p_{k,t} - p_{r,t} \\
+        v_{k,t} - v_{r,t}
+    \end{bmatrix},
+    \quad
+    h_{\text{des}} =
+    \begin{bmatrix}
+        d_{\text{des}} \\
+        0
+    \end{bmatrix}.
+\end{equation}
+
+
+
+\subsection*{MPC}
+\begin{figure}
+	\centering
+	\includegraphics[width=1.0\textwidth]{MPC_hard_scheme.png}
+	\caption{Model Predictive Control scheme with sensors}
+	\label{image:MPC_hard_scheme}
+\end{figure}
+
+The overall implementation of the LQR in the context of the real system in described by algorithm \ref{alg:LQR_hard_implementation}, while the control architecture using the sensors for taking the measurements is shown in figure \ref{image:MPC_hard_scheme}.
+
+It has to be noticed that the actual absolute runner acceleration is estimated. 
+First of all the relative acceleration between kart and runner $\Delta a$ is estimated, as well as the kart absoluted acceleration $a_k$.
+The absolute runner acceleration used is equal to $a_r = a_k - \Delta a$.
+For this purpose a Kalman filter has been used.
+
+Tutto il discorso sul noise
+
+
+
 	  
 	
 
