@@ -28,7 +28,7 @@ nsp = 3
 
 def main():
     params = Params()
-    t_end = 12.0
+    t_end = 15.0
     t_hor = 1.0
     num_steps = int(t_end/params.dt)
     num_steps_mpc = int(t_hor/params.dt)
@@ -59,15 +59,32 @@ def main():
     h_meas = np.zeros(nsp)
 
     # LQR profile
-    speed_profile = [0, 7, 8, 9, 10, 10, 10]  
-    time_profile = [0, 2, 4, 8, 10, 13, 16]
-    init_distance = 5
+    # Saturation profile
+    # speed_profile = [0, 7, 8, 9, 10, 10, 10]  
+    # time_profile = [0, 2, 4, 8, 10, 13, 16]
+    # init_distance = 5
+
+    # No saturation profile
+    speed_profile = [0, 2, 4.5, 6, 7, 7, 7, 7]  
+    time_profile = [0, 1, 2, 4, 8, 10, 13, 16]
+    init_distance = 0.5
+
+    # Usain Bolt
+    # speed_profile = [0, 8, 11, 12, 12, 12, 12]  
+    # time_profile = [0, 2, 4, 8, 10, 13, 16]
+    # init_distance = 12
+
+    # Mujinga profile
+    time_profile = [0, 2.03, 3.17, 4.21, 5.21, 6.21, 7.21, 8.23, 9.25, 10.30, 11.41,]
+    speed_profile = [0, 4.93, 8.77, 9.62, 10, 10, 10, 9.80, 9.80, 9.52, 9]
+    init_distance = 4 #10
+
     xk[0,0] = params.offset_ref + init_distance
 
-        # Initialize State and Disturbance Estimator
+    # Initialize State and Disturbance Estimator
     Est = Estimator(parameters=params)
     x_est = np.zeros((nsp, num_steps)) # Estimated state
-    # x_est[0,0] = init_distance + params.offset_ref
+    x_est[0,0] = params.offset_ref #+ init_distance
     d_est = np.zeros((1, num_steps)) # Estimated disturbance
 
     position, velocity, acceleration = create_runner_profile(speed_profile, time_profile, params.dt, t_end)

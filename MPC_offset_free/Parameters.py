@@ -35,7 +35,7 @@ class Params():
                   [dt*(Cm1/m)]])
     
         
-    Qo = np.diag([50, 50, 0]) 
+    Qo = np.diag([3, 5, 0]) 
     Ro = np.array([[1e-2]])   
     
     

@@ -31,7 +31,7 @@ class LQRController():
         """Performs LQR tracking
         u = u_opt - K (error)"""
         
-        if car_speed > 0.8*(car_speed - error[1]) and car_speed>6.0 and self.speed_matched == False:
+        if car_speed > 0.8*(car_speed - error[1]) and car_speed>4.0 and self.speed_matched == False:
             self.speed_matched = True
             print("---------------------")
             print("Catch maneuver accomplished")
@@ -45,9 +45,10 @@ class LQRController():
             uak = - (self.K @ error)[0]
 
         # Bounds for input
-        uak = np.clip(uak, input_limits[0], input_limits[1])
+        uak_clip = np.clip(uak, input_limits[0], input_limits[1])
+        uak = np.clip(uak,input_limits[0], 300)
 
-        return uak, self.speed_matched
+        return uak, uak_clip, self.speed_matched
 
     def solve_optcon_problem(self, x_init, kart_ref, dt, t_end):
         """Solves optimal control problem for given init condition"""
