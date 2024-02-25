@@ -254,7 +254,7 @@ In the context of multi-objective optimization, the challenge lies in finding a 
 The Infinite Horizon Linear Quadratic Regulator problem is defined as follows:
 find the optimal control input $u_t, \, \forall t \in [0, \infty)$ that makes the following quadratic criteria as small as possible
 \begin{equation}
-    J(\boldsymbol{u}, \boldsymbol{u})  = \sum_{t=0} ^{+\infty} x_t^T Q x_t + u_t ^T R u_t
+    J(\boldsymbol{x}, \boldsymbol{u})  = \sum_{t=0} ^{+\infty} x_t^T Q x_t + u_t ^T R u_t
 \label{Quadratic_cost_funct}
 \end{equation}
 where $Q \in \mathbb{R}^{n \times n}$ and $R \in \mathbb{R}^{m \times m}$ are symmetric positive-definite weight matrices.
@@ -419,9 +419,9 @@ It can be, in general, written in the following form:
 \end{aligned}
 \label{Augmented_model}
 \end{equation}
-where the additional state $d_t \in \mathbb{R}^{n_d}$ is known as disturbance state or simply disturbance and follows an integral dynamics, as proposed by \cite{pannocchia2003disturbance}. 
+where the additional state $d_t \in \mathbb{R}^{n_d}$ is known as disturbance state or simply disturbance, is assumed to be constant and follows an integral dynamics, as proposed by \cite{pannocchia2003disturbance}. 
 The maximum dimension of the disturbance state has to be equal to the number of measured outputs, i.e. $n_d \leq p$.
-The pair $(B_d, C_d)$ can be seen as the disturbance model.
+The pair $(B_d, C_d)$ can be seen as the disturbance model where $B_d \in \mathbb{R}^{n \times n_d}$ and $C_d \in \mathbb{R}^{m \times n_d}$.
 
 \bigskip
 Assuming observability of the augmented system \ref{Augmented_model}, an estimator that continuously estimates the augmented state $(x,d)$ can be designed.
@@ -545,6 +545,7 @@ Later on a proper description of the design choices and the formulations of both
 \begin{figure}[h!]
 	\centering
 	\includegraphics[width=0.7\textwidth]{Bycicle_scheme.png}
+\label{Kinematic bicycle model of the vehicle}
 \end{figure}
 Having a good model plays a central role in the controller design framework.
 The non linear model used to describe the kart dynamics is a bicycle model.
@@ -767,7 +768,7 @@ Once this alignement is achieved, typically at an 80\% match, the controller swi
 \begin{equation}
     Q_{\text{reg}} =
     \begin{bmatrix}
-        1000 & 0 \\
+        800 & 0 \\
         0 & 4000
     \end{bmatrix},
     \quad
@@ -874,7 +875,7 @@ The optimal control problem solved at each discrete time instant, in a receiding
 \begin{alignedat}{2}
 	\min_{\substack{\boldsymbol{x}, \boldsymbol{u}}}\quad J &= \sum_{i=t}^{t+N-1} (x_{p,i|t} - x_{p,\text{des}}) ^T \, Q \, (x_{p,i|t} - x_{p,\text{des}}) +  u_{i|t}^T \, R \, u_{i|t} &&   \\
 	\text{subj. to} & \quad x_{p,i+1|t}  = A_p \, x_{p,i|t} + B_p \, u_{i|t} + a_t && \\
-    &\quad u_{\text{min}} \leq u_{i|t} \leq u_{\text{max}}&& \\
+    &\quad a_{\text{min}} \leq u_{i|t} \leq a_{\text{max}}&& \\
     &\quad d_{\text{safe}}\leq \Delta p_{i|t} &&  \\
     &\quad x_{p,t|t} = x_{p,\text{meas}} &&
 \end{alignedat}
@@ -889,7 +890,7 @@ where the reference values for the prediction states are the following
         0
     \end{bmatrix}
 \end{equation}
-and $d_{\text{safe}}$ is a minimum distance between go-kart and runner, ensuring a safe situation.
+and $d_{\text{safe}}$ is a minimum distance between go-kart and runner, ensuring a safe situation, set to a value of 1.5 metres distance.
 The parameter $N$ defines the prediction horizon thus the number of control intervals the controller must evaluate by prediction. 
 This parameter must be carefully selected since the complexity of solving the optimization problem increases when the prediction horizon increases. 
 This problem could have important consequences in systems having fast dynamics, where the number of prediction steps is limited by the processor power.
@@ -900,13 +901,15 @@ The weights in the cost function are much less sensible to changes with respect 
 \begin{equation}
     Q =
     \begin{bmatrix}
-        5 & 0 & 0 \\
+        2.5 & 0 & 0 \\
         0 & 5 & 0 \\
         0 & 0 & 0
     \end{bmatrix},
     \quad
     R = [0.02]    
 \end{equation}
+The last element in the $Q$ matrix is chosen to be equal to zero since a reference for the absolute kart velocity is not present. 
+For this reason the third state is not taken into account in the cost function of the optimization problem but it is kept in the state vector because it makes possible to write the prediction model in an easier way.
 
 \begin{figure}
 	\centering
@@ -919,7 +922,7 @@ The weights in the cost function are much less sensible to changes with respect 
 \begin{algorithmic}[1]
 	\State Define desired prediction state $x_{p,\text{des}} = [d_{\text{des}}, 0, 0]^T$;
 	\State Set initial runner position with a proper distance $\bar{d}$ from kart;
-	\For{$t=0,1,2,..., t_{\text{end}}$}
+	\For{$t=0,1,2,...$}
 		\State Take prediction state information $x_{p,t} = [\Delta p_t, \Delta v_t, v_{k,t}]^T$;
 		\State Solve the constrained QP and get $\boldsymbol{u}^* = \{u_0, u_1, \cdots, u_N\}$; 
 		\State Inject the first element of the optimal input sequence $u_0^*$ in the plant;
@@ -928,7 +931,7 @@ The weights in the cost function are much less sensible to changes with respect 
 \label{alg:MPC_sim_implementation}
 \end{algorithmic}
 \end{algorithm}
-
+\bigskip
 The overall MPC control scheme is shown in \ref{image:MPC_sim_scheme}.
 It is easy to understand the semplification in the architecture achieved with the MPC, with respect to the LQR case shown in \ref{image:LQR_sim_scheme}.
  Algorithm \ref{alg:MPC_sim_implementation} describes the points of the MPC implementation.
@@ -1051,7 +1054,7 @@ In image \ref{image:mpc_of_scheme} the block diagram of the proposed offset-free
 	\State Define desired prediction state $x_{p,\text{des}} = [d_{\text{des}}, 0, 0]^T$;
 	\State Set initial runner position with a proper distance $\bar{d}$ from kart;
 	\State Initialize estimator $\hat{x}_{p,0} = [d_{\text{des}}, 0, 0]^T$ and $\hat{d}_0 = 0$;
-	\For{$t=0,1,2,..., t_{\text{end}}$}
+	\For{$t=0,1,2,... $}
 		\State Take state estimator and disturbance observer information $\hat{x}_{p,t}$ and $\hat{d}_t$;
 		\State Solve the constrained QP and get $\boldsymbol{u}^* = \{u_0, u_1, \cdots, u_N\}$; 
 		\State Inject the first element of the optimal input sequence $u_0^*$ in the plant;
@@ -1081,7 +1084,7 @@ This section presents the results obtained carrying out a Python simulation of t
 The three controllers: Linear Quadratic Regulator, Model Predictive Control and Offset-Free Model Predictive Control have been tested and their performances are evaluated and compared.
 To assess the performance of the controllers and evaluate the application's behaviour, empirical data from two presigious Diamond League competitions have been employed, focusing on the winners of the 100m sprint both in the man's and women's categories.
 
-\begin{table}[htbp]
+\begin{table}[h!]
 	\centering
 	\begin{adjustbox}{max width=\textwidth}
 	\begin{tabular}{c|c|c|c|c|c|c|c|c|c|c}
@@ -1094,7 +1097,7 @@ To assess the performance of the controllers and evaluate the application's beha
 	\hline
 	\end{tabular}
 	\end{adjustbox}
-\caption{Marie-Josèe Ta-Lou Diamong League Lausanne 30th June 2023}
+\caption{Marie-Josèe Ta-Lou - Diamong League Lausanne 30th June 2023}
 \label{tab:Women}
 \end{table}
 
@@ -1102,7 +1105,7 @@ In the case of the women's 100m sprint event, data are taken from the competitio
 The race saw Marie-Josèe Ta Lous as winner and in table \ref{tab:Women} are reported her timed intervals recorded at every 10 meters. 
 Based on these splits an average velocity for each 10 meters interval has been computed in order to have a velocity runner profile over time.
 
-\begin{table}[htbp]
+\begin{table}[h!]
 	\centering
 	\begin{adjustbox}{max width=\textwidth}
 	\begin{tabular}{c|c|c|c|c|c|c|c|c|c|c}
@@ -1115,7 +1118,7 @@ Based on these splits an average velocity for each 10 meters interval has been c
 	\hline
 	\end{tabular}
 	\end{adjustbox}
-\caption{Christian Coleman Diamong League Eugene 16th September 2023}
+\caption{Christian Coleman - Diamong League Eugene 16th September 2023}
 \label{tab:Man}
 \end{table}
 
@@ -1141,62 +1144,120 @@ The parameters used for the evaluation and comparison of the controllers perform
 	\item Minimum distance from kart: the concept is similar to the undershoot, thus the extent to which the system's response deviates from the desired trajectory. This parameter quantifies how close the runner goes to the kart during the performance.
 	\item Energy consumption: quantifies the amount of energy expended by the controller to achieve the desired tracking performance.
 	\item Stead-state error: characterized the residual errror between the actual output and the desired reference value once the system has reached a stable operating condition, thus a constant velocity of the kart tracking a constant velocity of the runner.
-	\item "Rise" tim to reach a desired reference distance of 2.6m from kart: refers to the duration taken by the system's output to transition from the initial state to the desired position setpoint. It represents the speed at which the system responds to changes in the reference signal and it's indicative of the controller's dynamic responsiveness.
+	\item "Rise" time to reach a desired reference distance of 2.6m from kart: refers to the duration taken by the system's output to transition from the initial state to the desired position setpoint. It represents the speed at which the system responds to changes in the reference signal and it's indicative of the controller's dynamic responsiveness.
 \end{itemize}
 
+\newpage
 \subsection{Test on women velocity profile of Ta Lou}
-\begin{figure}[htbp]
+\begin{figure}[h!]
     \centering
     \begin{subfigure}[t]{0.8\textwidth}
         \includegraphics[width=\textwidth]{Ta_Lou/Deltap.png}
-        \caption{Relative position}
+        \caption{Relative position between runner and go-kart}
         \label{fig:Deltapwomen}
     \end{subfigure}
     
     \begin{subfigure}[t]{0.8\textwidth}
         \includegraphics[width=\textwidth]{Ta_Lou/Deltav.png}
-        \caption{Relative velocity}
+        \caption{Relative velocity between runner and go-kart}
         \label{fig:Deltavwomen}
     \end{subfigure}
     
     \begin{subfigure}[t]{0.8\textwidth}
         \includegraphics[width=\textwidth]{Ta_Lou/Input.png}
-        \caption{T}
+        \caption{Input effort (drive-train acceleration)}
         \label{fig:Inputwomen}
     \end{subfigure}
-    \caption{Input}
+    \caption{Simulation results following Ta Lou velocity profile. The results for LQR (in blue), MPC (in green) and Offset-free MPC (in red) are shown overlapped on the same plot to appreciate the comparison among controllers}
     \label{fig:Women}
 \end{figure}
 
+The initial distance used for the simulation is $\bar{d} = 4m$.
+It is clearly understendable from both Table \ref{tab:Ta_Lou} and figure \ref{fig:Women} that the LQR controller exibits worst performances with respect to the other controllers.
+In particular taking into account the minimum distance between runner and go-kart the LQR has performances much worst with respect to the other two controllers, and violates the safety distance state constraints $d_{\text{safe}}$ introduced in both the MPC formulations.
+It is worth pointing out that the offset-free version of the predictive controller is able to obtain an almost zero steady-state error, much smoller to the values around 10 centimeters obtained with the other controllers.
+The controller exhibit similar energy consumptions over time values.
+
 \begin{table}[htbp]
 	\centering
-	\caption{Comparison of controllers performances: First test}
-	\label{tab:Test1}
 	\begin{tabular}{c|c|c|c}
-          & LQR & MPC & MPC Offset-free \\
+          & \textbf{LQR} & \textbf{MPC} & \textbf{MPC Offset-free} \\
 	\hline
 	\hline
-	Mean($\Delta p$) & 0.8892 & 0.6867 &  0.6168 \\
-	Mean($\Delta v$) & 0.3987 & 0.2611 & 0.2522 \\
+	mean($\Delta p$) & 0.8892 & 0.6867 &  0.6168 \\
+	mean($\Delta v$) & 0.3987 & 0.2611 & 0.2522 \\
 	IAE on $\Delta p$ & 13.2352 & 10.1978 & 9.1515 \\
 	IAE on $\Delta v$ & 5.9811 & 3.9176 & 3.7826 \\
-	Min($\Delta p$) & 1.1885 & 2.2371 & 2.3605 \\
+	min($\Delta p$) & 1.1885 & 2.2371 & 2.3605 \\
 	Energy consumption & 0.5208 & 0.5200 & 0.5207 \\
 	Steady state error & 0.1354 & 0.1079 & 0.0009 \\
 	"Rise" time to 2.6m & 3.3 & 3.75 & 3.85 \\
 	\hline
 	\end{tabular}
+\caption{Comparison of controllers performances: Ta Lou velocity profile }
+\label{tab:Ta_Lou}
 \end{table}
 
 
+\newpage
+\subsection{Test on men velocity profile of Coleman}
+\begin{figure}[h!]
+    \centering
+    \begin{subfigure}[t]{0.8\textwidth}
+        \includegraphics[width=\textwidth]{Coleman/Deltap.png}
+        \caption{Relative position between runner and go-kart}
+        \label{fig:Deltapmen}
+    \end{subfigure}
+    
+    \begin{subfigure}[t]{0.8\textwidth}
+        \includegraphics[width=\textwidth]{Coleman/Deltav.png}
+        \caption{Relative velocity between runner and go-kart}
+        \label{fig:Deltaven}
+    \end{subfigure}
+    
+    \begin{subfigure}[t]{0.8\textwidth}
+        \includegraphics[width=\textwidth]{Coleman/Input.png}
+        \caption{Input effort (drive-train acceleration)}
+        \label{fig:Inputmen}
+    \end{subfigure}
+    \caption{Input}
+    \label{fig:Men}
+\end{figure}
 
+It is reasonable that by intensifying the difficulty of the velocity profile from the one of a female runner to the one of male one, the required initial distance from the go-kart is going to increase.
+In the case of the Christian Coleman velocity profile this value is set to $\bar{d} = 13m$.
+
+\begin{table}[h!]
+	\centering
+	\begin{tabular}{c|c|c|c}
+          & LQR & MPC & MPC Offset-free \\
+	\hline
+	\hline
+	mean($\Delta p$) & 2.5984 & 2.5636 &  2.4848 \\
+	mean($\Delta v$) & 1.0037 & 0.9392 & 0.9419 \\
+	IAE on $\Delta p$ & 38.6465 & 38.1247 & 36.9459 \\
+	IAE on $\Delta v$ & 15.0578 & 14.0901 & 14.1308 \\
+	min($\Delta p$) & 1.0802 & 1.6036 & 1.6105 \\
+	Energy consumption & 0.5694 & 0.5694 & 0.5697 \\
+	Steady state error & 0.1689 & 0.1784 & 0.0350 \\
+	"Rise" time to 2.6m & 4.5 & 4.7 & 4.7 \\
+	\hline
+	\end{tabular}
+\caption{Comparison of controllers performances: Coleman velocity profile}
+\label{tab:Coleman}
+\end{table}
+
+Initializing the maneuver from a further distance, with respect to the previous case, implies higher values of mean position error and integral absolute error, as reported in Table \ref{tab:Coleman}.
+The value of the minimum distance reached between runner and go-kart is much smaller for the LQR with respect to the two MPC formulations also with this velocity profile, meaning that the athlete enters for a bigger distance inside the shield.
+The LQR value of 1 meter and 8 centimeters violates the safety bound introduced in the MPC, as in the case of Ta Lou velocity profile.
+
+It should be noticed how, in both the scenario saturation phenomenon is present for a consistent part of the tracking.
 
 
 \section{System structure and hardware description}
 This part discuss the hardware components present in the system.
 
-
-
+\bigskip
 The system comprises a fully electric-powered go-kart with an attached airshield structure via a fixed joint. According to the CIK-FIA (International Karting Commission Federation International Automobile), a go-kart is a land vehicle with four non-aligned wheels in contact with the ground, two of which control steering while the others transmit power. Go-karts emerged after the post-war period of the 1950s, originally created by airmen as a pastime. Typically, go-kart chassis are constructed from steel pipes that provide both stiffness and flexibility to compensate for the lack of a suspension system and a differential.
 
 \subsection*{Electric-powered go-kart}
@@ -1403,7 +1464,80 @@ For this purpose a Kalman filter has been used.
 
 Tutto il discorso sul noise
 
+\section{Real-hardware test}
+In the following some results of test developed on real-hardware are presented.
 
+\begin{figure}[h!]
+    \centering
+    \begin{subfigure}[b]{0.24\textwidth}
+        \includegraphics[width=\textwidth]{Catch/Catch1.png}
+    \end{subfigure}
+\hfill
+    \begin{subfigure}[b]{0.24\textwidth}
+        \includegraphics[width=\textwidth]{Catch/Catch2.png}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.24\textwidth}
+        \includegraphics[width=\textwidth]{Catch/Catch3.png}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.24\textwidth}
+        \includegraphics[width=\textwidth]{Catch/Catch4.png}
+    \end{subfigure}
+\\[0.2cm]
+    \begin{subfigure}[b]{0.24\textwidth}
+        \includegraphics[width=\textwidth]{Catch/Catch5.png}
+    \end{subfigure}
+\hfill
+    \begin{subfigure}[b]{0.24\textwidth}
+        \includegraphics[width=\textwidth]{Catch/Catch6.png}
+    \end{subfigure}
+\hfill
+    \begin{subfigure}[b]{0.24\textwidth}
+        \includegraphics[width=\textwidth]{Catch/Catch7.png}
+    \end{subfigure}
+\hfill
+    \begin{subfigure}[b]{0.24\textwidth}
+        \includegraphics[width=\textwidth]{Catch/Catch8.png}
+    \end{subfigure}
+    \caption{Sequence of images taken from a video, describing a catch-up maneuver regulated with MPC }
+\end{figure}
+
+\begin{figure}[h!]
+    \centering
+    \begin{subfigure}[b]{0.24\textwidth}
+        \includegraphics[width=\textwidth]{SteadyState/ss1.png}
+    \end{subfigure}
+\hfill
+    \begin{subfigure}[b]{0.24\textwidth}
+        \includegraphics[width=\textwidth]{SteadyState/ss2.png}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.24\textwidth}
+        \includegraphics[width=\textwidth]{SteadyState/ss3.png}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.24\textwidth}
+        \includegraphics[width=\textwidth]{SteadyState/ss4.png}
+    \end{subfigure}
+\\[0.2cm]
+    \begin{subfigure}[b]{0.24\textwidth}
+        \includegraphics[width=\textwidth]{SteadyState/ss5.png}
+    \end{subfigure}
+\hfill
+    \begin{subfigure}[b]{0.24\textwidth}
+        \includegraphics[width=\textwidth]{SteadyState/ss6.png}
+    \end{subfigure}
+\hfill
+    \begin{subfigure}[b]{0.24\textwidth}
+        \includegraphics[width=\textwidth]{SteadyState/ss7.png}
+    \end{subfigure}
+\hfill
+    \begin{subfigure}[b]{0.24\textwidth}
+        \includegraphics[width=\textwidth]{SteadyState/ss8.png}
+    \end{subfigure}
+    \caption{Sequence of images taken from a video, describing a tracking regulated with MPC }
+\end{figure}
 
 	  
 	

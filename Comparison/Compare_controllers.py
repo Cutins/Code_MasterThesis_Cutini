@@ -132,6 +132,8 @@ plt.plot(time_hor, Error_traj_MPCOF[0], 'r', label='MPC Offset Free', linewidth=
 # plt.scatter(t_rise_LQR, 2.6, marker='o', color='b', label='Rise time LQR')
 # plt.scatter(t_rise_MPC, 2.6, marker='o', color='g', label='Rise time MPC')
 # plt.scatter(t_rise_MPCOF, 2.6, marker='o', color='r', label='Rise time MPC Offset Free')
+plt.fill_between(time_hor, 0, -0.5, color=(0.7, 0.7, 0.7), where=(Error_traj_LQR[0] > -0.5), label='Go-Kart')
+plt.fill_between(time_hor, 1.5, 0, color='red', alpha=0.2, where=(Error_traj_LQR[0] > -0.5), label='Unsafe Area')
 plt.xlabel(r'Time[$s$]')
 plt.ylabel(r'$\Delta p$ [$m$]')
 plt.legend(loc="upper right")

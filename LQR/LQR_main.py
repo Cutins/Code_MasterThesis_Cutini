@@ -62,9 +62,9 @@ def main():
     init_distance = 4
 
     # # Christian Coleman (Diamond League Eugene 16th September 2023)
-    # time_profile = [0, 1.87, 2.89, 3.8, 4.67, 5.52, 6.36, 7.21, 8.07, 8.93, 9.83]
-    # speed_profile = [0, 5.35, 9.80, 10.99, 11.49, 11.76, 11.90, 11.76, 11.63, 11.63, 11.11]
-    # init_distance = 13
+    time_profile = [0, 1.87, 2.89, 3.8, 4.67, 5.52, 6.36, 7.21, 8.07, 8.93, 9.83]
+    speed_profile = [0, 5.35, 9.80, 10.99, 11.49, 11.76, 11.90, 11.76, 11.63, 11.63, 11.11]
+    init_distance = 13
 
     pr, vr, ar = create_runner_profile(speed_profile, time_profile, params.dt, t_end)
     xr = np.vstack((pr, vr))
