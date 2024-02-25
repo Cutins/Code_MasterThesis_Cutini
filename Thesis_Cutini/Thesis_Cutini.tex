@@ -19,7 +19,8 @@
 \usepackage[font=small,labelfont=bf]{caption} % caption belle alle figure
 \usepackage{algorithm}
 \usepackage{algpseudocode}
-\usepackage{booktabs} % Per linee orizzontali migliori
+\usepackage{adjustbox}
+
 \setcounter{tocdepth}{5}
 
 \usepackage[
@@ -384,7 +385,7 @@ Consider a discrete-time, time-invariant system describing the plant:
 \begin{equation}
 \begin{aligned}
     x_p^+ &= f_p (x_p, u) \\
-    y_p^+ &= h_p (x_p) 
+    y_p &= h_p (x_p) 
 \end{aligned}
 \label{Plant1}
 \end{equation}
@@ -1061,6 +1062,8 @@ In image \ref{image:mpc_of_scheme} the block diagram of the proposed offset-free
 \end{algorithmic}
 \end{algorithm}
 
+\section{Aerodynamic studies}
+ciao
 
 
 \chapter{Simulation results and Hardware-in-the-loop validation}
@@ -1074,31 +1077,95 @@ Later an overview of the hardware structure and sensors equipment of the system 
 Finally, some test developed on the real hardware are presented and their results are compared with the simulation framework.
 
 \section{Simulation results}
-This section presents the results obtained carrying out a Python simulation of the go-kart non linear dynamical model.
-Two different velocity profiles for the runner are used as data and represented in figure (Plot solo profili velocità).
+This section presents the results obtained carrying out a Python simulation of the go-kart non linear dynamical model trying to follow a velocity profile simulating the runner behaviour during a competition or a training.
 The three controllers: Linear Quadratic Regulator, Model Predictive Control and Offset-Free Model Predictive Control have been tested and their performances are evaluated and compared.
+To assess the performance of the controllers and evaluate the application's behaviour, empirical data from two presigious Diamond League competitions have been employed, focusing on the winners of the 100m sprint both in the man's and women's categories.
 
+\begin{table}[htbp]
+	\centering
+	\begin{adjustbox}{max width=\textwidth}
+	\begin{tabular}{c|c|c|c|c|c|c|c|c|c|c}
+           & 10m & 20m & 30m & 40m & 50m & 60m & 70m & 80m & 90m &100m \\
+	\hline
+	\hline
+	t & 1.97 & 3.10 & 4.11 & 5.08 & 6.03 & 6.99 & 7.94 & 8.90 & 9.88 & 10.88  \\	
+	$\Delta t$ & 1.97 & 1.13 & 1.01 & 0.97 & 0.95 & 0.96 & 0.95 & 0.96 & 0.98 & 1.00 \\
+	$\bar{v}_r$ & 5.07 & 8.85 & 9.90 & 10.31 & 10.53 & 10.42 & 10.53 & 10.42 & 10.20 & 10.00 \\
+	\hline
+	\end{tabular}
+	\end{adjustbox}
+\caption{Marie-Josèe Ta-Lou Diamong League Lausanne 30th June 2023}
+\label{tab:Women}
+\end{table}
+
+In the case of the women's 100m sprint event, data are taken from the competition held in Lausanne on June 30, 2023.  
+The race saw Marie-Josèe Ta Lous as winner and in table \ref{tab:Women} are reported her timed intervals recorded at every 10 meters. 
+Based on these splits an average velocity for each 10 meters interval has been computed in order to have a velocity runner profile over time.
+
+\begin{table}[htbp]
+	\centering
+	\begin{adjustbox}{max width=\textwidth}
+	\begin{tabular}{c|c|c|c|c|c|c|c|c|c|c}
+           & 10m & 20m & 30m & 40m & 50m & 60m & 70m & 80m & 90m &100m \\
+	\hline
+	\hline
+	t & 1.87 & 2.89 & 3.80 & 4.67 & 5.52 & 6.36 & 7.21 & 8.07 & 8.93 & 9.83  \\	
+	$\Delta t$ & 1.87 & 1.02 & 0.91 & 0.87 & 0.85 & 0.84 & 0.85 & 0.86 & 0.86 & 0.90 \\
+	$\bar{v}_r$ & 5.35 & 9.80 & 10.99 & 11.49 & 11.76 & 11.90 & 11.76 & 11.63 & 11.63 & 11.11 \\
+	\hline
+	\end{tabular}
+	\end{adjustbox}
+\caption{Christian Coleman Diamong League Eugene 16th September 2023}
+\label{tab:Man}
+\end{table}
+
+Likewise, a similar methodology have been applied to the men's 100m competition, which took place in Eugen on September 16, 2023.
+Christian Coleman clinched victory crossing the finish line in 9.83 seconds.
+The detailed analysis of Coleman's performance and the corresponding average velocities derived from the intervals times are reported in table \ref{tab:Man}.
+
+\begin{figure}[!h]
+	\centering
+	\includegraphics[width=0.7\textwidth]{Test_Velocities.png}
+\caption{Velocities profiles used for simulation tests}
+\label{Test_Velocities}
+\end{figure}
+
+The velocity profiles obtained by interpolating the average velocities are illustrated in figure \ref{Test_Velocities}.
+The red dot denotes the moment when runners cross the finish line.
+Subsequent to this event, the velocities are assumed to remain constant until a simulation time of 15 seconds with the purpose of allowing for an evaluation of the controllers' steady-state performance.
+
+The parameters used for the evaluation and comparison of the controllers performances are the following:
+\begin{itemize}
+	\item Mean error (position and velocity): represents the average difference between the desired reference value and the actual plant output over the simulation period. It provides a measure of the overall accuracy of the controller's tracking performance.
+	\item Integral Asbolute Error (position and velocity): measured the cumulative sum of the absolute errors between the desired reference value and the actual plant output. It provides insight into the total deviation od the system's response from the desired trajectory.
+	\item Minimum distance from kart: the concept is similar to the undershoot, thus the extent to which the system's response deviates from the desired trajectory. This parameter quantifies how close the runner goes to the kart during the performance.
+	\item Energy consumption: quantifies the amount of energy expended by the controller to achieve the desired tracking performance.
+	\item Stead-state error: characterized the residual errror between the actual output and the desired reference value once the system has reached a stable operating condition, thus a constant velocity of the kart tracking a constant velocity of the runner.
+	\item "Rise" tim to reach a desired reference distance of 2.6m from kart: refers to the duration taken by the system's output to transition from the initial state to the desired position setpoint. It represents the speed at which the system responds to changes in the reference signal and it's indicative of the controller's dynamic responsiveness.
+\end{itemize}
+
+\subsection{Test on women velocity profile of Ta Lou}
 \begin{figure}[htbp]
     \centering
     \begin{subfigure}[t]{0.8\textwidth}
-        \includegraphics[width=\textwidth]{Test1/Deltap.png}
+        \includegraphics[width=\textwidth]{Ta_Lou/Deltap.png}
         \caption{Relative position}
-        \label{fig:Deltap1}
+        \label{fig:Deltapwomen}
     \end{subfigure}
     
     \begin{subfigure}[t]{0.8\textwidth}
-        \includegraphics[width=\textwidth]{Test1/Deltav.png}
+        \includegraphics[width=\textwidth]{Ta_Lou/Deltav.png}
         \caption{Relative velocity}
-        \label{fig:plot2}
+        \label{fig:Deltavwomen}
     \end{subfigure}
     
     \begin{subfigure}[t]{0.8\textwidth}
-        \includegraphics[width=\textwidth]{Test1/Input.png}
+        \includegraphics[width=\textwidth]{Ta_Lou/Input.png}
         \caption{T}
-        \label{fig:plot3}
+        \label{fig:Inputwomen}
     \end{subfigure}
     \caption{Input}
-    \label{fig:pannello}
+    \label{fig:Women}
 \end{figure}
 
 \begin{table}[htbp]
@@ -1109,14 +1176,14 @@ The three controllers: Linear Quadratic Regulator, Model Predictive Control and 
           & LQR & MPC & MPC Offset-free \\
 	\hline
 	\hline
-	Mean($\Delta p$) & 0.1260 & 0.0681 &  0.0429 \\
-	Mean($\Delta v$) & 0.0341 & 0.0265 & 0.0282 \\
-	IAE on $\Delta p$ & 1.8759 & 1.0082 & 0.6304 \\
-	IAE on $\Delta v$ & 0.5127 & 0.4009 & 0.4236 \\
-	Min($\Delta p$) & 2.3366 & 2.4330 & 2.4523 \\
-	Energy consumption & 0.3552 & 0.3548 & 0.3552 \\
-	Steady state error [$cm$] & 0.0758 & 0.0365 & 0.0\\
-	"Rise" time to  ${d}$ & 1.4 & 1.35 & 1.4 \\
+	Mean($\Delta p$) & 0.8892 & 0.6867 &  0.6168 \\
+	Mean($\Delta v$) & 0.3987 & 0.2611 & 0.2522 \\
+	IAE on $\Delta p$ & 13.2352 & 10.1978 & 9.1515 \\
+	IAE on $\Delta v$ & 5.9811 & 3.9176 & 3.7826 \\
+	Min($\Delta p$) & 1.1885 & 2.2371 & 2.3605 \\
+	Energy consumption & 0.5208 & 0.5200 & 0.5207 \\
+	Steady state error & 0.1354 & 0.1079 & 0.0009 \\
+	"Rise" time to 2.6m & 3.3 & 3.75 & 3.85 \\
 	\hline
 	\end{tabular}
 \end{table}

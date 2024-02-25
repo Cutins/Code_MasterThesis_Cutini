@@ -34,7 +34,7 @@ class Parameters():
     Ro = np.array([[2e-3]])
 
     # LQR Tracking Weight matrices - default
-    Q = np.diag([1e3, 4e3])
+    Q = np.diag([8e2, 4e3])
     R = np.array([[1e-3]])
 
     # LQR Tracking Weight matrices - catch-up

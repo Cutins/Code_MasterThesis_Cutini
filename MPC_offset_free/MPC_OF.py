@@ -69,15 +69,15 @@ def main():
     time_profile = [0, 1, 2, 4, 8, 10, 13, 16]
     init_distance = 0.5
 
-    # Usain Bolt
-    # speed_profile = [0, 8, 11, 12, 12, 12, 12]  
-    # time_profile = [0, 2, 4, 8, 10, 13, 16]
-    # init_distance = 12
+    # Marie-Josèe Ta-Lou (Diamond League Lausanne 30th June 2023)
+    time_profile = [0, 1.97, 3.1, 4.11, 5.08, 6.03, 6.99, 7.94, 8.9, 9.88, 10.88]
+    speed_profile = [0, 5.07, 8.85, 9.9, 10.31, 10.53, 10.42, 10.53, 10.42, 10.2, 10]
+    init_distance = 4
 
-    # Mujinga profile
-    time_profile = [0, 2.03, 3.17, 4.21, 5.21, 6.21, 7.21, 8.23, 9.25, 10.30, 11.41,]
-    speed_profile = [0, 4.93, 8.77, 9.62, 10, 10, 10, 9.80, 9.80, 9.52, 9]
-    init_distance = 4 #10
+    # # Christian Coleman (Diamond League Eugene 16th September 2023)
+    # time_profile = [0, 1.87, 2.89, 3.8, 4.67, 5.52, 6.36, 7.21, 8.07, 8.93, 9.83]
+    # speed_profile = [0, 5.35, 9.80, 10.99, 11.49, 11.76, 11.90, 11.76, 11.63, 11.63, 11.11]
+    # init_distance = 13
 
     xk[0,0] = params.offset_ref + init_distance
 

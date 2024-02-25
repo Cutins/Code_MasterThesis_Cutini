@@ -56,6 +56,16 @@ def main():
     # time_profile = [0, 1, 2, 4, 8, 10, 13, 16]
     # init_distance = 2
 
+    # Marie-Josèe Ta-Lou (Diamond League Lausanne 30th June 2023)
+    time_profile = [0, 1.97, 3.1, 4.11, 5.08, 6.03, 6.99, 7.94, 8.9, 9.88, 10.88]
+    speed_profile = [0, 5.07, 8.85, 9.9, 10.31, 10.53, 10.42, 10.53, 10.42, 10.2, 10]
+    init_distance = 4
+
+    # # Christian Coleman (Diamond League Eugene 16th September 2023)
+    # time_profile = [0, 1.87, 2.89, 3.8, 4.67, 5.52, 6.36, 7.21, 8.07, 8.93, 9.83]
+    # speed_profile = [0, 5.35, 9.80, 10.99, 11.49, 11.76, 11.90, 11.76, 11.63, 11.63, 11.11]
+    # init_distance = 13
+
     pr, vr, ar = create_runner_profile(speed_profile, time_profile, params.dt, t_end)
     xr = np.vstack((pr, vr))
 
@@ -141,7 +151,7 @@ def main():
     plt.fill_between(time_hor, 2.5, x_err[0] + 2.5, where=negative_mask_x, facecolor='red', alpha=0.2, label='Offset < 2.5m')
     plt.xlabel(r'Time[$s$]')
     plt.ylabel(r'$\Delta p$ [$m$]')
-    plt.ylim(1.5, init_distance+3)
+    plt.ylim(0.5, init_distance+3)
     plt.legend()
     plt.grid(True)
 
