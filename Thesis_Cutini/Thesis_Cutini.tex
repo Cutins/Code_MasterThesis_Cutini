@@ -88,7 +88,7 @@ sorting=none
       \vfill
       {\large Academic Year \\ \itshape 2022--2023} \\
       \vspace{5mm}
-      {\large Session \\ \itshape IV}
+      {\large Session \\ \itshape III}
 \end{center}
 
 
@@ -970,8 +970,8 @@ In particular the true nonlinear prediction model for the MPC should result in t
     -
     \begin{bmatrix}
     0 \\
-    dt (\frac{C_{d}}{m} v_{k,t}^2) \\
-    dt (\frac{C_{d}}{m} v_{k,t}^2)
+    dt (\frac{C_{d}}{m} v_{k,t}^2+ \frac{C_{roll}}{m}) \\
+    dt (\frac{C_{d}}{m} v_{k,t}^2+ \frac{C_{roll}}{m})
     \end{bmatrix}
 \end{aligned}
 \label{Non-lin_prediction_model_MPC}
@@ -1066,7 +1066,12 @@ In image \ref{image:mpc_of_scheme} the block diagram of the proposed offset-free
 \end{algorithm}
 
 \section{Aerodynamic studies}
-ciao
+\begin{figure}
+	\centering
+	\includegraphics[width=0.6\textwidth]{Aerodynamics.png}
+	\caption{}
+	\label{image:mpc_of_scheme}
+\end{figure}
 
 
 \chapter{Simulation results and Hardware-in-the-loop validation}
@@ -1082,7 +1087,7 @@ Finally, some test developed on the real hardware are presented and their result
 \section{Simulation results}
 This section presents the results obtained carrying out a Python simulation of the go-kart non linear dynamical model trying to follow a velocity profile simulating the runner behaviour during a competition or a training.
 The three controllers: Linear Quadratic Regulator, Model Predictive Control and Offset-Free Model Predictive Control have been tested and their performances are evaluated and compared.
-To assess the performance of the controllers and evaluate the application's behaviour, empirical data from two presigious Diamond League competitions have been employed, focusing on the winners of the 100m sprint both in the man's and women's categories.
+To assess the performance of the controllers and evaluate the application's behaviour, empirical data from two presigious Diamond League competitions \cite{diamondleague}  have been employed, focusing on the winners of the 100m sprint both in the man's and women's categories. 
 
 \begin{table}[h!]
 	\centering
@@ -1101,6 +1106,7 @@ To assess the performance of the controllers and evaluate the application's beha
 \label{tab:Women}
 \end{table}
 
+\bigskip
 In the case of the women's 100m sprint event, data are taken from the competition held in Lausanne on June 30, 2023.  
 The race saw Marie-Josèe Ta Lous as winner and in table \ref{tab:Women} are reported her timed intervals recorded at every 10 meters. 
 Based on these splits an average velocity for each 10 meters interval has been computed in order to have a velocity runner profile over time.
@@ -1172,11 +1178,14 @@ The parameters used for the evaluation and comparison of the controllers perform
     \label{fig:Women}
 \end{figure}
 
-The initial distance used for the simulation is $\bar{d} = 4m$.
-It is clearly understendable from both Table \ref{tab:Ta_Lou} and figure \ref{fig:Women} that the LQR controller exibits worst performances with respect to the other controllers.
-In particular taking into account the minimum distance between runner and go-kart the LQR has performances much worst with respect to the other two controllers, and violates the safety distance state constraints $d_{\text{safe}}$ introduced in both the MPC formulations.
-It is worth pointing out that the offset-free version of the predictive controller is able to obtain an almost zero steady-state error, much smoller to the values around 10 centimeters obtained with the other controllers.
-The controller exhibit similar energy consumptions over time values.
+The initial distance used for the simulation is $\bar{d} = 4$ meters.
+
+Both Table \ref{tab:Ta_Lou} and figure \ref{fig:Women} clearly demonstrate that the LQR controller exibits poorer performance compared to the other controllers.
+Specifically, considering the minimum distance between runner and go-kart, the LQR performs significantly worse than the other two controllers and violates the safety distance state constraints $d_{\text{safe}}$ introduced in both the MPC formulations.
+The LQR also has the highest mean value of position deviation ($\Delta p$) and velocity deviation ($\Delta v$) indicating a less accurate tracking performance compared to MPC and MPC Offset-free.
+Additionally, the fact that also the Integral of Absolute Error (IAE) metrics for both position and velocity are higher, suggests poorer tracking accuracy over the entire simulation period.
+It's noteworthy that the offset-free version of the predictive controller achieves an almost zero steady-state error, significantly smaller than the approximately 10-centimeter values obtained with the other controllers. 
+The three controllers show similar energy consumption over time.
 
 \begin{table}[htbp]
 	\centering
@@ -1194,7 +1203,7 @@ The controller exhibit similar energy consumptions over time values.
 	"Rise" time to 2.6m & 3.3 & 3.75 & 3.85 \\
 	\hline
 	\end{tabular}
-\caption{Comparison of controllers performances: Ta Lou velocity profile }
+\caption{Comparison of controllers performance: Ta Lou velocity profile }
 \label{tab:Ta_Lou}
 \end{table}
 
@@ -1224,13 +1233,13 @@ The controller exhibit similar energy consumptions over time values.
     \label{fig:Men}
 \end{figure}
 
-It is reasonable that by intensifying the difficulty of the velocity profile from the one of a female runner to the one of male one, the required initial distance from the go-kart is going to increase.
+It is reasonable that by intensifying the difficulty of the velocity profile from the one of a female runner to the one of male, the required initial distance from the go-kart is going to increase.
 In the case of the Christian Coleman velocity profile this value is set to $\bar{d} = 13m$.
 
 \begin{table}[h!]
 	\centering
 	\begin{tabular}{c|c|c|c}
-          & LQR & MPC & MPC Offset-free \\
+          & \textbf{LQR} & \textbf{MPC} & \textbf{MPC Offset-free} \\
 	\hline
 	\hline
 	mean($\Delta p$) & 2.5984 & 2.5636 &  2.4848 \\
@@ -1243,15 +1252,16 @@ In the case of the Christian Coleman velocity profile this value is set to $\bar
 	"Rise" time to 2.6m & 4.5 & 4.7 & 4.7 \\
 	\hline
 	\end{tabular}
-\caption{Comparison of controllers performances: Coleman velocity profile}
+\caption{Comparison of controllers performance: Coleman velocity profile}
 \label{tab:Coleman}
 \end{table}
 
-Initializing the maneuver from a further distance, with respect to the previous case, implies higher values of mean position error and integral absolute error, as reported in Table \ref{tab:Coleman}.
-The value of the minimum distance reached between runner and go-kart is much smaller for the LQR with respect to the two MPC formulations also with this velocity profile, meaning that the athlete enters for a bigger distance inside the shield.
-The LQR value of 1 meter and 8 centimeters violates the safety bound introduced in the MPC, as in the case of Ta Lou velocity profile.
+When nitializing the maneuver from a further distance compared to the previous scenario, higher values of mean position error and Integral Absolute Erroare observed, as reported in Table \ref{tab:Coleman}.
+The value of the minimum distance reached between runner and go-kart is much smaller for the LQR with respect to the two MPC formulations also in this simulation, meaning that the athlete enters for a bigger distance inside the shield.
+The recorded LQR value of 1 meter and 8 centimeters violates the safety bound introduced in the MPC, similar to the observation made in the Ta Lou velocity profile case.
+Furthermore, it's worth noting that the offset-free MPC consistently outperforms both LQR and MPC in terms of steady-state error, achieving the lowest value among the three controllers.
 
-It should be noticed how, in both the scenario saturation phenomenon is present for a consistent part of the tracking.
+It should be noticed that, in both the scenario saturation phenomenon is present for a consistent part of the tracking with the LQR controller.
 
 
 \section{System structure and hardware description}
@@ -1469,74 +1479,82 @@ In the following some results of test developed on real-hardware are presented.
 
 \begin{figure}[h!]
     \centering
-    \begin{subfigure}[b]{0.24\textwidth}
+    \begin{subfigure}[b]{0.32\textwidth}
         \includegraphics[width=\textwidth]{Catch/Catch1.png}
     \end{subfigure}
-\hfill
-    \begin{subfigure}[b]{0.24\textwidth}
+    \hfill
+    \begin{subfigure}[b]{0.32\textwidth}
         \includegraphics[width=\textwidth]{Catch/Catch2.png}
     \end{subfigure}
     \hfill
-    \begin{subfigure}[b]{0.24\textwidth}
+    \begin{subfigure}[b]{0.32\textwidth}
         \includegraphics[width=\textwidth]{Catch/Catch3.png}
     \end{subfigure}
-    \hfill
-    \begin{subfigure}[b]{0.24\textwidth}
+    \\[0.2cm]
+    \begin{subfigure}[b]{0.32\textwidth}
         \includegraphics[width=\textwidth]{Catch/Catch4.png}
     \end{subfigure}
-\\[0.2cm]
-    \begin{subfigure}[b]{0.24\textwidth}
+    \hfill
+    \begin{subfigure}[b]{0.32\textwidth}
         \includegraphics[width=\textwidth]{Catch/Catch5.png}
     \end{subfigure}
-\hfill
-    \begin{subfigure}[b]{0.24\textwidth}
+    \hfill
+    \begin{subfigure}[b]{0.32\textwidth}
         \includegraphics[width=\textwidth]{Catch/Catch6.png}
     \end{subfigure}
-\hfill
-    \begin{subfigure}[b]{0.24\textwidth}
+    \\[0.2cm]
+    \begin{subfigure}[b]{0.32\textwidth}
         \includegraphics[width=\textwidth]{Catch/Catch7.png}
     \end{subfigure}
-\hfill
-    \begin{subfigure}[b]{0.24\textwidth}
+    \hfill
+    \begin{subfigure}[b]{0.32\textwidth}
         \includegraphics[width=\textwidth]{Catch/Catch8.png}
     \end{subfigure}
-    \caption{Sequence of images taken from a video, describing a catch-up maneuver regulated with MPC }
+    \hfill
+    \begin{subfigure}[b]{0.32\textwidth}
+        \includegraphics[width=\textwidth]{Catch/Catch9.png}
+    \end{subfigure}
+    \caption{Sequence of images taken from a video, showing a catch-up maneuver regulated with MPC }
 \end{figure}
 
 \begin{figure}[h!]
     \centering
-    \begin{subfigure}[b]{0.24\textwidth}
+    \begin{subfigure}[b]{0.32\textwidth}
         \includegraphics[width=\textwidth]{SteadyState/ss1.png}
     \end{subfigure}
-\hfill
-    \begin{subfigure}[b]{0.24\textwidth}
+    \hfill
+    \begin{subfigure}[b]{0.32\textwidth}
         \includegraphics[width=\textwidth]{SteadyState/ss2.png}
     \end{subfigure}
     \hfill
-    \begin{subfigure}[b]{0.24\textwidth}
+    \begin{subfigure}[b]{0.32\textwidth}
         \includegraphics[width=\textwidth]{SteadyState/ss3.png}
     \end{subfigure}
-    \hfill
-    \begin{subfigure}[b]{0.24\textwidth}
+    \\[0.2cm]
+    \begin{subfigure}[b]{0.32\textwidth}
         \includegraphics[width=\textwidth]{SteadyState/ss4.png}
     \end{subfigure}
-\\[0.2cm]
-    \begin{subfigure}[b]{0.24\textwidth}
+    \hfill
+    \begin{subfigure}[b]{0.32\textwidth}
         \includegraphics[width=\textwidth]{SteadyState/ss5.png}
     \end{subfigure}
-\hfill
-    \begin{subfigure}[b]{0.24\textwidth}
+    \hfill
+    \begin{subfigure}[b]{0.32\textwidth}
         \includegraphics[width=\textwidth]{SteadyState/ss6.png}
     \end{subfigure}
-\hfill
-    \begin{subfigure}[b]{0.24\textwidth}
+    \\[0.2cm]
+    \begin{subfigure}[b]{0.32\textwidth}
         \includegraphics[width=\textwidth]{SteadyState/ss7.png}
     \end{subfigure}
-\hfill
-    \begin{subfigure}[b]{0.24\textwidth}
+    \hfill
+    \begin{subfigure}[b]{0.32\textwidth}
         \includegraphics[width=\textwidth]{SteadyState/ss8.png}
     \end{subfigure}
-    \caption{Sequence of images taken from a video, describing a tracking regulated with MPC }
+    \hfill
+    \begin{subfigure}[b]{0.32\textwidth}
+        \includegraphics[width=\textwidth]{SteadyState/ss9.png}
+    \end{subfigure}
+    \caption{Sequence of images taken from a video, showing a tracking regulated with MPC }
 \end{figure}
 
 	  
