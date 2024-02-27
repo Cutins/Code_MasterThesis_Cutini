@@ -1072,16 +1072,25 @@ In image \ref{image:mpc_of_scheme} the block diagram of the proposed offset-free
 	\caption{}
 	\label{image:Aerodynamic_studies}
 \end{figure}
-Aerodynamics is the study of how moving objects interact with the air.
-Drag force can be expressed with the following formula:
+Fluid dynamics is a branch of physics that deals with the study of how fluids (liquids and gases) behave when they are in motion.
+In the context of sports engineering, fluid dynamics plays a crucial role in understanding the interaction between athletes and the surrounding air or water during their performance.
+
+Aerodynamics, a subfield of fluid dynamics, specifically focuses on the study of how moving objects interact with the air. 
+It encompasses the analysis of forces such as lift and drag that affect the motion of objects through the air. 
+Drag force, a key parameter in aerodynamics, quantifies the resistance encountered by an object as it moves through a fluid medium. 
+It can be expressed mathematically using the drag equation:
 \begin{equation}
 	F_d = \frac{1}{2} C_d \rho A \, v^2
 \end{equation}
 where $F_d$ is the drag force, $\rho$ is the density of fluid (air in this case), $A$ is the frontal area of the object moving in the fluid, 
 $v$ is the velocity of the object ad $C_d$ the drag coefficient.
-The drag force is proportional to the square of the speed, thus the resistance due to the air increases exponentially as the speed of the body increases.
-Some fluid-dynamics studies and simulations developed  addressed with wind-tunnel by \cite{Coni_article} has shown the effect of the aerodynamic shield on the variation of the aerodynamic force acting on a runner for a range of speeds between 5 and 13 meters per second.
-In particular the aerodynamic drag, also known as air 
+One notable characteristic of drag force is its dependence on the square of the velocity $(v^2)$, indicating that the resistance experienced by an object increases exponentially with its speed. 
+Recent fluid-dynamic studies and simulations, conducted using wind tunnels and advanced computational methods by \cite{Coni_article} has shown the effect of the aerodynamic shield on the variation of the aerodynamic force acting on a runner for a range of speeds between 5 and 13 meters per second.
+As depicted in figure \ref{image:Aerodynamic_studies}, when the air moving over the shield fails in following the curvature of a surface, it is reparated into two different flows.
+This leads to the formation of vortices and regions of recirculating flow, creating a large low-pressure region behind the shield.
+Interestingly, this aerodynamic configuration not only reduces air friction experienced by the athlete but also generates a pushing force from behind, aligning with the athlete's movement. Consequently, the athlete benefits from reduced air resistance and a propulsive force, potentially enhancing their speed and performance.
+For this reason the reference distance $d_{\text{des}}$ to be kept between the runner and the kart can be assumed to be around $2.5$ meters, thus the athlete should be able to run on the airshield border on the slipstream up to a couple of meters further.
+In the following, for both the simulations and the real Hardware test it is used $d_\text{des} = 2.5$ meters.
 
 
 \chapter{Simulation results and Hardware-in-the-loop validation}
@@ -1567,6 +1576,34 @@ In the following some results of test developed on real-hardware are presented.
     \caption{Sequence of images taken from a video, showing a tracking regulated with MPC }
 \end{figure}
 
+\begin{figure}[h!]
+    \centering
+    \begin{subfigure}[t]{0.8\textwidth}
+        \includegraphics[width=\textwidth]{Hardware_test/Position.png}
+        \caption{Relative position between runner and go-kart}
+        \label{fig:Deltaphard}
+    \end{subfigure}
+    
+    \begin{subfigure}[t]{0.8\textwidth}
+        \includegraphics[width=\textwidth]{Hardware_test/Velocity.png}
+        \caption{Relative velocity between runner and go-kart}
+        \label{fig:Deltavhard}
+    \end{subfigure}
+    
+    \begin{subfigure}[t]{0.8\textwidth}
+        \includegraphics[width=\textwidth]{Hardware_test/Input.png}
+        \caption{Input effort (drive-train acceleration)}
+        \label{fig:Inputhard}
+    \end{subfigure}
+
+    \begin{subfigure}[t]{0.8\textwidth}
+        \includegraphics[width=\textwidth]{Hardware_test/Acceleration.png}
+        \caption{Estimated Acceleration}
+        \label{fig:Est_acc}
+    \end{subfigure}
+    \caption{Hardware tests results}
+    \label{fig:Hardware_Test}
+\end{figure}
 
 
 

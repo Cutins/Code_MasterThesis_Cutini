@@ -12,7 +12,7 @@ plt.rc('font', **font)
 signal.signal(signal.SIGINT, signal.SIG_DFL)
 
 
-Test = 'CSV_plot/Test3_LQR_csv' # Test1_LQR_csv, Test2_LQR_csv, Test3_LQR_csv
+Test = 'CSV_plot/Test6'  # Test1_LQR_csv, Test2_LQR_csv, Test3_LQR_csv
 
 command_file = Test + '/motors_cmd.csv'
 
@@ -68,33 +68,33 @@ with open(control_file, newline='', encoding='utf-8') as file_csv:
 
         count_crtl += 1
 
-# estimator_runner = Test + '/Estimator_runner.csv'
+estimator_runner = Test + '/Estimator_runner.csv'
 
-# time_est = []
-# rel_acc = []
+time_est = []
+rel_acc = []
 
-# count_est = 0
+count_est = 0
 
-# with open(estimator_runner, newline='', encoding='utf-8') as file_csv:
-#     reader_csv = csv.reader(file_csv)
+with open(estimator_runner, newline='', encoding='utf-8') as file_csv:
+    reader_csv = csv.reader(file_csv)
 
-#     header = next(reader_csv)
+    header = next(reader_csv)
 
-#     for row in reader_csv:
+    for row in reader_csv:
 
-#         # Extract values from csv file
-#         relative_acc = float(row[12])
+        # Extract values from csv file
+        relative_acc = float(row[12])
 
-#         # Create lists for plot
-#         time_est.append(count_est/20)
+        # Create lists for plot
+        time_est.append(count_est/20)
 
-#         rel_acc.append(relative_acc)
+        rel_acc.append(relative_acc)
 
-#         count_est += 1
+        count_est += 1
 
 ###### Set time window we want to display from file
-tmin = 400 #288 #400
-tmax = 415 #300 #415
+tmin = 288 #400
+tmax = 300 #415
 
 time_cmd_filt = [t for t in time_cmd if tmin <= t <= tmax]
 cmd_values_filt = [cmd_values[time_cmd.index(t)] for t in time_cmd_filt]
@@ -126,20 +126,21 @@ plt.grid(True)
 
 plt.figure('Relative velocity', figsize=(10, 4.5))
 plt.plot(time_crtl_filt, vel_errors_filt, label='Relative velocity', linewidth=1.5)
+plt.plot(time_crtl_filt, np.zeros(len(time_crtl_filt)),  linestyle='--', color = 'black', label='Reference', linewidth=1.0)
 plt.xlabel(r'Time[$s$]')
 plt.ylabel(r'Velocity [$\frac{m}{s}$]')
 plt.legend()
 plt.grid(True)
 
-# time_est_filt = [t for t in time_est if tmin <= t <= tmax]
-# rel_acc_filt = [rel_acc[time_est.index(t)] for t in time_est_filt]
+time_est_filt = [t for t in time_est if tmin <= t <= tmax]
+rel_acc_filt = [rel_acc[time_est.index(t)] for t in time_est_filt]
 
-# plt.figure('Relative acceleration', figsize=(10, 4.5))
-# plt.plot(time_est_filt, rel_acc_filt, label='Relative acceleration', linewidth=1.5)
-# plt.xlabel(r'Time[$s$]')
-# plt.ylabel(r'Acceleration [$\frac{m}{s^2}$]')
-# plt.legend()
-# plt.grid(True)
+plt.figure('Relative acceleration', figsize=(10, 4.5))
+plt.plot(time_est_filt, rel_acc_filt, label='Relative acceleration', linewidth=1.5)
+plt.xlabel(r'Time[$s$]')
+plt.ylabel(r'Acceleration [$\frac{m}{s^2}$]')
+plt.legend()
+plt.grid(True)
 
 
 plt.show()
