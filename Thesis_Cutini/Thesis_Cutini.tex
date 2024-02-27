@@ -384,21 +384,21 @@ For instance, in the context of regulating nonlinear systems using a linear pred
 Consider a discrete-time, time-invariant system describing the plant:
 \begin{equation}
 \begin{aligned}
-    x_p^+ &= f_p (x_p, u) \\
-    y_p &= h_p (x_p) 
+    x_m^+ &= f_m (x_m, u) \\
+    y_m &= h_m (x_m) 
 \end{aligned}
 \label{Plant1}
 \end{equation}
-where $x_p \in \mathbb{R}^n$, $u \in \mathbb{R}^m$ and $y_p \in \mathbb{R}^p$ are the state, input and plant measured output respectively. 
+where $x_m \in \mathbb{R}^n$, $u \in \mathbb{R}^m$ and $y_m \in \mathbb{R}^p$ are the state, input and plant measured output respectively. 
 
-The aim of the offset-free model predictive controller is to have $y_p$ tracking a certain reference signal $y_{\text{des}} \in \mathbb{R}^p$ that is assumed to asymptotically converge to a constant.
+The aim of the offset-free model predictive controller is to have $y_m$ tracking a certain reference signal $y_{\text{des}} \in \mathbb{R}^p$ that is assumed to asymptotically converge to a constant.
 
 \bigskip
 Let $w \in \mathbb{R}^n$ and $v \in \mathbb{R}^p$ be defined as:
 \begin{equation}
 \begin{aligned}
-    w & := f_p (x_p, u_t) - (A x + Bu) \\
-    v & := h_p (x_p) - C x
+    w & := f_m (x_m, u_t) - (A x + Bu) \\
+    v & := h_m (x_m) - C x
 \end{aligned}
 \label{Plant_model_mismatch}
 \end{equation}
@@ -451,7 +451,7 @@ An example could be a linear disturbance observer, that uses the prediction erro
             L_x \\
             L_d \\
         \end{bmatrix} 
-        ( - y_{p,t} +
+        ( - y_{m,t} +
         \begin{bmatrix}
             C & C_d 
         \end{bmatrix}
@@ -467,7 +467,7 @@ An example could be a linear disturbance observer, that uses the prediction erro
         + 
         B_e \, u +
         L (
-         - y_{p,t} +
+         - y_{m,t} +
         C_e
         \begin{bmatrix}
             \hat{x}_t \\
@@ -1072,7 +1072,16 @@ In image \ref{image:mpc_of_scheme} the block diagram of the proposed offset-free
 	\caption{}
 	\label{image:Aerodynamic_studies}
 \end{figure}
-Some fluid-dynamic
+Aerodynamics is the study of how moving objects interact with the air.
+Drag force can be expressed with the following formula:
+\begin{equation}
+	F_d = \frac{1}{2} C_d \rho A \, v^2
+\end{equation}
+where $F_d$ is the drag force, $\rho$ is the density of fluid (air in this case), $A$ is the frontal area of the object moving in the fluid, 
+$v$ is the velocity of the object ad $C_d$ the drag coefficient.
+The drag force is proportional to the square of the speed, thus the resistance due to the air increases exponentially as the speed of the body increases.
+Some fluid-dynamics studies and simulations developed  addressed with wind-tunnel by \cite{Coni_article} has shown the effect of the aerodynamic shield on the variation of the aerodynamic force acting on a runner for a range of speeds between 5 and 13 meters per second.
+In particular the aerodynamic drag, also known as air 
 
 
 \chapter{Simulation results and Hardware-in-the-loop validation}
@@ -1557,6 +1566,11 @@ In the following some results of test developed on real-hardware are presented.
     \end{subfigure}
     \caption{Sequence of images taken from a video, showing a tracking regulated with MPC }
 \end{figure}
+
+
+
+
+
 
 	  
 	

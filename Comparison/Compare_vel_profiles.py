@@ -95,18 +95,18 @@ plt.figure('Test Velocities 2', figsize=(10, 5.5))
 time_before = [step * dt for step in range(num_steps) if step * dt <= 9.83]
 vr_man_before = [vr_man[step] for step in range(num_steps) if step * dt <= 9.83]
 vr_wom_before = [vr_wom[step] for step in range(num_steps) if step * dt <= 9.83]
-plt.plot(time_before, vr_man_before, color='blue', label='Christian Coleman')
-plt.plot(time_before, vr_wom_before, color='orange', label='Marie-Josèe Ta Lou')
+plt.plot(time_before, vr_man_before, color='blue', label='Christian Coleman', linewidth=1.5)
+plt.plot(time_before, vr_wom_before, color='orange', label='Marie-Josèe Ta Lou', linewidth=1.5)
 time_between = [step * dt for step in range(num_steps) if 9.83 < step * dt <= 10.88]
 vr_man_between = [vr_man[step] for step in range(num_steps) if 9.83 < step * dt <= 10.88]
 vr_wom_between = [vr_wom[step] for step in range(num_steps) if 9.83 < step * dt <= 10.88]
-plt.plot(time_between, vr_man_between, color='blue', alpha=0.4)
-plt.plot(time_between, vr_wom_between, color='orange')
+plt.plot(time_between, vr_man_between, color='blue', alpha=0.4, linewidth=1.5)
+plt.plot(time_between, vr_wom_between, color='orange', linewidth=1.5)
 time_after = [step * dt for step in range(num_steps) if step * dt > 10.88]
 vr_man_after = [vr_man[step] for step in range(num_steps) if step * dt > 10.88]
 vr_wom_after = [vr_wom[step] for step in range(num_steps) if step * dt > 10.88]
-plt.plot(time_after, vr_man_after, color='blue', alpha=0.4)
-plt.plot(time_after, vr_wom_after, color='orange', alpha=0.4)
+plt.plot(time_after, vr_man_after, color='blue', alpha=0.4, linewidth=1.5)
+plt.plot(time_after, vr_wom_after, color='orange', alpha=0.4, linewidth=1.5)
 plt.scatter(9.83, vr_man[int(9.83/dt)], marker='o', color='r', label='Finish line')
 plt.scatter(10.88, vr_wom[int(10.88/dt)], marker='o', color='r')
 plt.xlabel(r'Time [$s$]')
