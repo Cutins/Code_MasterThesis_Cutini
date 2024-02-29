@@ -49,18 +49,18 @@ sorting=none
 
 \thispagestyle{empty}  
                                                
-\begin{center}                                                            
+%\begin{center}                                                            
    % \vspace{2mm}
-    {\large ALMA MATER STUDIORUM -- UNIVERSIT\`A DI BOLOGNA} \\  
+   % {\large ALMA MATER STUDIORUM -- UNIVERSIT\`A DI BOLOGNA} \\  
 
    %   \vspace{2mm}
-\end{center}
+%\end{center}
 \begin{center}
-	\includegraphics[width=0.4\textwidth]{Logo_unibo.png}
+	\includegraphics[width=0.5\textwidth]{Logo_unibo.png}
 \end{center}
 \begin{center}
       %\vspace{5mm}
-	\vspace{2mm}
+	%\vspace{2mm}
       {\large \uppercase{School of Engineering}} \\
         %\vspace{5mm}
 	\vspace{2mm}
@@ -72,9 +72,9 @@ sorting=none
       {\Large \bf Master's Degree in Automation Engineering}\\
       \vspace{2mm}
       { \textbf{Master Thesis}\\ in\\ \textit{Optimal Control}}\\
-      \vspace{5mm}
+      \vspace{4mm}
       {\LARGE\bf Control of an autonomous aerodynamic airshield for training Olympic 100m sprint athletes} \\                
-      \vspace{5mm}
+      \vspace{8mm}
       
       % table??
 		\begin{tabularx}{\textwidth} { 
@@ -88,8 +88,9 @@ sorting=none
                 & {\large \itshape Ing. Lorenzo Sforni} \\
 		\end{tabularx}
       \vfill
-      {\large Academic Year \\ \itshape 2022--2023} \\
-      \vspace{2mm}
+      {\vspace{1mm}
+	\large Academic Year \\ \itshape 2022--2023} \\
+      \vspace{1mm}
       {\large Session \\ \itshape III}
 \end{center}
 
@@ -124,7 +125,7 @@ sorting=none
 \section*{Motivations}
 \addcontentsline{toc}{section}{Motivations}
 
-In recent decades, the integration of advanced technologies has become an integral facet of sport, ushering in a new era of innovation and performance enhancement \cite{Technology_athletics}. 
+In recent decades, the integration of advanced technologies has become an integral facet of sport, introducing a new era of innovation and performance enhancement \cite{Technology_athletics}. 
 In sports characterized by high-speed competition, where victories are often determined by fractions of a second, the advancements in technology have revolutionized performance across various disciplines. 
 \bigskip
 
@@ -215,9 +216,9 @@ Chapter 2 is focused on discussing the problem set-up, the formulation of the op
 Chapter 3 gives a description of the system mechanical structure, hardware and sensors. Then it shows the numerical results of the controllers application obtained both in Python simulation and on the real hardware. A comparison of the performance in different scenarios is also presented.
 This demonstrate the effectiveness of the proposed methodologies.
 
-\chapter{Theoretical Background}
+\chapter{Optimal Control theory for controlling dynamical systems via Linear Quadratic Regulator and Model Predictive Control}
 %\addcontentsline{toc}{chapter}{Theoretical Background}
-\markboth{}{THEORETICAL BACKGROUND}
+\markboth{}{OPTIMAL CONTROL OF DYNAMICAL SYSTEMS}
 %\label{chapter:Theoretical_Background}
 In this chapter the aim is to provide the necessary optimal control theoretical background before introducing the design process and the main peculiarities and limitations of the implemented controllers: the Linear Quadratic Regulator (LQR) and the Model Predictive Control (MPC).
 
@@ -230,7 +231,7 @@ In 1960, Kalman introduced for the first time the linear-quadratic feedback cont
 The LQR is a feedback control algorithm designed to stabilize and optimize the performance in case where the dynamical system can be described by linear equations and the cost function is quadratic in terms of the states and inputs. 
 
 \bigskip
-Assume that the process to be controlled can be described by discrete-time LTI dynamical system, like the following state-space form:
+Assume that the process to be controlled can be described by discrete-time LTI dynamical system, such as the following state-space form:
 \begin{equation} 
 \begin{aligned}
     x_{t+1} &= A x_t + B u_t \\
@@ -246,7 +247,7 @@ $A \in \mathbb{R}^{n\times n}$ and $B\in \mathbb{R}^{n\times m}$ are the state a
 In the context of this thesis is possible to assume the full state information available, thus the input matrix $C \in \mathbb{R}^{p\times n}$ is the identity. 
 
 \bigskip
-The main goal of the control task is to achieve optimal regulation of the system's state towards the origin. 
+The main goal of the control task is to achieve optimal regulation of the system's states towards the origin. 
 The notion of optimality, in this context, is framed within a quadratic objective function.
 The LQR problem, therefore, can be viewed as a multi-objective optimization task, where the goal is to simultaneously minimize competing objectives.
 For example, minimizing the deviation of the system's states from desired values may require higher control effort, and vice versa.
@@ -256,21 +257,21 @@ In the context of multi-objective optimization, the challenge lies in finding a 
 The Infinite Horizon Linear Quadratic Regulator problem is defined as follows:
 find the optimal control input $u_t, \, \forall t \in [0, \infty)$ that makes the following quadratic criteria as small as possible
 \begin{equation}
-    J(\boldsymbol{x}, \boldsymbol{u})  = \sum_{t=0} ^{+\infty} x_t^T Q x_t + u_t ^T R u_t
+    J(\boldsymbol{x}, \boldsymbol{u})  = \sum_{t=0} ^{+\infty} x_t^\top Q x_t + u_t ^\top R u_t
 \label{Quadratic_cost_funct}
 \end{equation}
 where $Q \in \mathbb{R}^{n \times n}$ and $R \in \mathbb{R}^{m \times m}$ are symmetric positive-definite weight matrices.
 
-The vector $\boldsymbol{u}$, also known as input trajectory, consists of the input elements, i.e. $\boldsymbol{u} = \{u_0, u_1, \dots\}$ and $\boldsymbol{x}$, the state trajectory, consists of the states along the infinite time horizon i.e $\boldsymbol{x} = \{x_1, x_2, \dots\}$.
+The vector $\boldsymbol{u}$, also known as input trajectory, consists of the input elements, i.e. $\boldsymbol{u} = \{u_0, u_1, \dots\}$ and $\boldsymbol{x}$, the state trajectory, consists of the states along the infinite time horizon, i.e $\boldsymbol{x} = \{x_1, x_2, \dots\}$.
 The cost function in \eqref{Quadratic_cost_funct} can be seen as the mathematical formulation of the trade-off between the two objectives to be minimized.
-Specifically the term $x_t^T Q x_t$ penalizes deviations of the system's states from desired values, while $u_t^T R u_t$ penalizes excessive control effort.
+Specifically the term $x_t^\top Q x_t$ penalizes deviations of the system's states from desired values, while $u_t^\top R u_t$ penalizes excessive control effort.
 The weights of the $Q$ and $R$, typically chosen as diagonal matrices, can be adjusted to find solutions that strike an appropriate balance between minimizing state deviations and control effort.
 
 \bigskip
 The overall LQR problem can be mathematically translated into the following optimization problem:
 \begin{equation}
 \begin{aligned}
-	\min_{\substack{\boldsymbol{x}, \boldsymbol{u}}}\quad & \sum_{t=0}^{+\infty}  x_t ^T Q x_t  + u_t^T R u_t  \\
+	\min_{\substack{\boldsymbol{x}, \boldsymbol{u}}}\quad & \sum_{t=0}^{+\infty}  x_t ^\top Q x_t  + u_t^\top R u_t  \\
 	\text{subj. to} & \quad x_{t+1}  = A x_t + B u_t \hspace{2cm} t = 0, 1 \ldots. \\
     & \quad x_0 = x_{\text{init}}
 \end{aligned}
@@ -281,11 +282,11 @@ where  $x_{\text{init}} \in \mathbb{R}^n$ is the initial condition of the system
 
 
 \bigskip
-Assuming the pair $(A,B)$ to be controllable and the pair $(A,C)$ with $Q = C^T C$ to be observable, holds:
+Assuming the pair $(A,B)$ to be controllable and the pair $(A,C)$ with $Q = C^\top C$ to be observable, holds:
 \begin{itemize}
     \item there exists a unique positive definite $P_\infty$ solution of the following equation called Algebraic Riccati Equation (ARE)
     \begin{equation}
-        P_\infty = Q + A^T P_\infty A - A^T P_\infty B (R + B^T P_\infty B)^{-1} B^T P_\infty A.
+        P_\infty = Q + A^\top P_\infty A - A^\top P_\infty B (R + B^\top P_\infty B)^{-1} B^\top P_\infty A.
     \end{equation}
     \item exploiting the first-order necessary and sufficient conditions for optimality, the optimal control law is a closed form solution, feedback of the state
     \begin{equation}
@@ -293,7 +294,7 @@ Assuming the pair $(A,B)$ to be controllable and the pair $(A,C)$ with $Q = C^T 
     \end{equation}
     with
     \begin{equation}
-        K = -( B^T P_\infty B + R)^{-1}(B^T P_\infty A)
+        K = -( B^\top P_\infty B + R)^{-1}(B^\top P_\infty A)
     \label{eq:Regulator_LQR}
     \end{equation}
     and it is able to asymptotically stabilize the system.
@@ -302,22 +303,22 @@ Assuming the pair $(A,B)$ to be controllable and the pair $(A,C)$ with $Q = C^T 
 The pair $(x_t^*, u_t^*)$ is the optimal state and input at discrete time instant $t$.
 
 \bigskip
-Despite the fact that one of the main applications of LQ optimal control is regulation, this strategy can be used to track a desired system behaviour as closely as possible, in the framework of Linear Quadratic Tracking (LQT).
+Despite the fact that one of the main applications of LQ optimal control is regulation, this strategy can be used to track a desired system behaviour as closely as possible, in the framework of Linear Quadratic Tracking (LQT) \cite{Linear_Quadratic_Tracking}.
 To incorporate the desired behaviour to be tracked in the objective, the problem can be written as:
 \begin{equation}
 \begin{aligned}
-	\min_{\substack{\boldsymbol{x}, \boldsymbol{u}}}\quad & \sum_{t=0}^{+\infty}  (x_t - x_{t,\text{des}})^T Q (x_t - x_{t,\text{des}}) + u_t^T R u_t  \\
+	\min_{\substack{\boldsymbol{x}, \boldsymbol{u}}}\quad & \sum_{t=0}^{+\infty}  (x_t - x_{t,\text{des}})^\top Q (x_t - x_{t,\text{des}}) + u_t^\top R u_t  \\
 	\text{subj. to} & \quad x_{t+1}  = A x_t + B u_t \hspace{2cm} t = 0, 1 \ldots. \\
     & \quad x_0 = x_{\text{init}}
 \end{aligned}
 \label{eq:LQR}
 \end{equation}
 
-where $x_{\text{des}}$ is the reference signal we want our system's states to track over time.
+where $x_{t,\text{des}} \in \mathbb{R}^n$ is the reference state value we want our system's states to track at time $t$.
 
 Cost function quantifies the controlled system's performance, defined as a weighted sum of the deviations of the system's states from desired values and control effort.
 
-In the context of tracking piece-wise affine desired state behaviour the optimal feedback control law is modified in the following way:
+In the context of tracking a given desired state behaviour $x_{\text{des}}$ the optimal feedback control law is modified in the following way:
 \begin{equation}
     u_t^* = K (x_t - x_{t,\text{des}})
 \label{Closed-loop_control_law}
@@ -350,7 +351,7 @@ the state set $\mathcal{X}$ is closed and the input set $\mathcal{U}$ is compact
 \bigskip
 Similarly to the LQR case, Model Predictive Control aims to minimize a cost function by defining positive definite matrices $Q$ and $R$. The goal is to find the optimal control input that minimizes a cost function that takes the following form:
 \begin{equation}
-    J(\boldsymbol{x}, \boldsymbol{u}; x_t t) = \sum_{i=t} ^{+ \infty} x_{i|t}^T \, Q \, x_{i|t} + u_{i|t}^T \, R \, u_{i|t}
+    J(\boldsymbol{x}, \boldsymbol{u}; x_t, t) = \sum_{i=t} ^{+ \infty} x_{i|t}^\top \, Q \, x_{i|t} + u_{i|t}^\top \, R \, u_{i|t}
 \end{equation}
 
 In this formulation $x_{i|t}$ represents the predicted state a time $i$, given the initial state $x_t = x_{t|t}$. 
@@ -362,7 +363,7 @@ For this reason usually MPC formulations optimize only on a finite horizon $N$, 
 
 \begin{equation}
 \begin{alignedat}{2}
-	\min_{\substack{\boldsymbol{x}, \boldsymbol{u}}}\quad & \sum_{i=t}^{t+N-1} (x_{i|t} - x_{t,\text{des}}) ^T \, Q \, (x_{i|t} - x_{t,\text{des}}) +  u_{i|t}^T \, R \, u_{i|t} &&   \\
+	\min_{\substack{\boldsymbol{x}, \boldsymbol{u}}}\quad & \sum_{i=t}^{t+N-1} (x_{i|t} - x_{t,\text{des}}) ^\top \, Q \, (x_{i|t} - x_{t,\text{des}}) +  u_{i|t}^\top \, R \, u_{i|t} &&   \\
 	\text{subj. to} & \quad x_{i+1|t}  = A x_{i|t} + B u_{i|t}   \hspace{2cm} t = 0, 1 \ldots N &&  \\
      &\quad x_{i|t} \in \mathcal{X} && \\
     &\quad u_{i|t} \in \mathcal{U} && \\
@@ -389,10 +390,14 @@ This procedure is repeated, as illustrated in figure \ref{image:mpc}, at each ti
 
 
 
-\section{Offset-free tracking MPC and disturbance observer}
+\section{Offset-free tracking MPC and Disturbance Observer}
 Regulating nonlinear systems using a linear predictive control framework can be a complex task and the model-plant mismatch due to the unmodeled nonlinear dynamics effects, can result in suboptimal performances of the controller.
+
+\bigskip
 Even if MPC is able to react to small unmodeled dynamics effects through the receding-horizon fashion, it is not able to consider them inside the predictions, thus to optimize upon them.
 MPC solves at each time an optimal control problem using the nominal model of the controlled process and, only when the actual plant behaviour closely matches the nominal model, the feedback control scheme can be guaranteed to stabilize the system, and achieve precise tracking of desired setpoints without any offset.
+
+\bigskip
 Offset-free Model Predictive Control represents an advanced control strategy designed to address this limitation. It aims to achieve zero steady-state tracking errors in the controlled system, even in presence of disturbances or model uncertainties that cause model-plant mismatch.
 For instance, in the context of regulating nonlinear systems using a linear predictive control framework, offset-free MPC seeks to regulate the system to its desired setpoint without steady-state error, ensuring precise and accurate control performance.
 
@@ -400,7 +405,7 @@ For instance, in the context of regulating nonlinear systems using a linear pred
 Consider a discrete-time, time-invariant system describing the plant:
 \begin{equation}
 \begin{aligned}
-    x_{m,t+1}+ &= f_m (x_{m,t}, u_t) \\
+    x_{m,t+1} &= f_m (x_{m,t}, u_t) \\
     y_{m,t} &= h_m (x_{m,t}) 
 \end{aligned}
 \label{Plant1}
@@ -419,21 +424,21 @@ Let $w \in \mathbb{R}^n$ and $v \in \mathbb{R}^p$ be defined as:
 \label{Plant_model_mismatch}
 \end{equation}
 where $w \in \mathbb{R}^n$ is the model mismatch between the non-linear plant model and the linear predictive model, $v \in \mathbb{R}^m$ is the output mismatch between predicted output and the real measured plant one.
-the $A$, $B$ and $C$ matrices are the ones mentioned in the linear model \ref{eq:Linear_model}.
+The $A$, $B$ and $C$ matrices are the ones mentioned in the linear model \eqref{eq:Linear_model}.
 
 \bigskip
-The key feature of this offset-free control strategy lies in the incorporation of a disturbance model in the prediction model \ref{eq:Linear_model}.
-This disturbance allows to capture the mismatch between the linear prediction model \eqref{eq:Linear_model} and the nonlinear plant \ref{Plant1} in steady state, thus the $w$ term.
+The key feature of this offset-free control strategy lies in the incorporation of a disturbance model in the prediction model \eqref{eq:Linear_model}.
+This disturbance allows to capture the mismatch between the linear prediction model \eqref{eq:Linear_model} and the nonlinear plant \eqref{Plant1} in steady state, thus the $w$ term, and to consider it inside the optimization.
 
 The steps that have to be followed, in order to have an offset-free MPC formulation, are the following:
 \begin{enumerate}
-	\item Introduce an augmented prediction model with an additional integrating state known as disturbance
+	\item Introduce an augmented prediction model with an additional integrating state known as disturbance and modeling the model-plant mismatch
 	\item Design a state and disturbance estimator based on the augmented model
-	\item Modify the MPC formulation into an offset-free one
+	\item Modify the MPC formulation into an offset-free one considering the estimated disturbance in the formulation
 \end{enumerate}
 Each point will be properly explained in the following.
 
-\subsection{Augmented model with disturbance}
+\subsection*{Augmented model with disturbance}
 Accordingly the given introduction, the first step consists in introducing an augmented model for computing the system's predictions in the offset-free MPC framework. 
 It can be, in general, written in the following form:
 \begin{equation}
@@ -444,12 +449,12 @@ It can be, in general, written in the following form:
 \end{aligned}
 \label{Augmented_model}
 \end{equation}
-where the additional state $d_t \in \mathbb{R}^{n_d}$ is known as disturbance state or simply disturbance, is assumed to be constant and follows an integral dynamics, as proposed by \cite{pannocchia2003disturbance}. 
+where the additional state $d_t \in \mathbb{R}^{n_d}$, known as disturbance state or simply disturbance, is assumed to be constant and follows an integral dynamics, as proposed by \cite{pannocchia2003disturbance}. 
+The pair $(B_d, C_d)$, where $B_d \in \mathbb{R}^{n \times n_d}$ and $C_d \in \mathbb{R}^{m \times n_d}$, can be seen as the disturbance model matrices.
 The maximum dimension of the disturbance state has to be equal to the number of measured outputs, i.e. $n_d \leq p$.
-The pair $(B_d, C_d)$ can be seen as the disturbance model where $B_d \in \mathbb{R}^{n \times n_d}$ and $C_d \in \mathbb{R}^{m \times n_d}$.
 
-\subsection{Disturbance observer and estimator}
-Assuming observability of the augmented system \ref{Augmented_model}, an estimator that continuously estimates the augmented state $(x,d)$ can be designed.
+\subsection*{Disturbance observer and estimator}
+Assuming observability of the augmented system \eqref{Augmented_model}, an estimator that continuously estimates the augmented state $(x,d)$ can be designed.
 An example could be a linear disturbance observer, that uses the prediction error between the real plant output and the predicted one, to estimate the augmented state as described by the following dynamical system:
 \begin{equation}
     \begin{aligned}
@@ -503,7 +508,7 @@ An example could be a linear disturbance observer, that uses the prediction erro
 \end{equation}
 where $\hat{x} \in \mathbb{R}^n$ and $\hat{d} \in \mathbb{R}^{n_d}$ are the state and disturbance estimates.
 
-The matrices $A_e \in \mathbb{R}^{(n+n_d) \times (n+n_d)}$, $B_e \in \mathbb{R}^{(n+n_d) \times m}$ and $C_e \in \mathbb{R}^{m \times (n + n_d)}$ are the following:
+The matrices $A_e \in \mathbb{R}^{(n+n_d) \times (n+n_d)}$, $B_e \in \mathbb{R}^{(n+n_d) \times m}$ and $C_e \in \mathbb{R}^{p \times (n + n_d)}$ are the following:
 \begin{equation}
     A_e =
     \begin{bmatrix}
@@ -522,7 +527,7 @@ The matrices $A_e \in \mathbb{R}^{(n+n_d) \times (n+n_d)}$, $B_e \in \mathbb{R}^
         C & C_d 
     \end{bmatrix}.
 \end{equation}
-The $L \in \mathbb{R}^{(n+n_d) \times n}$ is the the following one:
+The $L \in \mathbb{R}^{(n+n_d) \times p}$ matrix is described as follows:
 \begin{equation}
     L =
     \begin{bmatrix}
@@ -531,19 +536,19 @@ The $L \in \mathbb{R}^{(n+n_d) \times n}$ is the the following one:
     \end{bmatrix}
 \end{equation}
 
-The system in \eqref{eq:Estimator_and_observer} estimates, at each time instant t the unknown disturbance (i.e. the model-plant mismatch in this context) in addition to states. 
+The system in \eqref{eq:Estimator_and_observer} estimates, at each time instant $t$ the unknown disturbance (i.e. the model-plant mismatch in this context) in addition to states. 
 The estimation is performed evaluating the prediction error between the measured plant output and the predicted one.
 
-\subsection{Offset-free MPC formulation}
-Given the current estimates of the augmented state $(\hat{x}_t, \hat{d}_t)$ the MPC classical formulation is modified into an offset-free MPC algorithm.
+\subsection*{Offset-free MPC formulation}
+Given the current estimates of the augmented state $(\hat{x}_t, \hat{d}_t)$ at discrete time $t$, the MPC classical formulation is modified into an offset-free MPC formulation.
 
-The estimated variables  $(\hat{x}_t, \hat{d}_t)$ are used as initial states for the MPC solution at the current time instant.
+The estimated variables  $(\hat{x}_t, \hat{d}_t)$ are used as initial states for the MPC optimization problem at the current solving time instant $t$.
 The augmented model in \eqref{Augmented_model} is used as prediction model: the disturbance is added both as a constant state, and in the state evolution.
 
 The resulting formulation is the following one:
 \begin{equation}
 \begin{alignedat}{2}
-	\min_{\substack{\boldsymbol{x}, \boldsymbol{u}}}\quad & \sum_{i=t}^{t+N-1} (x_{i|t} - \bar{x}_t) ^T \, Q \, (x_{i|t} -  \bar{x}_t) +  (u_{i|t} - \bar{u}_t)^T \, R \, (u_{i|t} - \bar{u}_t) &&  \\
+	\min_{\substack{\boldsymbol{x}, \boldsymbol{u}}}\quad & \sum_{i=t}^{t+N-1} (x_{i|t} - \bar{x}_t) ^\top \, Q \, (x_{i|t} -  \bar{x}_t) +  (u_{i|t} - \bar{u}_t)^\top \, R \, (u_{i|t} - \bar{u}_t) &&  \\
 	\text{subj. to} & \quad x_{i+1|t}  = A x_{i|t} + B u_{i|t} + B_d d_{i|t} \hspace{1.5cm} t = 0, 1 \ldots N &&  \\
     & \quad d_{i+1|t}  = d_{i|t} && \\
     &\quad x_{i|t} \in \mathcal{X} &&  \\
@@ -571,44 +576,46 @@ where $\bar{x}_t \in \mathbb{R}^n$ and $\bar{u}_t \in \mathbb{R}^m$ are solution
 	\end{bmatrix}
 \end{equation}
 
-This system is overconstrained and there the right hand side term takes into account the disturbance estimation in the system and the desired reference setpoint for the plant output. 
+In the last system the coefficient matrix, or left-hand side matrix, represents the dynamics of the system according to the linear model, thus the $(A, B, C)$ matrices.
+The right-hand side vector, on the contrary, takes into account the disturbance model, thus the $(B_d, C_d)$ matrices, the estimated disturbance $\hat{d}$ and the desired plant reference setpoint $y_{\text{des}}$.
+This system could be in general overconstrained, meaning there may not exist a solution that satisfies all equations exactly, and the solution is typically found using the least square method with the pseudoinverse.
 
-\subsection{Observer design}
+\subsection*{Luenberger observer design}
 %\addcontentsline{toc}{section}{Observer design}
 
-In this formulation the nominal augmented state $(x,d)$ needs to be estimated at each time instant, given the plant output measurement $y_p$, according to the dynamical estimator system in \eqref{eq:Estimator_and_observer}.
+In this offset-free MPC formulation the nominal augmented state $(x,d)$ needs to be estimated at each time instant, given the plant output measurement $y_m$, according to the dynamical estimator system in \eqref{eq:Estimator_and_observer}.
 
-The $L_x \in \mathbb{R}^{n \times n_d}$ and $L_d \in \mathbb{R}^{n_d \times n} $ observer gain matrices in \ref{eq:Estimator_and_observer} has to be designed in such a way the estimator to be stable, while the method doesn't matter for our purposes.
+The $L_x \in \mathbb{R}^{n \times p}$ and $L_d \in \mathbb{R}^{n_d \times p} $ observer gain matrices in \eqref{eq:Estimator_and_observer} has to be designed in such a way the estimator to be stable, while the method doesn't matter for our purposes.
 
 \bigskip
 Two possible choices of state estimator could be Luenberger observer or the Kalman filter. 
 Specifically in the context of this thesis the Luenberger observer has been used.
-The Luenberger observer updates the state prediction computed at time $t-1$ using the current measured plant output $y_p$ at time $t$ as in the following:
+It updates the state prediction computed at time $t-1$ using the current measured plant output $y_m$ at time $t$ as in the following:
 \begin{equation}
-    \hat{x}_t = A \hat{x}_{t-1} + B u_{t-1} + L (y_{p,t} - \hat{y}_t)
+    \hat{x}_t = A \hat{x}_{t-1} + B u_{t-1} + L (y_{m,t} - \hat{y}_t)
 \end{equation}
 where $\hat{y}_t := C(A \hat{x}_{t-1} + B u_{t-1})$.
-The difference $(y_{p,t} - \hat{y}_t)$ is called estimation error or correction term and $L \in \mathbb{R}^{n \times p}$ is the observer gain.
+The difference $(y_{m,t} - \hat{y}_t)$ is called estimation error or correction term and $L \in \mathbb{R}^{n \times p}$ is the observer gain.
 
 \bigskip
-If the pair $(A_e,C_e)$ in \ref{eq:Estimator_and_observer} is observable, than the eigenvalues of $(A_e+LC_e)$ can be placed arbitrarily in such a way the estimator dynamical system to be stable.
+If the pair $(A_e,C_e)$ in \eqref{eq:Estimator_and_observer} is observable, than the eigenvalues of $(A_e+LC_e)$ can be placed arbitrarily in such a way the estimator dynamical system to be stable.
 Usually we want the estimator to be faster with respect to the controller, for this reason the desired eigenvalues for $(A_e+LC_e)$, thus the poles of the estimator dynamical systems, are chosen smaller with respect to the ones of the controlled stabilized system.
 
-\chapter{Control design}
+\chapter{Design of Optimization-based Controller for autonomous airshield}
 %\addcontentsline{toc}{chapter}{Control design}
 \markboth{}{CONTROL DESIGN}
 \label{chapter:Control_design}
-This chapter will provide first of all a description of the plant model and of the linear approximation used to design the predictive controllers. 
+This chapter will provide first of all a description of the go-kart plant model and of its linear approximation used to design the predictive controllers. 
 
 Later on a proper description of the design choices and the formulations of both the controllers in the context of the sport application: the Linear Quadratic Regulator (LQR) and the Model Predictive Control (MPC), nominal and with Offset-free version.
 
-\section{Model}
+\section{Go-kart kynematics model}
 \begin{figure}[h!]
 	\centering
 	\includegraphics[width=0.7\textwidth]{Bycicle_scheme.png}
 \label{Kinematic bicycle model of the vehicle}
 \end{figure}
-Having a good model plays a central role in the controller design framework.
+%Having a good model plays a central role in the controller design framework.
 The non linear model used to describe the kart dynamics is a bicycle model.
 2D bicycle model can be seen as a simplified vehicle model that approximates very well the motion of a 4-wheel vehicle in normal driving conditions.
 
@@ -638,7 +645,7 @@ The variable $\beta$ is the slip angle at the center of mass.
 \bigskip
 The model has two parameters, $l_f$ and $l_r$, which represent the distances from the centre of mass to the front axle and rear axle, respectively.
 
-The mass $m = 300$ Kg includes both the kart and the trailer weight, while $l_f = l_r = 0.8$ m.
+The mass $m = 300$ Kg includes both the kart and the trailer weight, while $l_f = l_r = 0.8$ meters.
 The other parameters of this model have been identified as reported in table \ref{tab:Parameters}.
 
 
@@ -671,7 +678,7 @@ The identified coefficients represent:
     \label{tab:Parameters}
 \end{table}
 
-According to the estimated values the \ref{eq:Long_force} can be rewritten as follows:
+According to the estimated values the \eqref{eq:Long_force} can be rewritten as follows:
 \begin{equation}
     F_x(t) = C_{m1} a(t) - C_f v(t) - C_d v^2(t) - Croll
 \end{equation}
@@ -684,10 +691,13 @@ The physical actuations limits on the input variable $a$ can be expressed as box
 The coefficients reported in table \ref{tab:Parameters} are identified in such a way to have $a_{min} = 0$ and $a_{max} = 1$ as actuation limits for the motor torque.
 
 \section{Linear approximation of the system dynamics}
-The application for which the system is designed is for training Olympics runner in overspeed training. 
-Due to the high velocities involved in this kind of training technique, the athlete is interested to execute only distances of about $50/60$ m. 
+The system is specifically designed for overspeed training of Olympic runners.
+For this kind of high energetic demanding training, the athletes are interested in executing only short distances of approximately  $50-60$ meters performed on the straightway of the track and field oval-shaped racetrack.
 For this reason it is reasonable to consider only the longitudinal motion of the vehicle along one direction and not taking anymore into account the steering degree of freedom. 
-According this assumption the plant model can be simplified as in the following:
+Additionally, the go-kart is designed such that an onboard driver must be present for safety reasons and to control the steering when maneuvering the go-kart back to the starting line of the sprint.
+
+\bigskip
+According this assumption rectlinear motion assumption, the go-kart plant model in \eqref{Plant} can be simplified as in the following:
 
 \begin{equation}
 \begin{cases}
@@ -701,7 +711,7 @@ According this assumption the plant model can be simplified as in the following:
 where $p$ indicates the position of the vehicle along an arbitrarily oriented direction.
 
 \bigskip
-It's very easy to notice that a good linear approximation of \ref{Plant_simplified} can be found and used for the controller design. 
+Examining the equations, it can be noticed that a good linear approximation of \eqref{Plant_simplified} can be found and used for the longitudinal controller design. 
 The only non linear term is in fact the one related to the drag coefficient in the equation describing the longitudinal force.
 Assuming that in the context of this application, the velocities the kart exploits during the motion are quite small, this term will be small as well.
 
@@ -758,12 +768,14 @@ And moving into the state space form it can be rewritten as:
 \label{Linear_system}
 \end{equation}
 
-where $x_k = [p_k , v_k] ^T$  are the kart state variables expressing respectively the kart position and the kart velocity and $u = a$ is the control input of the system, while $dt$ is the sampling step used for Euler forward integration.
+where $x_k = [p_k , v_k] ^\top$  are the kart state variables expressing respectively the kart position and the kart velocity and $u = a$ is the control input of the system, while $dt$ is the sampling step used for Euler forward integration.
 
 This linear model is the one used as basic for the controllers design in the following.
 
-\newpage
-\section{LQR design}
+
+
+
+\section{Gain Scheduling LQR design}
 Consider that at each time instant the information about the runner state $x_r =[p_r , v_r] ^T $ is known, where $p_r$ represents the absolute runner position and $v_r$ indicates the absolute runner velocity.
 
 At each time instant $t$ the desired state for the go-kart is given by:
@@ -779,7 +791,7 @@ Using this reference, the closed-form control law in \ref{Closed-loop_control_la
 
 \bigskip
 While MPC explicitly incorporates constraints into the optimization problem, LQR does not provide a direct mechanism for handling constraints.
-Constraints in LQR can be indirectly addressed by penalizing their violation in the cost function, but it's still possible to deal with control actions that violate certain physical limits, such as those described in \ref{Input_limits}.
+Constraints can be indirectly addressed by penalizing their violation in the cost function, but it's still possible to deal with control actions that violate certain physical limits, such as those described in \ref{Input_limits}.
 To address this, the unconstrained control actions generated by the LQR controller has been "clipped" as follows:
 \begin{equation}
     \Tilde{u}^* = \text{sat}_{[a_{min}, a_{max}]} (u^*)
@@ -789,6 +801,12 @@ The value $\Tilde{u}^*$ can be referred to as the clipped-unconstrained optimal 
 While clipping allows the controller to handle constraints in a straightforward manner, it can lead to suboptimal performances, as the controller may be forced to operate at the constraint boundaries.
 Therefore, alternative approaches such as MPC may be preferred for systems with stringent constraint requirements.
 
+\bigskip
+From the control architecture point of view a gain scheduling approach has been introduced in the control scheme.
+A gain scheduling controller is a type of control design that allows to dynamically switch between different control laws or gains based on certain operating conditions or parameters.
+In the context of this thesis one among two difference LQR controllers is selected and used to regulate the system to the desired reference value.
+They will be explained in details in the following.
+
 \subsection{Catch-up maneuver}
 \begin{figure}
 	\centering
@@ -797,7 +815,7 @@ Therefore, alternative approaches such as MPC may be preferred for systems with 
 	\label{image:LQR_sim_scheme}
 \end{figure}
 
-The most challenging phase of the motion occurs in the first few seconds when the runneraccelerates faster than the maximum acceleration the kart can achieve.
+The most challenging phase of the motion occurs in the first few seconds when the runner accelerates faster than the maximum acceleration the kart can achieve.
 This phase is referred to as the 'catch-up maneuver'.
 To prevent a potential collision between the airshield and the runner, a safety measure is implemented, requiring the runner to begin the sprint performance from a position several meters farther from the kart, with respect to the steady state desired distance $d_{\text{des}}$.
 
@@ -811,8 +829,7 @@ Hence, the initial condition for the kart state is set to be the following:
 \end{equation}
 where $\bar{d}$ is a parameter that depends on how fast the runner is going to accelerate during his performance. 
  
-\bigskip
-From the control architecture point of view a gain scheduling approach has been introduced in the control scheme.
+
 During the catch-up phase, the control action is governed by the controller gain $K_{\text{catch}}$ computed using the following weights: 
 \begin{equation}
     Q_{\text{catch}} =
@@ -824,34 +841,46 @@ During the catch-up phase, the control action is governed by the controller gain
     R_{\text{catch}} = [2]
 \end{equation}
 
-As clearly understandable from the weights, during the catch-up maneuver, the primary objective is to match the go-kart velocity with  that of the runner.
-Once this alignement is achieved, typically at an 80\% match, the controller switches to $K_{\text{reg}}$ which assigns nearly equal importance to distance and velocity mismatch.
+As evidenced by the weight selection, during the catch-up maneuver, the primary objective during the catch-up maneuver is to match the go-kart velocity with that of the runner.
+For this reason a significantly higher weight is assigned to the second state variable.
+This weights configuration enables the kart to start accelerating at its maximum capability, even if the runner remains at a distance greater than the desired value $d_{\text{des}}$.
+Such an approach serves to avoid an unsafe scenarios, particularly situations where the runner's higher velocity could lead to a collision with the shield.
+
+\subsection{Cruise maneuver}
+Once the alignement between the kart and runner velocity is achieved, typically at an 80\% match, the controller switches to $K_{\text{cruise}}$ which assigns nearly equal importance to distance and velocity mismatch.
+While a preference for the velocity state persists, the significance given to the kart's position relative to the runner's is significantly increased.
+
+The weight matrices for this cruise control configuration are as follows:
 \begin{equation}
-    Q_{\text{reg}} =
+    Q_{\text{cruise}} =
     \begin{bmatrix}
         800 & 0 \\
         0 & 4000
     \end{bmatrix},
     \quad
-    R_{\text{reg}} = [0.002]
+    R_{\text{cruise}} = [0.002]
 \end{equation}
+This setup enables a rapid and substantial reduction in the relative distance to the desired value once the velocities of the go-kart and runner closely align. 
+Once the desired value $d_{\text{des}}$ is reached, the $K_{\text{cruise}}$ controller and its corresponding control law maintain the system around the desired operating conditions.
 
-The overall control scheme is the one shown in \ref{image:LQR_sim_scheme}, while algorithm \ref{alg:LQR_sim_implementation} outlines the steps followed by the LQR algorithm while controlling the system.
+\bigskip
+The overall control scheme is the one shown in figure \ref{image:LQR_sim_scheme}, while algorithm \ref{alg:LQR_sim_implementation} outlines the steps followed by the LQR algorithm while controlling the system.
+
 \begin{algorithm}
 \begin{algorithmic}[1]
 	\State catched = false;
 	\State Set initial runner position with a proper distance $\bar{d}$ from kart;
 	\For{$t=0,1,2,...$};
-		\State Take kart state information $x_{k,t} = [p_{k,t}, v_{k,t}]^T$;
-		\State Take runner state information $x_{r,t} = [p_{r,t}, v_{r,t}]^T$;
-		\State Compute corresponding desired state for kart $x_{k,t,des} = [p_{r,t} + d_{\text{des}}, v_{r,t}]^T$;
+		\State Take kart state information $x_{k,t} = [p_{k,t}, v_{k,t}]^\top$;
+		\State Take runner state information $x_{r,t} = [p_{r,t}, v_{r,t}]^\top$;
+		\State Compute corresponding desired state for kart $x_{k,t,des} = [p_{r,t} + d_{\text{des}}, v_{r,t}]^\top$;
 		\If{$v_{k,t} \geq 0.8 v_{r,t}$ \textbf{and} catched = false}
 			\State catched = true;
 		\EndIf
 		\If{catched = false}
 			\State $u^* = - K_{\text{catch}} (x_{k,t} - x_{k,t,des}) $;
 		\Else 
-			\State $u^* = - K_{\text{reg}} (x_{k,t} - x_{k,t,des}) $;
+			\State $u^* = - K_{\text{cruise}} (x_{k,t} - x_{k,t,des}) $;
 		\EndIf
 		\State Clip input according to limit saturation limits $\tilde{u}^* = \text{sat}_{[a_{\min}, a_{\max}]} (u^*)$;
 		\State Inject $\tilde{u}^*$ in the plant;
@@ -860,6 +889,7 @@ The overall control scheme is the one shown in \ref{image:LQR_sim_scheme}, while
 \label{alg:LQR_sim_implementation}
 \end{algorithmic}
 \end{algorithm}
+
 
 \newpage
 \newpage
@@ -927,15 +957,33 @@ The overall prediction model, in discrete-time, state-space formulation can be w
 \label{Prediction_model_MPC}
 \end{equation}
 
+where
+\begin{equation}
+    A_p =
+        \begin{bmatrix}
+            1 & dt & 0 \\
+            0 & 1 & -dt\frac{C_f}{m} \\
+            0 & 0 & 1-dt\frac{C_f}{m}
+        \end{bmatrix}
+    \quad
+    B_e = 
+        \begin{bmatrix}
+            0 \\
+            dt \frac{C_{m1}}{m} \\
+            dt \frac{C_{m1}}{m}
+        \end{bmatrix}.
+\label{Prediction_matrices}
+\end{equation}
+
 The runner actual acceleration $a_{r,t}$ is considered to be known and introduced in the prediction model as a linear affine term that allows the predictions to better fit with the real future runner behaviour.
-This term relative to the actual runner acceleration can be seen as the introduction of a known disturbance in the system.
+This term relative to the actual runner acceleration can be seen as the introduction of a known disturbance in the system, thus $a_t = [0, -dt a_{r,t}, 0]^\top$.
 
 \bigskip
 The optimal control problem solved at each discrete time instant, in a receiding horizon fashion, has the following formulation:
 \begin{equation}
 \begin{alignedat}{2}
-	\min_{\substack{\boldsymbol{x}, \boldsymbol{u}}}\quad J &= \sum_{i=t}^{t+N-1} (x_{p,i|t} - x_{p,\text{des}}) ^T \, Q \, (x_{p,i|t} - x_{p,\text{des}}) +  u_{i|t}^T \, R \, u_{i|t} &&   \\
-	\text{subj. to} & \quad x_{p,i+1|t}  = A_p \, x_{p,i|t} + B_p \, u_{i|t} + a_t && \\
+	\min_{\substack{\boldsymbol{x}, \boldsymbol{u}}}\quad &\sum_{i=t}^{t+N-1} (x_{p,i|t} - x_{p,\text{des}}) ^\top \, Q \, (x_{p,i|t} - x_{p,\text{des}}) +  u_{i|t}^\top \, R \, u_{i|t} &&   \\
+	\text{subj. to} & \quad x_{p,i+1|t}  = A_p \, x_{p,i|t} + B_p \, u_{i|t} + a_t  \hspace{1.5cm} t = 0, 1 \ldots N && \\
     &\quad a_{\text{min}} \leq u_{i|t} \leq a_{\text{max}}&& \\
     &\quad d_{\text{safe}}\leq \Delta p_{i|t} &&  \\
     &\quad x_{p,t|t} = x_{p,\text{meas}} &&
@@ -951,13 +999,16 @@ where the reference values for the prediction states are the following
         0
     \end{bmatrix}
 \end{equation}
-and $d_{\text{safe}}$ is a minimum distance between go-kart and runner, ensuring a safe situation, set to a value of 1.5 metres distance.
+and $d_{\text{safe}}$ is a minimum distance between go-kart and runner, ensuring a safe situation.
+
+\bigskip
 The parameter $N$ defines the prediction horizon thus the number of control intervals the controller must evaluate by prediction. 
 This parameter must be carefully selected since the complexity of solving the optimization problem increases when the prediction horizon increases. 
 This problem could have important consequences in systems having fast dynamics, where the number of prediction steps is limited by the processor power.
 At the same time the prediction horizon has to be chosen long enought to adequately capture the system dynamics.
 The optimal input sequence, found by repeatedly solving at each time step the optimizaton problem, is such that $\boldsymbol{u}^* \in \mathbb{R}^{m \times N}$.
 
+\bigskip
 The weights in the cost function are much less sensible to changes with respect to the ones used in the LQR formulation and are chosen like:
 \begin{equation}
     Q =
@@ -981,10 +1032,10 @@ For this reason the third state is not taken into account in the cost function o
 
 \begin{algorithm}
 \begin{algorithmic}[1]
-	\State Define desired prediction state $x_{p,\text{des}} = [d_{\text{des}}, 0, 0]^T$;
+	\State Define desired prediction state $x_{p,\text{des}} = [d_{\text{des}}, 0, 0]^\top$;
 	\State Set initial runner position with a proper distance $\bar{d}$ from kart;
 	\For{$t=0,1,2,...$}
-		\State Take prediction state information $x_{p,t} = [\Delta p_t, \Delta v_t, v_{k,t}]^T$;
+		\State Take prediction state information $x_{p,t} = [\Delta p_t, \Delta v_t, v_{k,t}]^\top$;
 		\State Solve the constrained QP and get $\boldsymbol{u}^* = \{u_0, u_1, \cdots, u_N\}$; 
 		\State Inject the first element of the optimal input sequence $u_0^*$ in the plant;
 	\EndFor
@@ -998,7 +1049,7 @@ It is easy to understand the semplification in the architecture achieved with th
  Algorithm \ref{alg:MPC_sim_implementation} describes the points of the MPC implementation.
 
 \section{Offset-free MPC and disturbance observer design}
-The MPC problem formulated in \ref{MPC_formulation} employs as prediction model a linear approximation of the kart dynamics (see \ref{Linear_system}), augmented with the runner model in \ref{Runner_model}.
+The MPC problem formulated in \eqref{MPC_formulation} employs as prediction model a linear approximation of the kart dynamics (see \eqref{Linear_system}), augmented with the runner model in \eqref{Runner_model}.
 However, this prediction model does not take into account the nonlinear term arising from the drag coefficient present in the identified kart dynamic equations in \ref{Plant_simplified}.
 In particular the true nonlinear prediction model for the MPC should result in the following formulation:
 
@@ -1038,10 +1089,10 @@ In particular the true nonlinear prediction model for the MPC should result in t
 \label{Non-lin_prediction_model_MPC}
 \end{equation}
 
-where the last term includes the nonlinear, unmodelled drag effect, thus the $w$ in \ref{Plant_model_mismatch} representing the model-plant mismatch term within the offset-free MPC context.
+where the last term includes the nonlinear, unmodelled drag effect, thus the $w$ term in \eqref{Plant_model_mismatch} representing the model-plant mismatch term within the offset-free MPC context.
 
 \bigskip
-Since MPC derives its solution based on the linear model in \ref{Prediction_model_MPC}, the performance of the controller are inherently tied to the magnitude of the unmodeled effects.
+Since MPC derives its solution based on the linear model in \eqref{Prediction_model_MPC}, the performance of the controller are inherently tied to the magnitude of the unmodeled effects.
 Consequently, optimal closed-loop performance may not be achievable using the nominal MPC formulation. 
 Offset-free MPC is designed to handle this kind of situations where there are discrepancies between the nominal model used for prediction and the actual plant dynamics. 
 
@@ -1056,50 +1107,102 @@ Although offset-free MPC can mitigate model-plant mismatch, estimating real-time
 This delay has as a consequence the fact that the disturbance compensation may only be optimal at steady-state and not during transient when the disturbance varies.
 
 \bigskip
-Considering the problem statement presented in \ref{MPC:offset-free}, the affine term that takes into account the runner acceleration, has been added, similar to the nominal MPC case.
+Considering the problem statement presented in \eqref{MPC:offset-free}, the affine term that takes into account the runner acceleration, has been added, similar to the nominal MPC case.
 
-The prediction model in \ref{Augmented_model} is applied and it results to be:
+The augmented prediction model in \ref{Augmented_model} necessary to the offset-free formulation is applied and it results to be:
 \begin{equation}
 \begin{aligned}
-	x_{p,t+1} & =
-    \begin{bmatrix}
-        1 & dt & 0 \\
-        0 & 1 & -dt\frac{C_f}{m} \\
-        0 & 0 & 1-dt\frac{C_f}{m}
-    \end{bmatrix}
-    x_{p,t}
-    +
-    \begin{bmatrix}
-        0 \\
-        dt \frac{C_{m1}}{m} \\
-        dt \frac{C_{m1}}{m}
-    \end{bmatrix}
-    u_t + 
-    \begin{bmatrix}
-    0 \\
-    - dt a_{r,t} \\
-    0
-    \end{bmatrix} 
-    -
-    \begin{bmatrix}
-    0 \\
-    1 \\
-    1
-    \end{bmatrix}
-	d_t \\
-    d_{t+1} & = d_t
+	x_{p,t+1} & = A_p \, x_{p,t} + B_p \, u_t + a_t + B_d \, d_t \\
+    	d_{t+1} & = d_t
 \end{aligned}
 \label{Offset-free_prediction_model_MPC}
 \end{equation}
+where the matrices $A_p$, $B_p$ and the vector $a_t$ are defined in \eqref{Prediction_matrices} and $d_t$ is a scalar.
 
-Here $B_d = [0, 1, 1]^T$ signifies that the disturbance affects only in the second and third states, while the relative position prediction model remains unaffected by the mismatch with the plant.
-For the purposes of this thesis the state is considered to be fully observable (i.e. $C = I_3$) and, as a consequence, the reference for the measured plant output is translated in reference for the plant states, thus $y_{\text{des}} = x_{p,\text{des}} = [d_{\text{des}}, 0, 0] ^T$.
-Accordingly also $C_d = [0, 0, 0]^T$. 
+The term $B_d = [0, 1, 1]^\top$ signifies that the disturbance affects only in the second and third states, while the relative position prediction model remains unaffected by the mismatch with the plant.
+For the purposes of this thesis the state is considered to be fully observable (i.e. $C = I_3$) and, as a consequence, the reference for the measured plant output is translated in reference for the plant states, thus $y_{\text{des}} = x_{p,\text{des}} = [d_{\text{des}}, 0, 0] ^\top$.
+Accordingly also $C_d = [0, 0, 0]^\top$. 
 
 \bigskip
-The design of the observer plays a crucial role in enhancing the robustness of the proposed control scheme.
-The observer gain matrices $L_x$ and $L_d$ are designed in such a way the poles of $(A_e + L C_e)$ are placed in $\lambda=[0.5, 0.51, 0.52, 0.53]^T$, ensuring the resultant matrix to be Hurwitz. 
+The design of the observer plays a crucial role in enhancing the robustness of the proposed control scheme and it becomes:
+\begin{equation}
+    \begin{aligned}
+    	\begin{bmatrix}
+    	   \hat{x}_{p,t+1} \\
+            \hat{d}_{t+1}
+        \end{bmatrix}
+	= A_e 
+        \begin{bmatrix}
+        \hat{x}_{p,t} \\
+        \hat{d}_t
+    	\end{bmatrix}
+        + 
+        B_e \, u +
+        L (
+         - x_{p,t} +
+        C_e
+        \begin{bmatrix}
+            \hat{x}_{p,t} \\
+            \hat{d}_t
+        \end{bmatrix} )
+    \end{aligned}
+\end{equation}
+where
+\begin{equation}
+    A_e =
+    \begin{bmatrix}
+        A_p & B_d \\
+        0 & 1  
+    \end{bmatrix},
+    \quad
+    B_e = 
+    \begin{bmatrix}
+        B_p \\
+        0  
+    \end{bmatrix},
+    \quad
+    C_e = 
+    \begin{bmatrix}
+        I_3 & 0 
+    \end{bmatrix}.
+\label{Observer_real}
+\end{equation}
+
+\bigskip
+The observer gain matrix $L$ is designed in such a way the poles of $(A_e + L C_e)$ are placed in $\lambda=[0.5, 0.51, 0.52, 0.53]$, ensuring the resultant matrix to be Hurwitz. 
 The same weighting matrices $Q$ and $R$ utilized in the nominal MPC context are employed as weights.
+
+\bigskip
+The final resulting offset-free formulation can be summarized in the following constrained optimization problem:
+\begin{equation}
+\begin{alignedat}{2}
+	\min_{\substack{\boldsymbol{x}, \boldsymbol{u}}}\quad & \sum_{i=t}^{t+N-1} (x_{p,i|t} - \bar{x}_t) ^\top \, Q \, (x_{p,i|t} -  \bar{x}_t) +  (u_{i|t} - \bar{u}_t)^\top \, R \, (u_{i|t} - \bar{u}_t) &&  \\
+	\text{subj. to} & \quad x_{p,i+1|t}  = A_e \, x_{p,i|t} + B_e \, u_{i|t} + B_d \, d_{i|t} \hspace{1.5cm} t = 0, 1 \ldots N &&  \\
+    & \quad d_{i+1|t}  = d_{i|t} && \\
+    &\quad a_{\text{min}} \leq u_{i|t} \leq a_{\text{max}}&& \\
+    &\quad d_{\text{safe}}\leq \Delta p_{i|t} &&  \\
+    &\quad x_{p,t|t} = \hat{x}_t && \\
+    &\quad d_{t|t} = \hat{d}_t && 
+\end{alignedat}
+\label{MPC:offset-free}
+\end{equation}
+where $\bar{x}_t \in \mathbb{R}^n$ and $\bar{u}_t \in \mathbb{R}^m$ are solution of the following system:
+
+\begin{equation}
+    \begin{bmatrix}
+    A_p-I_3 & B_p \\
+    I_3 & 0
+	\end{bmatrix}
+ 	\begin{bmatrix}
+		\bar{x}_t \\
+		\bar{u}_t
+	\end{bmatrix}
+    =
+    \begin{bmatrix}
+    -B_d \hat{d}_t\\
+    x_{p,\text{des}} - C_d \hat{d}_t
+	\end{bmatrix}
+\end{equation}
 
 \begin{figure}
 	\centering
@@ -1108,13 +1211,11 @@ The same weighting matrices $Q$ and $R$ utilized in the nominal MPC context are 
 	\label{image:mpc_of_scheme}
 \end{figure}
 
-In image \ref{image:mpc_of_scheme} the block diagram of the proposed offset-free MPC with disturbance observer implementation is represented and algorithm \ref{alg:MPCOF_sim_implementation} describes the point of both estimation and control followed by the scheme.
-
 \begin{algorithm}
 \begin{algorithmic}[1]
-	\State Define desired prediction state $x_{p,\text{des}} = [d_{\text{des}}, 0, 0]^T$;
+	\State Define desired prediction state $x_{p,\text{des}} = [d_{\text{des}}, 0, 0]^\top$;
 	\State Set initial runner position with a proper distance $\bar{d}$ from kart;
-	\State Initialize estimator $\hat{x}_{p,0} = [d_{\text{des}}, 0, 0]^T$ and $\hat{d}_0 = 0$;
+	\State Initialize estimator $\hat{x}_{p,0} = [d_{\text{des}}, 0, 0]^\top$ and $\hat{d}_0 = 0$;
 	\For{$t=0,1,2,... $}
 		\State Take state estimator and disturbance observer information $\hat{x}_{p,t}$ and $\hat{d}_t$;
 		\State Solve the constrained QP and get $\boldsymbol{u}^* = \{u_0, u_1, \cdots, u_N\}$; 
@@ -1126,18 +1227,16 @@ In image \ref{image:mpc_of_scheme} the block diagram of the proposed offset-free
 \end{algorithmic}
 \end{algorithm}
 
+\bigskip
+In image \ref{image:mpc_of_scheme} the block diagram of the proposed offset-free MPC with disturbance observer implementation is represented and algorithm \ref{alg:MPCOF_sim_implementation} describes the point of both estimation and control followed by the scheme.
+
+\newpage
 \section{Fluid-dynamic studies}
-\begin{figure}
-	\centering
-	\includegraphics[width=0.6\textwidth]{Aerodynamics.png}
-	\caption{}
-	\label{image:Aerodynamic_studies}
-\end{figure}
+
 Fluid dynamics is a branch of physics that deals with the study of how fluids (liquids and gases) behave when they are in motion.
 In the context of sports engineering, fluid dynamics plays a crucial role in understanding the interaction between athletes and the surrounding air or water during their performance.
 
 Aerodynamics, a subfield of fluid dynamics, specifically focuses on the study of how moving objects interact with the air. 
-It encompasses the analysis of forces such as lift and drag that affect the motion of objects through the air. 
 Drag force, a key parameter in aerodynamics, quantifies the resistance encountered by an object as it moves through a fluid medium. 
 It can be expressed mathematically using the drag equation:
 \begin{equation}
@@ -1146,30 +1245,38 @@ It can be expressed mathematically using the drag equation:
 where $F_d$ is the drag force, $\rho$ is the density of fluid (air in this case), $A$ is the frontal area of the object moving in the fluid, 
 $v$ is the velocity of the object ad $C_d$ the drag coefficient.
 One notable characteristic of drag force is its dependence on the square of the velocity $(v^2)$, indicating that the resistance experienced by an object increases exponentially with its speed. 
+
+\bigskip
 Recent fluid-dynamic studies and simulations, conducted using wind tunnels and advanced computational methods by \cite{Coni_article} has shown the effect of the aerodynamic shield on the variation of the aerodynamic force acting on a runner for a range of speeds between 5 and 13 meters per second.
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=0.6\textwidth]{Aerodynamics.png}
+	\caption{}
+	\label{image:Aerodynamic_studies}
+\end{figure}
+
 As depicted in figure \ref{image:Aerodynamic_studies}, when the air moving over the shield fails in following the curvature of a surface, it is reparated into two different flows.
 This leads to the formation of vortices and regions of recirculating flow, creating a large low-pressure region behind the shield.
 Interestingly, this aerodynamic configuration not only reduces air friction experienced by the athlete but also generates a pushing force from behind, aligning with the athlete's movement. Consequently, the athlete benefits from reduced air resistance and a propulsive force, potentially enhancing their speed and performance.
-For this reason the reference distance $d_{\text{des}}$ to be kept between the runner and the kart can be assumed to be around $2.5$ meters, thus the athlete should be able to run on the airshield border on the slipstream up to a couple of meters further.
-In the following, for both the simulations and the real Hardware test it is used $d_\text{des} = 2.5$ meters.
-
-
-\chapter{Simulation results and Hardware-in-the-loop validation}
-%\addcontentsline{toc}{chapter}{Simulations and Hardware results}
-\markboth{}{RESULTS}
-\label{chapter:Simulations_and_results}
-The first purpose of this chapter is to present and analyze the results of Python simulations.
-
-Later an overview of the hardware structure and sensors equipment of the system is provided together with the changes in the controllers formulations with respect to the simulation environment. 
-
-Finally, some test developed on the real hardware are presented and their results are compared with the simulation framework.
-
-\section{Simulation results}
-This section presents the results obtained carrying out a Python simulation of the go-kart non linear dynamical model, trying to follow a velocity profile simulating the runner behaviour during a competition or a training.
 
 \bigskip
+For this reason the reference distance $d_{\text{des}}$ to be kept between the runner and the kart can be assumed to be around $2.5$ meters, thus the athlete should be able to run on the airshield border or in the slipstream up to a couple of meters further.
+In the following, for both the simulations and the real hardware test it is used $d_\text{des}$ of $2.5$ meters and $d_\text{safe}$ of $1.5$ meters.
+
+
+\chapter{Numerical simulation results}
+%\addcontentsline{toc}{chapter}{Simulations and Hardware results}
+\markboth{}{SIMULATION RESULTS}
+\label{chapter:Simulations_results}
+The first purpose of this chapter is to present and analyze the results of Python simulations carried out on the non linear mathematical model of the go-kart with the airshield attached,  trying to follow a velocity profile simulating the runner behaviour during a competition or a training.
 The three controllers: Linear Quadratic Regulator, Model Predictive Control and Offset-Free Model Predictive Control have been tested and their performances are evaluated and compared.
-To assess the performance of the controllers and evaluate the application's behaviour, empirical data from two presigious Diamond League competitions \cite{diamondleague}  have been employed, focusing on the winners of the 100m sprint both in the man's and women's categories. 
+Specifically in section $3.1$, the data utilized for the controllers simulation tests are introduced.
+Additionally, it is described how they have been obtained from real competition results, together with a presentation of the parameters used for the comparison.
+Section $3.2$ and $3.3$ are focused on finally evaluate and numerically compare the controllers performances in two distinct scenario.
+
+\section{Test data and comparison parameters}
+To assess the performance of the controllers and evaluate the application's behaviour, empirical data from two presigious Diamond League competitions \cite{diamondleague}  have been employed, focusing on the winners of the 100m sprint event both in the man's and women's categories. 
 
 \begin{table}[h!]
 	\centering
@@ -1232,7 +1339,7 @@ The parameters used for the evaluation and comparison of the controllers perform
 	\item Minimum distance from kart: the concept is similar to the undershoot, thus the extent to which the system's response deviates from the desired trajectory. This parameter quantifies how close the runner goes to the kart during the performance.
 	\item Energy consumption: quantifies the amount of energy expended by the controller to achieve the desired tracking performance.
 	\item Stead-state error: characterized the residual errror between the actual output and the desired reference value once the system has reached a stable operating condition, thus a constant velocity of the kart tracking a constant velocity of the runner.
-	\item "Rise" time to reach a desired reference distance of 2.6m from kart: refers to the duration taken by the system's output to transition from the initial state to the desired position setpoint. It represents the speed at which the system responds to changes in the reference signal and it's indicative of the controller's dynamic responsiveness.
+	\item "Rise" time to reach the desired reference distance $d_\text{des}$: refers to the duration taken by the system's output to transition from the initial state to the desired position setpoint. It represents the speed at which the system responds to changes in the reference signal and it's indicative of the controller's dynamic responsiveness.
 \end{itemize}
 
 \subsection*{CVXPY and OSQP solver}
@@ -1240,7 +1347,7 @@ The quadratic optimization problems in the MPC formulations have been solved usi
 CVXPY allows to express the convex optimization problem to be solved according to a natural syntax that follows the math, and is later automatically converted into the standard form required by generic solvers.
 OSQP (Operator Splitting Quadratic Program) is a high-performance solver for convex quadratic programming problems well suited for applications in control systems, robotics and machine learning.
 
-\subsection{Test on women velocity profile of Ta Lou}
+\section{Test on women velocity profile of Ta Lou}
 \begin{figure}[h!]
     \centering
     \begin{subfigure}[t]{0.8\textwidth}
@@ -1287,7 +1394,7 @@ The three controllers show similar energy consumption over time.
 	min($\Delta p$) & 1.1885 & 2.2371 & 2.3605 \\
 	Energy consumption & 0.5208 & 0.5200 & 0.5207 \\
 	Steady state error & 0.1354 & 0.1079 & 0.0009 \\
-	"Rise" time to 2.6m & 3.3 & 3.75 & 3.85 \\
+	"Rise" time to $d_\text{des}$ & 3.3 & 3.75 & 3.85 \\
 	\hline
 	\end{tabular}
 \caption{Comparison of controllers performance: Ta Lou velocity profile }
@@ -1295,7 +1402,7 @@ The three controllers show similar energy consumption over time.
 \end{table}
 
 
-\subsection{Test on men velocity profile of Coleman}
+\section{Test on men velocity profile of Coleman}
 \begin{figure}[h!]
     \centering
     \begin{subfigure}[t]{0.8\textwidth}
@@ -1315,12 +1422,12 @@ The three controllers show similar energy consumption over time.
         \caption{Input effort (drive-train acceleration)}
         \label{fig:Inputmen}
     \end{subfigure}
-    \caption{Input}
+    \caption{Simulation results following Coleman velocity profile. The results for LQR (in blue), MPC (in green) and Offset-free MPC (in red) are shown overlapped on the same plot to appreciate the comparison among controllers}
     \label{fig:Men}
 \end{figure}
 
 It is reasonable that by intensifying the difficulty of the velocity profile from the one of a female runner to the one of male, the required initial distance from the go-kart is going to increase.
-In the case of the Christian Coleman velocity profile this value is set to $\bar{d} = 13m$.
+In the case of the Christian Coleman velocity profile this value is set to $\bar{d} = 13$ meters.
 
 \begin{table}[h!]
 	\centering
@@ -1335,22 +1442,55 @@ In the case of the Christian Coleman velocity profile this value is set to $\bar
 	min($\Delta p$) & 1.0802 & 1.6036 & 1.6105 \\
 	Energy consumption & 0.5694 & 0.5694 & 0.5697 \\
 	Steady state error & 0.1689 & 0.1784 & 0.0350 \\
-	"Rise" time to 2.6m & 4.5 & 4.7 & 4.7 \\
+	"Rise" time to $d_\text{des}$ & 4.5 & 4.7 & 4.7 \\
 	\hline
 	\end{tabular}
 \caption{Comparison of controllers performance: Coleman velocity profile}
 \label{tab:Coleman}
 \end{table}
 
-When nitializing the maneuver from a further distance compared to the previous scenario, higher values of mean position error and Integral Absolute Erroare observed, as reported in Table \ref{tab:Coleman}.
+When intializing the maneuver from a further distance compared to the previous scenario, higher values of mean position error and Integral Absolute Error observed, as reported in Table \ref{tab:Coleman}.
 The value of the minimum distance reached between runner and go-kart is much smaller for the LQR with respect to the two MPC formulations also in this simulation, meaning that the athlete enters for a bigger distance inside the shield.
 The recorded LQR value of 1 meter and 8 centimeters violates the safety bound introduced in the MPC, similar to the observation made in the Ta Lou velocity profile case.
 Furthermore, it's worth noting that the offset-free MPC consistently outperforms both LQR and MPC in terms of steady-state error, achieving the lowest value among the three controllers.
 
 It should be noticed that, in both the scenario saturation phenomenon is present for a consistent part of the tracking with the LQR controller.
 
+\section{Disturbance observer results}
 
-\section{System structure, hardware description}
+\begin{figure}[h!]
+    \centering
+    \begin{subfigure}[b]{0.49\textwidth}
+        \includegraphics[width=\textwidth]{Estimator/Deltap.png}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.49\textwidth}
+        \includegraphics[width=\textwidth]{Estimator/Deltav.png}
+    \end{subfigure}
+    \\[0.2cm]
+    \begin{subfigure}[b]{0.49\textwidth}
+        \includegraphics[width=\textwidth]{Estimator/vk.png}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.49\textwidth}
+        \includegraphics[width=\textwidth]{Estimator/mpm.png}
+    \end{subfigure}
+    \caption{Estimated state variables and observed Model-Plant mismatch term, compared to real known values}
+    \label{Estimator}
+\end{figure}
+
+In this section the output of the disturbance observer and state estimator formulated in \eqref{Observer_real} is shown.
+Figure \ref{Estimator}
+
+
+
+ \chapter{System Structure and Hardware-in-the-loop implementation and results}
+\markboth{}{HARDWARE TEST RESULTS}
+In this chapter an overview of the hardware structure and sensors equipment of the system is provided together with the changes in the controllers formulations with respect to the simulation environment. 
+Later, an overview of the technologies studied and used for the implementation on the hardware of the control algorithms.
+Finally, some test developed on the real hardware are presented and their results are shown and analyzed.
+
+\section{System structure}
 This part discuss the hardware components present in the system.
 
 \bigskip
@@ -1466,11 +1606,11 @@ The IMU used in the go-kart is the IRIMU-V2 from Izze-Racing that outputs data a
 The position with respect to the go-kart centre of gravity is showed in \ref{IMU_pose}.
 
 
-\subsection{Controller design changes for hardware integration}
+\section{Controller design changes for hardware integration}
 In the context of the hardware control implementation the available informations are the one coming from sensors and we cannot rely on a full state knowledge for both runner and kart as hypotized in Chapter 2.
 For this reason we have to take into account the sensor present in the system and the measurement provided by them to control the system properly. 
 
-\subsubsection*{LQR}
+\subsection*{LQR}
 Differently from the simulation context, where all the state variables both for runner and kart have been considered to be fully known, in the hardware-in-the-loop context, absolute position of both kart and runner, as well as the runner absolute velocity, result to be unknown.
 
 \begin{figure}
@@ -1560,31 +1700,36 @@ For this purpose a Kalman filter has been used.
 
 Tutto il discorso sul noise
 
-\section{Real-hardware test and tools}
-In the following some results of test developed on real-hardware are presented.
+\subsection*{Offset-free MPC}
+\begin{figure}
+	\centering
+	\includegraphics[width=1.0\textwidth]{MPC_ofhard_scheme.png}
+	\caption{Offset-free Model Predictive Control scheme with sensors}
+	\label{image:MPC_ofhard_scheme}
+\end{figure}
 
-\subsection{Tools}
+\section{Experimental tools}
 In this paragraph the tools used for the development of the controllers implementation on the system are briefly presented.
 
-\subsubsection*{Robot Operating System}
-The Robot Operating System (ROS) is an open-source middleware framework specifically designed for robotics research and development. 
+\subsection*{Robot Operating System}
+Robot Operating System (ROS) is an open-source middleware framework specifically designed for robotics research and development  \cite{ros} of robotic applications. 
 Despite the name it is not a real operating system but it's a collection of libraries, tools and conventions that allows robotic developers to share, re-use and manage the applications.
-ROS was born as a personal project of Keenan Wyrobek and Eric Berger, students at Stanford University and creators of the Stanford Personal Robot Program, with the purpose of creating a unified software for robotics applications.
+Being a communication and middleware layer it serves as an important intermediary layer between the operating system and software applications.
 One of the key features of ROS is its modular architecture, which promotes code reuse and modularity by breaking down robot applications into smaller, reusable components called "nodes." 
-These nodes can communicate with each other using a publish-subscribe messaging system, allowing for flexible and decentralized control architectures.
-ROS provides a rich set of libraries and tools for common robotics tasks, including sensor integration, perception, localization, mapping, motion planning, and control. 
+A node is an individual specific and independent program written in Python or C++ that executes a specific task or function within the framework of a more complex application.
+The nodes can communicate with each other using a publish-subscribe messaging system, allowing for flexible and decentralized control architectures. 
+In particular nodes can publish messages to topics (publisher) and other nodes can subscribe to these topics to receive and process the data (suscriber).
 
-It is designed to run on top of a traditional operating system, currently supported by Ubuntu or Debian, acting as a middleware and providing a layer of software infrasctructure that sits between the operating system and the robot application software.
-The environment is written and supports mainly C++ and Python, but ROS has also been designed to be language-neutral so it is possible to use also other programming languages.
 
+\bigskip
 ROS, and in particular its successor ROS2, offers numerous features and improvements that make it well-suited for driving autonomous systems and automated driving projects.
-A the core of ROS2's functionality lies the ability to run directly on the onboard computer of autonomous systems, having Ubuntu pre-installed, processing sensors raw data and executing the proper control algorithms.
-However, the true power of ROS2 lies not only in its individual capabilities but in its ability to facilitate seamless communication and collaboration between disparate components of the autonomous system. 
-Through ROS2's publish-subscribe messaging paradigm, nodes exchange information, share insights, and coordinate actions, creating a cohesive and adaptive autonomous ecosystem.
+At the core of ROS2's functionality lies the ability to run directly on the onboard computer of autonomous systems, having Ubuntu pre-installed, processing sensors raw data coming from sensors, processing them and executing the proper control algorithms.
+In this sense, one of the most notable innovations in ROS2 is its ability to support real-time capabilities, of fundamental importance when autonomous systems have to perform safety-critical and time-sensitive applications.
 
-\subsubsection*{Docker}
+
+\subsection*{Docker}
 Docker is an open-source platform that enables developers to package, distribute, and run applications in lightweight, portable containers. 
-These containers encapsulate all the dependencies and runtime components needed to run an application, including the code, runtime, system tools, libraries, and settings.
+These containers encapsulate all the dependencies and runtime components needed to run an application, including the code, system tools, libraries, and settings.
 Docker containers are designed to be isolated from each other and from the underlying host system, ensuring consistent and reliable execution across different environments.
 The only thing preventing a container from being able to stand alone is that it relies on the host’s operating system (OS) and kernel for low-level services, such as resource management and network access.
 \begin{figure}
@@ -1594,7 +1739,26 @@ The only thing preventing a container from being able to stand alone is that it 
 	\label{image:Docker}
 \end{figure}
 
+\subsection*{Go-kart repository}
+The autonomous go-kart repository consists of four different images. 
+The first one is the Ubuntu 20.04 base image with ROS2 installed and is the base for the other go-kart repositories stack.
+This layer manages the installation of the common libraries and the ROS2 communication between the hardware components (sensors and actuators) and the software applications contained in the other three higher-level images. 
+The communication is achieved through the ad-hoc definition of messages.
 
+The go-kart logs is the repository responsible for data analysis. 
+Specifically, it interprets and decodes binary sensor data into a numerical format that is meaningful and can be understood and processed by other software applications, such as control algorithms.
+In this application, binary signals are converted into CSV files.
+
+The go-kart interface repository is responsible for interfacing with hardware, serving as the intermediary layer between the operating system and the hardware. 
+Drivers read messages from ROS topics, enabling hardware components (such as LiDAR, cameras, motors, etc.) to execute requested actions.
+
+Finally, the go-kart core contains all the high level applications, such as the controller. 
+Several C++ packages for estimation, control, or visualization exist in order to execute various tasks in a modular and reusable manner.
+
+
+
+\section{Hardware-in-the-loop implementation and tests}
+In this section some hardware-in-the-loop tests developed are presented and analyzed.
 
 \begin{figure}[h!]
     \centering
@@ -1678,25 +1842,25 @@ The only thing preventing a container from being able to stand alone is that it 
 
 \begin{figure}[h!]
     \centering
-    \begin{subfigure}[t]{0.8\textwidth}
+    \begin{subfigure}[t]{0.7\textwidth}
         \includegraphics[width=\textwidth]{Hardware_test/Position.png}
         \caption{Relative position between runner and go-kart}
         \label{fig:Deltaphard}
     \end{subfigure}
     
-    \begin{subfigure}[t]{0.8\textwidth}
+    \begin{subfigure}[t]{0.7\textwidth}
         \includegraphics[width=\textwidth]{Hardware_test/Velocity.png}
         \caption{Relative velocity between runner and go-kart}
         \label{fig:Deltavhard}
     \end{subfigure}
     
-    \begin{subfigure}[t]{0.8\textwidth}
+    \begin{subfigure}[t]{0.7\textwidth}
         \includegraphics[width=\textwidth]{Hardware_test/Input.png}
         \caption{Input effort (drive-train acceleration)}
         \label{fig:Inputhard}
     \end{subfigure}
 
-    \begin{subfigure}[t]{0.8\textwidth}
+    \begin{subfigure}[t]{0.7\textwidth}
         \includegraphics[width=\textwidth]{Hardware_test/Acceleration.png}
         \caption{Estimated Acceleration}
         \label{fig:Est_acc}
