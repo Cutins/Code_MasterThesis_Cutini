@@ -103,16 +103,31 @@ sorting=none
 
 
 %%%%%%FRONTESPIZIO%%%%%%
+%\begin{center}   
+%	\vspace{40mm}
+%\end{center}
+%
+%\begin{flushright}
+%\textit{
+%Alla versione più fragile di me stessa, \\
+%che in realtà si è sempre dimostrata \\
+%la più forte.}
+%\end{flushright} 
 
 %%%%%% ABSTRACT %%%%%%%%%%
+
+%\chapter*{Acknowledgements }
+%The author is grateful to professor G. Notarstefano
+%
+%The 
 
 
 \chapter*{Abstract}
 % \addcontentsline{toc}{chapter}{Abstract}
 This thesis investigates the application of modern and advanced optimal control tecniques within the realm of an innovative sport application. 
 The system comprises an autonomous electric go-kart towing a plexiglass airshield, utilized for isolating Olympic athletes performing the 100m event, during the overspeed training phase.
-The primary objective of this thesis is the deployment of a suitable controller for autonomously regulating the go-kart and airshield in response to the position and velocity of the runner during sprint performance. 
-Initially, a proper linear kinematic model approximation of the system dynamics, serving as a foundation for controller design, implementation and testing has been established.
+The primary objective of this thesis is the deployment of a suitable controller for autonomously regulating the go-kart and the airshield in response to the position and velocity of the runner during sprint performance. 
+Initially, a proper linear kinematic model approximation of the system, serving as a foundation for controller design, implementation and testing, has been established.
 The main contribution of this work lies in the development of different controllers for addressing the desired task: a Gain Scheduling Linear Quadratic Regulator and a Linear Model Predictive Controller.
 These controllers are strongly model based and non perfectly modeled dynamics effects or unknown disturbances could lead to suboptimal performance of the control architecture.
  To address this, an Offset-free Model Predictive Control scheme has been introduced as a third control formulation.
@@ -1846,6 +1861,7 @@ It facilitates the representation of mathematical expressions symbolically, cruc
 
 \section{Hardware-in-the-loop implementation and tests}
 In this section some hardware-in-the-loop tests developed are presented and analyzed.
+First of all the model utilized for the controllers development has been demostrated to reproduce enough accurately the behaviour of the system when moving rectilinearly.
 
 \begin{figure} [h!]
     \centering
@@ -1993,7 +2009,23 @@ Implementing such a model into the control system could help mitigate the effect
 \chapter*{Conclusions}
 \addcontentsline{toc}{chapter}{Conclusions}
 
-	  
+In conclusion, this thesis has presented the development and implementation of a controller for an innovative application of an autonomous driving go-kart in the realm of sport, with the goal of improving the training of Olympics athletes.
+Specifically, the study has proposed three different optimal mode-based control approaches.
+Initially, a mathematical formulation of the system dynamics and a proper linear approximation was found.
+
+In the control development workflow, the first approach utilized was a Gain Scheduling Linear Quadratic Regulator technique, employing two differen regulators that can be used depending on the operational conditions.
+Subsequently, a Model Predictive Control appoach was introduced with the purpose of explicitly incorporate constraints in the formulation, along with a model for the runner used in the optimization and for the predictions.
+Additionally, an Offset-free Model Predictive Control formulation, based on a disturbance observer, was introduced to compensate for the model-plant mismatch present when controlling a nonlinear system with a linear prediction model.
+
+A comparative analysis of the three controllers, implemented in Python simulation environment, revealed the Offset-free Model Predictive Controller to outperform the other controllers in terms of tracking error, particularly at steady state.
+
+Globally, when implemented and tested on the real hardware in real-world contexts, both the Linear Quadratic Regulator and the Model Predictive Controller exhibited satisfactory performance, enshuring that the system functions as expected and achieves its intended objectives.
+With this work, a powerful tool has been developed that can be used to enchance the overspeed training results in the track and field context.
+Despite these successes, during hardware testing with the MPC controller, oscillations in the actuators were observed due to inaccurate estimation of the runner's acceleration. 
+This highlights an area for potential improvement and future development.
+The issue has proposed some possible ways of future development for this work, for example the usage of an additional sensor or the introduction of a learning approach technique to improve the estimation could lead to an enhancement of the system's performances.
+
+
 	
 
 %%%%%%%%%% APPENDIX %%%%%%%%%%%%%%%%%%%
