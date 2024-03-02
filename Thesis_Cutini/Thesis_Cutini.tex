@@ -20,6 +20,7 @@
 \usepackage{algorithm}
 \usepackage{algpseudocode}
 \usepackage{adjustbox}
+\usepackage{comment}
 
 \setcounter{tocdepth}{5}
 
@@ -39,7 +40,6 @@ sorting=none
 \graphicspath{{figs/}}
 
 \begin{document}
-	
 
 
 %%%%%% First Page %%%
@@ -137,7 +137,7 @@ This application holds significant potential for everyday use during training ph
 \section*{Motivations}
 \addcontentsline{toc}{section}{Motivations}
 
-In recent decades, the integration of advanced technologies has become an integral facet of sport, introducing a new era of innovation and performance enhancement \cite{Technology_athletics}. 
+In recent decades, the integration of advanced technologies has become an integral facet of sports, introducing a new era of innovation and performance enhancement \cite{Technology_athletics}. 
 In sports characterized by high-speed competition, where victories are often determined by fractions of a second, the advancements in technology have revolutionized performance across various disciplines. 
 \bigskip
 
@@ -146,41 +146,42 @@ Ski manufacturers utilize materials like carbon fiber and titanium in ski constr
 The incorporation of carbon fiber also into athletic footwear has not only reduced weight but also enhanced energy return and propulsion, while concurrently reducing the risk of injury.
 \bigskip
 
-The exploitation of technology for improving performances is not only used for competitions but also during the training phase. 
+The exploitation of technology to improve performances is not only used for competitions but also during the training phase. 
 In the track and field context, several training techniques have been used for the enhancement of running speed. 
-Among several possibilities overspeed training involves performing exercises or movements at a velocity higher than what the athlete can achieve through voluntary effort in classical environmental conditions. 
-Many methods for experience supramaximal velocities during trainings have been proposed: the usage of assistance mechanisms such as bungee cords or sleds is analized in \cite{Elastic_cord} and is found to be potentially dangerous for sprinters, requiring body contact with an external tool.
-Performing sprints on a downward slope allows to accelerate beyond typical maximal speed due to assistance provided to gravity force \cite{Hill_slope}.
+Among several possibilities, overspeed training involves performing exercises or movements at a velocity higher than what the athlete can achieve through voluntary effort in classical environmental conditions. 
+Many methods for experiencing supramaximal velocities during training have been proposed: the usage of assistance mechanisms such as bungee cords or sleds is analized in \cite{Elastic_cord} and is found to be potentially dangerous for sprinters, requiring body contact with an external tool.
+Performing sprints on a downward slope allows athletes to accelerate beyond typical maximal speed due to assistance provided by gravity force \cite{Hill_slope}.
 \bigskip
 
-In the context of gaining a training edge in sprint events the concept of aerodynamic drag resistance assumes a great importance. 
+In the context of gaining a training edge in sprint events, the concept of aerodynamic drag resistance assumes a great importance. 
 Accordingly sprinters meticulously refine their body position, posture, and apparel to minimize aerodynamic drag. 
 For this reason CONI (Italian National Olympic Committee) Institute of Sports Science presented in 2021 an aerodynamic shield to drastically reduce the resistance to forward movement during sprinters' training \cite{Coni_article}. 
 This shield allows athletes to run in the slipstream behind a car pulling the shield, experiencing speeds higher than those of the competition but with the same power output. 
 \bigskip
 
-Advancement in automated driving technology has created opportunities for many fields and autonomous vehicles (AVs) have become increasingly prevalent. 
+Advancement in automated driving technology have created opportunities for many fields, and autonomous vehicles (AVs) have become increasingly prevalent. 
 Given their versatility and potential to enhance efficiency and convenience, it's natural to consider their application in the realm of sports. 
-Similarly to the user-cooperative robots, designed to stay in direct contact with humans and assist them in several situations, an autonomous vehicle has been designed for driving the aerodynamic airshield. 
-Furthermore, intelligent control algorithms have shown huge advantages in autonomous system control, taking into account factors such as control error, bound constraints on system actuators, disturbance rejection and safety guarantees. Additionally, control algorithms can be designed to continuously monitor and analyze data from various sensors in real-time, enabling them to detect and respond to potential hazards or deviations from safety protocols more effectively than human operators.
+Similarly to user-cooperative robots, designed to stay in direct contact with humans and assist them in several situations, an autonomous vehicle has been designed for driving the aerodynamic airshield. 
+Furthermore, intelligent control algorithms have shown huge advantages in autonomous system control, taking into account factors such as control error, bound constraints on system actuators, disturbance rejection and safety guarantees. 
+Additionally, control algorithms can be designed to continuously monitor and analyze data from various sensors in real-time, enabling them to detect and respond to potential hazards or deviations from safety protocols more effectively than human operators.
 \bigskip
 
-This thesis is the result of an abroad internship in ETH (Eidgen\"ossische Technische Hochschule) Z\"urich, with the purpose of designing a proper controller to regulate an autonomous go-kart pulling a plexiglass airshield, according to the runner behaviour.
+This thesis is the result of an abroad internship in ETH (Eidgen\"ossische Technische Hochschule) Z\"urich, with the purpose of designing a proper controller to regulate an autonomous go-kart pulling a plexiglass airshield, according to the runner's behaviour.
 
 		
 \section*{Literature}
 \addcontentsline{toc}{section}{Literature}
-Numerous control techniques have been used in the last decades to enhance the efficiency of AVs in several different contexts.
+Numerous control techniques have been used in recent decades to enhance the efficiency of AVs in several different contexts.
 Longitudinal control of automated vehicles has received attention since the 1960s, and possibly even earlier.
-In \cite{Review_AVCS} an historical review of advanced vehicle control systems and longitudinal control of automated vehicles is presented.
-The control of vehicle acceleration to achieve a desired speed profile, essential keypoint of longitudinal control, is the main purpose of this thesis.
+In \cite{Review_AVCS}, a historical review of advanced vehicle control systems and longitudinal control of automated vehicles is presented.
+The control of vehicle acceleration to achieve a desired speed profile, an essential key point of longitudinal control, is the main purpose of this thesis.
 
 \bigskip
-The initial and simplest approach adopted to control the go-kart, which must maintain a constant reference position and velocity, relative to the runner behind it, involved a cascade of two Proportional-Integral-Derivative (PID) controllers.
+The initial and simplest approach adopted to control the go-kart, which must maintain a constant reference position and velocity relative to the runner behind it, involved a cascade of two Proportional-Integral-Derivative (PID) controllers.
 The first PID controller regulates the kart's position and generates a reference velocity for the second controller, a velocity PID.
 
 While PID controllers are widely used in industrial applications due to their straightforward implementation, they were not the optimal choice for this application.
-The main challenges of this control scheme includes difficulty in parameter tuning, in handling multi-variable processing and in addressing the initial phase of motion, where the runner's acceleration exceeds the kart's maximum capability, together with the impossibility of predicting the future motion of vehicle. 
+The main challenges of this control scheme include difficulty in parameter tuning, in handling multi-variable processing, and in addressing the initial phase of motion, where the runner's acceleration exceeds the kart's maximum capability, together with the impossibility of predicting the future motion of vehicle. 
 
 \bigskip
 The application requires the go-kart to maintain a consistent desired position and velocity relative to the runner.
@@ -188,35 +189,42 @@ This task is quite similar to adaptive cruise control (ACC), where the goal is t
 
 \bigskip
 Thanks to the capability of optimal controllers to cover multiple objectives and to predict future vehicle behaviour, Linear Quadratic Regulator (LQR) and Model Predictive Control (MPC) have been widely used for vehicle control in interacting contexts.
-In \cite{LQR_acc} distance and relative velocity between preceding and controlled vehicles are used as states to design an LQR controller that gives acceleration of the controlled vehicle as input, in such a way to minimize a proper cost function.
-Model Predictive Control is also largely used thanks to its capability of controlling a multi-variable process while satisfying a set of state and input constraints. According to \cite{MPC_basics} the essential elements of this controller are a prediction model that allows future predictions, the definition of an objective function reflecting the desired system behaviour, and constraints on both state and input. In the framework of MPC for adaptive cruise control, in \cite{MPC_acc_first} the same state and input variables than in \cite{LQR_acc} are used but constraints can be also incorporated. Differently, in \cite{MPC_acc_second} the controlled vehicle velocity is added as a third state and the acceleration of the preceding vehicle is included in the prediction model, regarded as an unknown external disturbance.
+In \cite{LQR_acc}, distance and relative velocity between preceding and controlled vehicles are used as states to design an LQR controller that gives acceleration of the controlled vehicle as input, in such a way to minimize a proper cost function.
+Model Predictive Control is also largely used thanks to its capability of controlling a multi-variable process while satisfying a set of state and input constraints. 
+According to \cite{MPC_basics}, the essential elements of this controller are a prediction model that allows future predictions, the definition of an objective function reflecting the desired system behaviour, and constraints on both state and input. 
+In the framework of MPC for adaptive cruise control, in \cite{MPC_acc_first}, the same state and input variables than in \cite{LQR_acc} are used but constraints can be also incorporated. 
+Differently, in \cite{MPC_acc_second}, the controlled vehicle's velocity is added as a third state and the acceleration of the preceding vehicle is included in the prediction model, regarded as an unknown external disturbance.
 
 \bigskip
-The MPC approach is strongly model-based in the sense that uses a model of the system to produce a prediction of system behaviour. The presence of uncertainties on this model may lead to unsatisfying results of the control task. 
-For this reason \cite{Offset-free_compare, Linear_offset-free} show offset-free MPC formulations able to achieve output tracking of reference signals despite the presence of Model-Plant Mismatch (MPM).
-For this purpose an augmented predictive model added with an artificial constant disturbance that represents modeling uncertainties, is used. 
+The MPC approach is strongly model-based in the sense that uses a model of the system to produce predictions of the system behaviour. 
+The presence of uncertainties in this model may lead to unsatisfying results of the control task. 
+For this reason, \cite{Offset-free_compare, Linear_offset-free} show offset-free MPC formulations able to achieve output tracking of reference signals despite the presence of Model-Plant Mismatch (MPM).
+For this purpose an augmented predictive model added with an artificial constant disturbance that represents modeling uncertainties is used. 
 To estimate both state ad disturbance from output measurements a disturbance observer must be properly designed and added in conjunction with feedback control law.
-Accordingly to \cite{Disturbance_observer} by appropriately including a disturbance estimate in a control law, MPM effects can be approximately removed in steady-state and offset-free tracking of constant references can be achieved.
+Accordingly to \cite{Disturbance_observer}, by appropriately including a disturbance estimate in a control law, MPM effects can be approximately removed in steady-state and offset-free tracking of constant references can be achieved.
 
 
 	
 \section*{Contributions}
 \addcontentsline{toc}{section}{Contributions}
 The main contribution of this thesis lies in the analysis and implementation of linear controllers for a pioneering autonomous driving go-kart, which is utilized for towing the airshield during the training of Olympic athletes participating in the 100m event.
-Specifically, the thesis proposes and compares two different control schemes in terms of performances and control architecture.
+Specifically, the thesis proposes and compares three different control schemes in terms of performances and control architecture.
 
 \bigskip
 Initially, a non linear model that accurately captures the dynamics of the kart with the airshield attached is identified. 
-Later a good linear approximation is found and used as basis for the design of the predictive controllers.
-The first step in control development involves the design of a Linear Quadratic Regulator (LQR) with a gain scheduling approach, where Q and R parameters vary depending on the motion phase. This gain scheduling approach addresses the challenges associated with the different maximum accelerations of the kart and of the runner in the first phase of the motion.
-Subsequently, a Model Predictive Control (MPC) is designed with the purpose of incorporate information on the runner future expected behaviour into the linear prediction model.
-Furthermore, since MPC is highly model based a disturbance observer and Offset-free MPC has been implemented with the purpose of increasing the accuracy of the predictive model and to obtain a zero-offset in tracking peace-wise affine (PWA) reference trajectories.
+Later a good linear approximation is found and used as the basis for the design of the predictive controllers.
+The first step in control development involves the design of a Linear Quadratic Regulator (LQR) with a gain scheduling approach, where Q and R parameters vary depending on the motion phase. 
+This gain scheduling approach addresses the challenges associated with the different maximum accelerations of the kart and of the runner in the first phase of motion.
+Subsequently, a Model Predictive Control (MPC) is designed with the purpose of incorporating information on the runner's future expected behaviour into the linear prediction model.
+Furthermore, since MPC is highly model-based a disturbance observer and Offset-free MPC have been implemented with the purpose of increasing the accuracy of the predictive model and obtaining a zero-offset in tracking piece-wise affine (PWA) reference trajectories.
 
 \bigskip
-The depicted workflow highlights how the control scheme architecture has been simplified starting from the two control loops governing the cascade of PID controllers. The gain scheduling LQR, which switches between two different control gains depending on the motion phase, just makes use of two different regulators. Ultimately, this thesis culminates in a single MPC controller capable of governing the system under all possible operating conditions, integrating information about the future evolution of the runner's velocity profile into the prediction model to further enhance tracking performance.
+The depicted workflow highlights how the control scheme architecture has been simplified starting from the two control loops governing the cascade of PID controllers. 
+The gain scheduling LQR, which switches between two different control gains depending on the motion phase, just makes use of two different regulators. 
+Ultimately, this thesis culminates in a single MPC controller capable of governing the system under all possible operating conditions, integrating information about the future evolution of the runner's velocity profile into the prediction model to further enhance tracking performance.
 
 \bigskip
-Both controllers have been developed and tested in simulation using Python and on the real system using ROS2.
+Both controllers have been developed and tested in simulation using Python and on the real system using ROS2 environment.
 
 \section*{Organization}
 This section provides to the reader a guide to the organization of the thesis. 
@@ -238,14 +246,14 @@ In this chapter the aim is to provide the necessary theoretical background in op
 
 Optimal control theory provides a mathematical framework for addressing control theory problems by optimizing control laws with respect to given cost functions, in order to achieve optimal system regulation.
 
-Such theoretical analysis is essential for fully comprehending the features and performance of the LQR and MPC controllers discussed in Chapter 2 within the specific context of the considered application.
+Such theoretical analysis is essential for fully comprehending the features and performance of the LQR and MPC controllers discussed later in Chapter 2 within the specific context of the considered application.
 
 \section{Linear Quadratic Regulator}
 In 1960, Kalman introduced for the first time the linear-quadratic feedback control, which later evolved into the Linear Quadratic Regulator (LQR) \cite{kalman_contributions} in the continuous-time context. 
-The LQR is a feedback control algorithm designed to stabilize and optimize the performance in case where the dynamical system can be described by linear equations and the cost function is quadratic in terms of the states and inputs. 
+The LQR is a feedback control algorithm designed to stabilize and optimize the performance in cases where the dynamical system can be described by linear equations and the cost function is quadratic in terms of the states and inputs. 
 
 \bigskip
-Assume that the process to be controlled can be described by discrete-time LTI dynamical system, such as the following state-space form:
+Assuming that the process to be controlled can be described by a discrete-time LTI dynamical system, such as the following state-space form:
 \begin{equation} 
 \begin{aligned}
     x_{t+1} &= A x_t + B u_t \\
@@ -258,7 +266,7 @@ where $x_t \in \mathbb{R}^n$ is the actual system state, $u_t \in \mathbb{R}^m$ 
 The state at the subsequent time instant $t+1$ is referred to as $x_{t+1}$.
 
 $A \in \mathbb{R}^{n\times n}$ and $B\in \mathbb{R}^{n\times m}$ are the state and input matrices, respectively.
-In the context of this thesis is possible to assume the full state information available, thus the input matrix $C \in \mathbb{R}^{p\times n}$ is the identity. 
+In the context of this thesis, it is possible to assume the full state information is available, thus the input matrix $C \in \mathbb{R}^{p\times n}$ is the identity. 
 
 \bigskip
 The main goal of the control task is to achieve optimal regulation of the system's states towards the origin. 
@@ -278,8 +286,8 @@ where $Q \in \mathbb{R}^{n \times n}$ and $R \in \mathbb{R}^{m \times m}$ are sy
 
 The vector $\boldsymbol{u}$, also known as input trajectory, consists of the input elements, i.e. $\boldsymbol{u} = \{u_0, u_1, \dots\}$ and $\boldsymbol{x}$, the state trajectory, consists of the states along the infinite time horizon, i.e $\boldsymbol{x} = \{x_1, x_2, \dots\}$.
 The cost function in \eqref{Quadratic_cost_funct} can be seen as the mathematical formulation of the trade-off between the two objectives to be minimized.
-Specifically the term $x_t^\top Q x_t$ penalizes deviations of the system's states from desired values, while $u_t^\top R u_t$ penalizes excessive control effort.
-The weights of the $Q$ and $R$, typically chosen as diagonal matrices, can be adjusted to find solutions that strike an appropriate balance between minimizing state deviations and control effort.
+Specifically, the term $x_t^\top Q x_t$ penalizes deviations of the system's states from desired values, while $u_t^\top R u_t$ penalizes excessive control effort.
+The weights of $Q$ and $R$, typically chosen as diagonal matrices, can be adjusted to find solutions that strike an appropriate balance between minimizing state deviations and control effort.
 
 \bigskip
 The overall LQR problem can be mathematically translated into the following optimization problem:
@@ -296,13 +304,13 @@ where  $x_{\text{init}} \in \mathbb{R}^n$ is the initial condition of the system
 
 
 \bigskip
-Assuming the pair $(A,B)$ to be controllable and the pair $(A,C)$ with $Q = C^\top C$ to be observable, holds:
+Assuming the pair $(A,B)$ to be controllable and the pair $(A,C)$ with $Q = C^\top C$ to be observable, the following holds:
 \begin{itemize}
     \item there exists a unique positive definite $P_\infty$ solution of the following equation called Algebraic Riccati Equation (ARE)
     \begin{equation}
         P_\infty = Q + A^\top P_\infty A - A^\top P_\infty B (R + B^\top P_\infty B)^{-1} B^\top P_\infty A.
     \end{equation}
-    \item exploiting the first-order necessary and sufficient conditions for optimality, the optimal control law is a closed form solution, feedback of the state
+    \item exploiting the first-order necessary and sufficient conditions for optimality, the optimal control law is a closed-form solution, feedback of the state
     \begin{equation}
         u_t^* = K x_t^*
     \end{equation}
@@ -330,7 +338,7 @@ To incorporate the desired behaviour to be tracked in the objective, the problem
 
 where $x_{t,\text{des}} \in \mathbb{R}^n$ is the reference state value we want our system's states to track at time $t$.
 
-Cost function quantifies the controlled system's performance, defined as a weighted sum of the deviations of the system's states from desired values and control effort.
+The cost function quantifies the controlled system's performance, defined as a weighted sum of the deviations of the system's states from desired values and control effort.
 
 In the context of tracking a given desired state behaviour $x_{\text{des}}$ the optimal feedback control law is modified in the following way:
 \begin{equation}
@@ -343,7 +351,7 @@ The effectiveness of LQR lies in its ability to leverage the full state informat
 
 
 \section{Linear Model Predictive Control}
-Model Predictive Control (MPC) is a modern control strategy renowned for its capacity to provide optimized responses while accounting for state and input constraints, such as saturation limits.
+Model Predictive Control (MPC) is a modern control strategy well known for its capacity to provide optimized responses while accounting for state and input constraints, such as saturation limits.
 These constraints can be explicitly integrated into the control design, enhancing the robustness and performance of the system. 
 The origin of MPC trace back to the mid-seventies to mid-eighties, initially emerging in industrial applications. 
 However, it was not until the nineties that MPC theory underwent significant advancements, leading to its widespread adoption and refinement.
@@ -360,20 +368,22 @@ For what regards the states and inputs constraints they can be expressed as foll
     x_t & \in \mathcal{X} \quad \quad \forall t = 0,1, \ldots \\
     u_t & \in \mathcal{U} \quad \quad \forall t = 0,1, \ldots
 \end{align}
-the state set $\mathcal{X}$ is closed and the input set $\mathcal{U}$ is compact and non-empty. Usually the sets are described with linear inequalities and both sets are convex and contain the origin.
+where the state set $\mathcal{X}$ is closed and the input set $\mathcal{U}$ is compact and non-empty. 
+Usually, the sets are described with linear inequalities, and both sets are convex and contain the origin.
 
 \bigskip
-Similarly to the LQR case, Model Predictive Control aims to minimize a cost function by defining positive definite matrices $Q$ and $R$. The goal is to find the optimal control input that minimizes a cost function that takes the following form:
+Similarly to the LQR case, Model Predictive Control aims to minimize a cost function by defining positive definite matrices $Q$ and $R$. 
+The goal is to find the optimal control input that minimizes a cost function, taking the following form:
 \begin{equation}
     J(\boldsymbol{x}, \boldsymbol{u}; x_t, t) = \sum_{i=t} ^{+ \infty} x_{i|t}^\top \, Q \, x_{i|t} + u_{i|t}^\top \, R \, u_{i|t}
 \end{equation}
 
-In this formulation $x_{i|t}$ represents the predicted state a time $i$, given the initial state $x_t = x_{t|t}$. 
-Similarly, $u_{i|t}$ is the predicted control sequence at current time $t$ found considering the entire future predicted trajectory for the system.
+In this formulation, $x_{i|t}$ represents the predicted state a time $i$, given the initial state $x_t = x_{t|t}$. 
+Similarly, $u_{i|t}$ is the predicted control sequence at current time $t$ found by considering the entire future predicted trajectory for the system.
 
 \bigskip
-The aforementioned formulation represents the infinite horizon MPC problem, that in many practical cases results challenging to be implemented or requires highly demanding computations.
-For this reason usually MPC formulations optimize only on a finite horizon $N$, thus the problem of tracking $x_{\text{des}}$ with the system's states becomes:
+The aforementioned formulation represents the infinite horizon MPC problem, which in many practical cases results challenging to be implemented or requires highly demanding computations.
+For this reason, usually MPC formulations optimize only on a finite horizon $N$, thus the problem of tracking $x_{\text{des}}$ with the system's states becomes:
 
 \begin{equation}
 \begin{alignedat}{2}
@@ -395,11 +405,11 @@ For this reason usually MPC formulations optimize only on a finite horizon $N$, 
 
 \bigskip
 The control law is applied based on the receding horizon principle, which is a key feature of MPC.
-This principle dictates that at each time instance $t$, an open-loop optimal control problem is solved using the current state of the plant $x_{\text{meas}}$ as the initial state, in order to obtain the control action. 
+This principle dictates that at each time instance $t$, an open-loop optimal control problem is solved using the current state of the plant $x_{\text{meas}}$ as the initial state for the optimization problem, in order to obtain the control action. 
 All predicted states and inputs within a prediction horizon $N$ are optimized to find an optimal input sequence.
 However, only the first input of the optimal control sequence generated by the optimization is injected into the plant. 
 This input is used to control the system over the next time step.
-This procedure is repeated, as illustrated in figure \ref{image:mpc}, at each time instance and by continuously updating the control action based on the most recent information, MPC ensures that the control strategy adapts to changes in the system dynamics and external conditions over time.
+This procedure is repeated, as illustrated in figure \ref{image:mpc}, at each time instance, and by continuously updating the control action based on the most recent information, MPC ensures that the control strategy adapts to changes in the system dynamics and external conditions over time.
 
 
 
@@ -408,11 +418,13 @@ This procedure is repeated, as illustrated in figure \ref{image:mpc}, at each ti
 Regulating nonlinear systems using a linear predictive control framework can be a complex task and the model-plant mismatch due to the unmodeled nonlinear dynamics effects, can result in suboptimal performances of the controller.
 
 \bigskip
-Even if MPC is able to react to small unmodeled dynamics effects through the receding-horizon fashion, it is not able to consider them inside the predictions, thus to optimize upon them.
-MPC solves at each time an optimal control problem using the nominal model of the controlled process and, only when the actual plant behaviour closely matches the nominal model, the feedback control scheme can be guaranteed to stabilize the system, and achieve precise tracking of desired setpoints without any offset.
+Even if MPC is able to react to small unmodeled dynamics effects through its receding-horizon fashion,it does not inherently incorporate them into its predictions or optimization.
+As a consequence, MPC solves an optimal control problem at each time step using the nominal model of the controlled process. 
+Only when the actual plant behavior closely matches the nominal model can the feedback control scheme be guaranteed to stabilize the system and achieve precise tracking of desired setpoints without any offset.
 
 \bigskip
-Offset-free Model Predictive Control represents an advanced control strategy designed to address this limitation. It aims to achieve zero steady-state tracking errors in the controlled system, even in presence of disturbances or model uncertainties that cause model-plant mismatch.
+Offset-free Model Predictive Control represents an advanced control strategy designed to address this limitation. 
+Its objective is to achieve zero steady-state tracking errors in the controlled system, even in the presence of disturbances or model uncertainties causing model-plant mismatch.
 For instance, in the context of regulating nonlinear systems using a linear predictive control framework, offset-free MPC seeks to regulate the system to its desired setpoint without steady-state error, ensuring precise and accurate control performance.
 
 \bigskip
@@ -424,12 +436,12 @@ Consider a discrete-time, time-invariant system describing the plant:
 \end{aligned}
 \label{Plant1}
 \end{equation}
-where $x_{m,t} \in \mathbb{R}^n$, $u_t \in \mathbb{R}^m$ and $y_{m,t} \in \mathbb{R}^p$ are the state, input and plant measured output respectively at time t.
+where $x_{m,t} \in \mathbb{R}^n$, $u_t \in \mathbb{R}^m$ and $y_{m,t} \in \mathbb{R}^p$ are the state, input and measured output of the plant at time $t$, respectively.
 
 The aim of the offset-free model predictive controller is to have $y_m$ tracking a certain reference signal $y_{\text{des}} \in \mathbb{R}^p$ that is assumed to asymptotically converge to a constant.
 
 \bigskip
-Let $w \in \mathbb{R}^n$ and $v \in \mathbb{R}^p$ be defined as:
+Let $w \in \mathbb{R}^n$ and $v \in \mathbb{R}^p$ be defined as follows:
 \begin{equation}
 \begin{aligned}
     w & := f_m (x_m, u_t) - (A x + Bu) \\
@@ -437,24 +449,24 @@ Let $w \in \mathbb{R}^n$ and $v \in \mathbb{R}^p$ be defined as:
 \end{aligned}
 \label{Plant_model_mismatch}
 \end{equation}
-where $w \in \mathbb{R}^n$ is the model mismatch between the non-linear plant model and the linear predictive model, $v \in \mathbb{R}^m$ is the output mismatch between predicted output and the real measured plant one.
+Here, $w \in \mathbb{R}^n$ represents the model mismatch between the nonlinear plant model and the linear predictive model, while $v \in \mathbb{R}^m$ represents the output mismatch between the predicted output and the real measured plant output.
 The $A$, $B$ and $C$ matrices are the ones mentioned in the linear model \eqref{eq:Linear_model}.
 
 \bigskip
 The key feature of this offset-free control strategy lies in the incorporation of a disturbance model in the prediction model \eqref{eq:Linear_model}.
 This disturbance allows to capture the mismatch between the linear prediction model \eqref{eq:Linear_model} and the nonlinear plant \eqref{Plant1} in steady state, thus the $w$ term, and to consider it inside the optimization.
 
-The steps that have to be followed, in order to have an offset-free MPC formulation, are the following:
+The steps to be followed to obtain an offset-free MPC formulation are the following:
 \begin{enumerate}
-	\item Introduce an augmented prediction model with an additional integrating state known as disturbance and modeling the model-plant mismatch
+	\item Introduce an augmented prediction model with an additional integrating state known as disturbance, to model the model-plant mismatch
 	\item Design a state and disturbance estimator based on the augmented model
-	\item Modify the MPC formulation into an offset-free one considering the estimated disturbance in the formulation
+	\item Modify the MPC formulation into an offset-free one, considering the estimated disturbance in the formulation
 \end{enumerate}
-Each point will be properly explained in the following.
+Each point will be properly explained in detail in the following.
 
 \subsection*{Augmented model with disturbance}
-Accordingly the given introduction, the first step consists in introducing an augmented model for computing the system's predictions in the offset-free MPC framework. 
-It can be, in general, written in the following form:
+As mentioned earlier, the first step is to introduce an augmented model for computing the system's predictions in the offset-free MPC framework. 
+This augmented model can generally be written in the following form:
 \begin{equation}
 \begin{aligned}
     x_{t+1} &= A x_t + B u_t + B_d d_t \\
@@ -465,11 +477,12 @@ It can be, in general, written in the following form:
 \end{equation}
 where the additional state $d_t \in \mathbb{R}^{n_d}$, known as disturbance state or simply disturbance, is assumed to be constant and follows an integral dynamics, as proposed by \cite{pannocchia2003disturbance}. 
 The pair $(B_d, C_d)$, where $B_d \in \mathbb{R}^{n \times n_d}$ and $C_d \in \mathbb{R}^{m \times n_d}$, can be seen as the disturbance model matrices.
-The maximum dimension of the disturbance state has to be equal to the number of measured outputs, i.e. $n_d \leq p$.
+The maximum dimension of the disturbance state must be equal to the number of measured outputs, i.e. $n_d \leq p$.
 
 \subsection*{Disturbance observer and estimator}
 Assuming observability of the augmented system \eqref{Augmented_model}, an estimator that continuously estimates the augmented state $(x,d)$ can be designed.
-An example could be a linear disturbance observer, that uses the prediction error between the real plant output and the predicted one, to estimate the augmented state as described by the following dynamical system:
+An example could be a linear disturbance observer, which uses the prediction error between the real plant output and the predicted one to estimate the augmented state.
+This can be described by the following dynamical system:
 \begin{equation}
     \begin{aligned}
     	\begin{bmatrix}
@@ -550,14 +563,14 @@ The $L \in \mathbb{R}^{(n+n_d) \times p}$ matrix is described as follows:
     \end{bmatrix}
 \end{equation}
 
-The system in \eqref{eq:Estimator_and_observer} estimates, at each time instant $t$ the unknown disturbance (i.e. the model-plant mismatch in this context) in addition to states. 
+The system in \eqref{eq:Estimator_and_observer} estimates, at each time instant $t$ the unknown disturbance (i.e. the model-plant mismatch in this context) in addition to the plant states. 
 The estimation is performed evaluating the prediction error between the measured plant output and the predicted one.
 
 \subsection*{Offset-free MPC formulation}
-Given the current estimates of the augmented state $(\hat{x}_t, \hat{d}_t)$ at discrete time $t$, the MPC classical formulation is modified into an offset-free MPC formulation.
+Given the current estimates of the augmented state $(\hat{x}_t, \hat{d}_t)$ at discrete time $t$, the classical MPC formulation is modified into an offset-free MPC formulation.
 
 The estimated variables  $(\hat{x}_t, \hat{d}_t)$ are used as initial states for the MPC optimization problem at the current solving time instant $t$.
-The augmented model in \eqref{Augmented_model} is used as prediction model: the disturbance is added both as a constant state, and in the state evolution.
+The augmented model in \eqref{Augmented_model} is employed as prediction model: the disturbance is included both as a constant state and in the state evolution equation.
 
 The resulting formulation is the following one:
 \begin{equation}
@@ -590,38 +603,37 @@ where $\bar{x}_t \in \mathbb{R}^n$ and $\bar{u}_t \in \mathbb{R}^m$ are solution
 	\end{bmatrix}
 \end{equation}
 
-In the last system the coefficient matrix, or left-hand side matrix, represents the dynamics of the system according to the linear model, thus the $(A, B, C)$ matrices.
-The right-hand side vector, on the contrary, takes into account the disturbance model, thus the $(B_d, C_d)$ matrices, the estimated disturbance $\hat{d}$ and the desired plant reference setpoint $y_{\text{des}}$.
-This system could be in general overconstrained, meaning there may not exist a solution that satisfies all equations exactly, and the solution is typically found using the least square method with the pseudoinverse.
+In this system, the coefficient matrix or left-hand side matrix, represents the dynamics of the system according to the linear model (i.e. the $(A, B, C)$ matrices), while the right-hand side vector incorporates the disturbance model (i.e. the $(B_d, C_d)$ matrices), the estimated disturbance $\hat{d}$ and the desired plant reference setpoint $y_{\text{des}}$.
+This system may be in general overconstrained, implying that there may not exist a solution that satisfies all equations exactly, and the solution is typically found using the least square method with the pseudoinverse.
 
 \subsection*{Luenberger observer design}
 %\addcontentsline{toc}{section}{Observer design}
 
-In this offset-free MPC formulation the nominal augmented state $(x,d)$ needs to be estimated at each time instant, given the plant output measurement $y_m$, according to the dynamical estimator system in \eqref{eq:Estimator_and_observer}.
+In this offset-free MPC formulation, the nominal augmented state $(x,d)$ needs to be estimated at each time instant, given the plant output measurement $y_m$, according to the dynamical estimator system in \eqref{eq:Estimator_and_observer}.
 
-The $L_x \in \mathbb{R}^{n \times p}$ and $L_d \in \mathbb{R}^{n_d \times p} $ observer gain matrices in \eqref{eq:Estimator_and_observer} has to be designed in such a way the estimator to be stable, while the method doesn't matter for our purposes.
+The $L_x \in \mathbb{R}^{n \times p}$ and $L_d \in \mathbb{R}^{n_d \times p} $ observer gain matrices in \eqref{eq:Estimator_and_observer} need to be designed in such a way the estimator to be stable, while the method doesn't matter for our purposes.
 
 \bigskip
-Two possible choices of state estimator could be Luenberger observer or the Kalman filter. 
-Specifically in the context of this thesis the Luenberger observer has been used.
+Two possible common choices for state estimators are the Luenberger observer and the Kalman filter. 
+Specifically, in the context of this thesis, the Luenberger observer has been employed.
 It updates the state prediction computed at time $t-1$ using the current measured plant output $y_m$ at time $t$ as in the following:
 \begin{equation}
     \hat{x}_t = A \hat{x}_{t-1} + B u_{t-1} + L (y_{m,t} - \hat{y}_t)
 \end{equation}
 where $\hat{y}_t := C(A \hat{x}_{t-1} + B u_{t-1})$.
-The difference $(y_{m,t} - \hat{y}_t)$ is called estimation error or correction term and $L \in \mathbb{R}^{n \times p}$ is the observer gain.
+The difference $(y_{m,t} - \hat{y}_t)$ is referred to as the estimation error or correction term, and $L \in \mathbb{R}^{n \times p}$ is the observer gain.
 
 \bigskip
-If the pair $(A_e,C_e)$ in \eqref{eq:Estimator_and_observer} is observable, than the eigenvalues of $(A_e+LC_e)$ can be placed arbitrarily in such a way the estimator dynamical system to be stable.
-Usually we want the estimator to be faster with respect to the controller, for this reason the desired eigenvalues for $(A_e+LC_e)$, thus the poles of the estimator dynamical systems, are chosen smaller with respect to the ones of the controlled stabilized system.
+If the pair $(A_e,C_e)$ in \eqref{eq:Estimator_and_observer} is observable, than the eigenvalues of $(A_e+LC_e)$ can be placed arbitrarily to ensure stability of the estimator dynamical system.
+Typically, the desired eigenvalues for $(A_e+LC_e)$, i.e., the poles of the estimator dynamical system, are chosen to be smaller than those of the controlled stabilized system to ensure that the estimator is faster than the controller.
 
 \chapter{Design of Optimization-based Controller for autonomous airshield}
 %\addcontentsline{toc}{chapter}{Control design}
 \markboth{}{CONTROL DESIGN}
 \label{chapter:Control_design}
-This chapter will provide first of all a description of the go-kart plant model and of its linear approximation used to design the predictive controllers. 
+This chapter will begin with a description of the go-kart plant model and its linear approximation, which is utilized in the design of the predictive controllers. 
 
-Later on a proper description of the design choices and the formulations of both the controllers in the context of the sport application: the Linear Quadratic Regulator (LQR) and the Model Predictive Control (MPC), nominal and with Offset-free version.
+Later on, a detailed description and explanation of the design choices and formulations of both the controllers within the context of the sport application: the Linear Quadratic Regulator (LQR) and the Model Predictive Control (MPC), nominal and with Offset-free version.
 
 \section{Go-kart kinematics model}
 \begin{figure}[h!]
@@ -631,8 +643,8 @@ Later on a proper description of the design choices and the formulations of both
 \label{Kinematic_bicycle}
 \end{figure}
 %Having a good model plays a central role in the controller design framework.
-The non linear model used to describe the go-kart motion is a bicycle kinematic model, illustrated in figure \ref{Kinematic_bicycle}.
-The 2D bicycle model can be seen as a simplified car-like vehicle model that approximates very well the motion of a 4-wheel vehicle in normal driving conditions.
+The non linear model utilized to describe the motion of the go-kart is a bicycle kinematic model, illustrated in figure \ref{Kinematic_bicycle}.
+The 2D bicycle model can be seen as a simplified car-like vehicle model that closely approximates the motion of a four-wheel vehicle in normal driving conditions.
 
 The mathematical equations are the following:
 \begin{equation}
@@ -647,15 +659,15 @@ The mathematical equations are the following:
 \label{Plant}
 \end{equation}
 
-where $x = [x, y, \psi, v]$ is the state vector where the components are respectively the $x$ and $y$ world frame coordinates, $\psi$ the heading angle with respect to the reference frame, and $v$ the total speed of the vehicle.
+where $x = [x, y, \psi, v]$ is the state vector, where the components are respectively the $x$ and $y$ world frame coordinates, $\psi$ is the heading angle with respect to the reference frame, and $v$ is the total speed of the vehicle.
 
-The longitudinal force $F_x$ acting on the vehicle is modeled as a single force applied to the center of gravity of the vehicle and is computed as a combination of the drive-train command and the velocity. 
+The longitudinal force $F_x$ acting on the vehicle is modeled as a single force applied to the center of gravity and is computed as a combination of the drive-train command and the velocity. 
 \begin{align}
     F_x (t) &= (C_{m_1} - C_{m_2} v(t)) a(t) - C_f v(t) - C_d v^2(t) - C_{roll} \label{eq:Long_force}\\
     \beta(t) &= \arctan\left(\tan\left(\frac{l_r}{l_f+l_r}\delta_f(t)\right) \right).
 \end{align}
-The inputs of this system are $u = [a, \delta_f]$ where $a$ is the drive-train acceleration and $\delta_f$ the front steering angle. 
-The variable $\beta$ is the slip angle at the center of mass. 
+The inputs of this system are $u = [a, \delta_f]$ where $a$ is the drive-train acceleration and $\delta_f$ is the front steering angle. 
+The variable $\beta$ represents the slip angle at the center of mass. 
 
 \bigskip
 The model has two parameters, $l_f$ and $l_r$, which represent the distances from the centre of mass to the front axle and rear axle, respectively.
@@ -698,7 +710,7 @@ According to the estimated values the \eqref{eq:Long_force} can be rewritten as 
     F_x(t) = C_{m1} a(t) - C_f v(t) - C_d v^2(t) - Croll
 \end{equation}
 
-The physical actuations limits on the input variable $a$ can be expressed as box constraints of the following type:
+The physical actuation limits on the input variable $a$ can be expressed as box constraints of the following type:
 \begin{equation}
     a_{\text{min}} \leq a_t \leq a_{\text{max}}
 \label{Input_limits}
@@ -706,13 +718,15 @@ The physical actuations limits on the input variable $a$ can be expressed as box
 The coefficients reported in table \ref{tab:Parameters} are identified in such a way to have $a_{min} = 0$ and $a_{max} = 1$ as actuation limits for the motor torque.
 
 \section{Linear approximation of the go-kart model}
-The system is specifically designed for overspeed training of Olympic runners.
-For this kind of high energetic demanding training, the athletes are interested in executing only short distances of approximately  $50-60$ meters performed on the straightway of the track and field oval-shaped racetrack.
-For this reason it is reasonable to consider only the longitudinal motion of the vehicle along one direction and not taking anymore into account the steering degree of freedom. 
-Additionally, the go-kart is designed such that an onboard driver must be present for safety reasons and to control the steering when maneuvering the go-kart back to the starting line of the sprint.
+The system under analysis is specifically designed for overspeed training of Olympic runners.
+In this type of high-energy demanding training, athletes focus on executing short sprints of approximately $50-60$ meters along the straight section of an oval-shaped racetrack.
+For this reason, it is reasonable to consider only the longitudinal motion of the vehicle along one direction and not taking anymore into account the steering degree of freedom. 
+Moreover, the go-kart is designed such that an onboard driver must be present for safety reasons and to control the steering when maneuvering the go-kart back to the starting line of the sprint.
+Differently, the throttle is controlled in a completely autonomous manner.
 
 \bigskip
-According this assumption rectlinear motion assumption, the go-kart plant model in \eqref{Plant} can be simplified as in the following:
+Given this context of rectilinear motion, the complex dynamics of the go-kart in in \eqref{Plant} can be simplified. 
+The simplified go-kart plant model (\ref{Plant_simplified}) is focused solely on the vehicle's longitudinal dynamics and the equations are the following ones:
 
 \begin{equation}
 \begin{cases}
@@ -726,11 +740,11 @@ According this assumption rectlinear motion assumption, the go-kart plant model 
 where $p$ indicates the position of the vehicle along an arbitrarily oriented direction.
 
 \bigskip
-Examining the equations, it can be noticed that a good linear approximation of \eqref{Plant_simplified} can be found and used for the longitudinal controller design. 
-The only non linear term is in fact the one related to the drag coefficient in the equation describing the longitudinal force.
-Assuming that in the context of this application, the velocities the kart exploits during the motion are quite small, this term will be small as well.
+Upon closer examination of the simplified model, it can be observed that a proper linear approximation of \eqref{Plant_simplified} can be found and used for the longitudinal controller design. 
+The only nonlinear term is in fact the one related to the drag coefficient in the equation describing the longitudinal force.
+Assuming that in the context of this application, the velocities the kart exploits during the motion are relatively low, consequently the influence of this nonlinear term is expected to be minor.
 
-Accordingly, continuous time dynamics equations of the linear approximation model can be obtained by just removing that non linear term:
+Accordingly, continuous-time dynamics equations of the linear approximation model can be obtained by simply removing the nonlinear term:
 \begin{equation}
 \begin{cases}
  	\begin{aligned}
@@ -742,13 +756,14 @@ Accordingly, continuous time dynamics equations of the linear approximation mode
 \end{equation}
 
 \bigskip
-The Forward Euler method is used for discretize the given continuous-time dynamical system:
+The Forward Euler method is employed to discretize the continuous-time dynamical system:
 \begin{equation}
     y_{t+1} = y_t + dt \cdot f(y_t, t) 
 \end{equation}
-where $f$ is the continuous time function and $dt$ is the discrete-time step size, distance between two consecutive discretization steps.
+where $f$ is the continuous-time dynamics function and $dt$ is the discrete-time step size, the distance between two consecutive discretization steps.
+This method allows us to transition from continuous-time dynamics to discrete-time dynamics, facilitating digital control implementation.
 
-It is possible to write the following linear discrete-time, time-invariant system:
+It is possible to write the resulting linear discrete-time, time-invariant system as follows:
 \begin{equation}
 \begin{cases}
 	\begin{aligned}
@@ -783,17 +798,15 @@ And moving into the state space form it can be rewritten as:
 \label{Linear_system}
 \end{equation}
 
-where $x_k = [p_k , v_k] ^\top$  are the kart state variables expressing respectively the kart position and the kart velocity and $u = a$ is the control input of the system, while $dt$ is the sampling step used for Euler forward integration.
+where $x_k = [p_k , v_k] ^\top$  are the kart state variables expressing respectively the kart position and velocity respectively, and $u = a$ is the control input of the system, while $dt$ is the sampling step used for Euler forward integration.
 
-This linear model is the one used as basic for the controllers design in the following.
-
-
+This linear model provides a suitable basis for designing longitudinal controllers.
 
 
 \section{Gain Scheduling Linear Quadratic Regulator design}
-Consider that at each time instant the information about the runner state $x_r =[p_r , v_r] ^T $ is known, where $p_r$ represents the absolute runner position and $v_r$ indicates the absolute runner velocity.
+Consider that at each time instant, the runner state $x_r =[p_r , v_r] ^T $ is known, where $p_r$ represents the absolute runner position and $v_r$ indicates the absolute runner velocity.
 
-At each time instant $t$ the desired state for the go-kart is given by:
+At each time instant $t$, the desired state for the go-kart is given by:
 \begin{equation}
     x_{k,\text{des}} =
     \begin{bmatrix}
@@ -805,21 +818,20 @@ where $d_{\text{des}}$ denotes the reference distance between the kart and the r
 Using this reference, the closed-form control law in \ref{Closed-loop_control_law} is applied to obtain the optimal unconstrained solution $u^*$ , at each time instant.
 
 \bigskip
-While MPC explicitly incorporates constraints into the optimization problem, LQR does not provide a direct mechanism for handling constraints.
-Constraints can be indirectly addressed by penalizing their violation in the cost function, but it's still possible to deal with control actions that violate certain physical limits, such as those described in \ref{Input_limits}.
-To address this, the unconstrained control actions generated by the LQR controller has been "clipped" as follows:
+While Model Predictive Control explicitly incorporates constraints into the optimization problem, Linear Quadratic Regulator does not provide a direct mechanism for handling constraints.
+Constraints can be indirectly addressed by penalizing their violation in the cost function, but it's still possible to deal with generated control actions that violate the physical limits, described in \ref{Input_limits}.
+To address this issue, the unconstrained control actions computed by the LQR controller has been "clipped" as follows:
 \begin{equation}
     \Tilde{u}^* = \text{sat}_{[a_{min}, a_{max}]} (u^*)
 \end{equation}
 
-The value $\Tilde{u}^*$ can be referred to as the clipped-unconstrained optimal LQR control action.
-While clipping allows the controller to handle constraints in a straightforward manner, it can lead to suboptimal performances, as the controller may be forced to operate at the constraint boundaries.
+The value $\Tilde{u}^*$ can be referred to as the clipped-unconstrained optimal LQR control action.While clipping enables straightforward constraint handling, it may lead to suboptimal performance as the controller may operate at constraint boundaries. 
 Therefore, alternative approaches such as MPC may be preferred for systems with stringent constraint requirements.
 
 \bigskip
-From the control architecture point of view a gain scheduling approach has been introduced in the control scheme.
-A gain scheduling controller is a type of control design that allows to dynamically switch between different control laws or gains based on certain operating conditions or parameters.
-In the context of this thesis one among two difference LQR controllers is selected and used to regulate the system to the desired reference value.
+From a control architecture perspective, a gain scheduling approach has been introduced in the control scheme.
+A gain scheduling controller dynamically switches between different control laws or gains based on certain operating conditions or parameters.
+In the context of this thesis one of two different LQR controllers is selected and used to regulate the system to the desired reference value.
 They will be explained in details in the following.
 
 \subsection{Catch-up maneuver}
@@ -831,8 +843,8 @@ They will be explained in details in the following.
 \end{figure}
 
 The most challenging phase of the motion occurs in the first few seconds when the runner accelerates faster than the maximum acceleration the kart can achieve.
-This phase is referred to as the 'catch-up maneuver'.
-To prevent a potential collision between the airshield and the runner, a safety measure is implemented, requiring the runner to begin the sprint performance from a position several meters farther from the kart, with respect to the steady state desired distance $d_{\text{des}}$.
+This phase, known as the 'catch-up maneuver', necessitates implementing a safety measure to prevent potential collisions between the airshield and the runner. 
+Therefore, the runner begins the sprint from a position several meters farther from the kart than the steady-state desired distance $d_{\text{des}}$.
 
 Hence, the initial condition for the kart state is set to be the following:
 \begin{equation}
@@ -842,10 +854,10 @@ Hence, the initial condition for the kart state is set to be the following:
         0
     \end{bmatrix}
 \end{equation}
-where $\bar{d}$ is a parameter that depends on how fast the runner is going to accelerate during his performance. 
+where $\bar{d}$ is a parameter dependent on the runner's expected acceleration along the performance.
  
 
-During the catch-up phase, the control action is governed by the controller gain $K_{\text{catch}}$ computed using the following weights: 
+During the catch-up phase, the control action is governed by the controller gain $K_{\text{catch}}$ computed using the following weighting matrices:
 \begin{equation}
     Q_{\text{catch}} =
     \begin{bmatrix}
@@ -856,13 +868,14 @@ During the catch-up phase, the control action is governed by the controller gain
     R_{\text{catch}} = [2]
 \end{equation}
 
-As evidenced by the weight selection, during the catch-up maneuver, the primary objective during the catch-up maneuver is to match the go-kart velocity with that of the runner.
-For this reason a significantly higher weight is assigned to the second state variable.
+As evidenced by the weight selection, the primary objective during the catch-up maneuver is to match the go-kart velocity with that of the runner.
+To facilitate this objective, a significantly higher weight is assigned to the second state variable.
 This weights configuration enables the kart to start accelerating at its maximum capability, even if the runner remains at a distance greater than the desired value $d_{\text{des}}$.
-Such an approach serves to avoid an unsafe scenarios, particularly situations where the runner's higher velocity could lead to a collision with the shield.
+Such an approach prevents unsafe scenarios where the runner's higher velocity could lead to a collision with the shield.
 
 \subsection{Cruise maneuver}
-Once the alignement between the kart and runner velocity is achieved, typically at an 80\% match, the controller switches to $K_{\text{cruise}}$ which assigns nearly equal importance to distance and velocity mismatch.
+Once the alignement between the kart and runner velocity is achieved, typically at an 80\% match, the controller switches to $K_{\text{cruise}}$.
+This controller assigns nearly equal importance to distance and velocity mismatch.
 While a preference for the velocity state persists, the significance given to the kart's position relative to the runner's is significantly increased.
 
 The weight matrices for this cruise control configuration are as follows:
@@ -875,11 +888,11 @@ The weight matrices for this cruise control configuration are as follows:
     \quad
     R_{\text{cruise}} = [0.002]
 \end{equation}
-This setup enables a rapid and substantial reduction in the relative distance to the desired value once the velocities of the go-kart and runner closely align. 
-Once the desired value $d_{\text{des}}$ is reached, the $K_{\text{cruise}}$ controller and its corresponding control law maintain the system around the desired operating conditions.
+This setup enables a rapid and substantial reduction in the relative distance to the desired value once the velocities of the go-kart and runner are already aligned.
+Once the desired value $d_{\text{des}}$ is reached, the $K_{\text{cruise}}$ controller and its corresponding control law are able to maintain the system around the desired operating conditions.
 
 \bigskip
-The overall control scheme is the one shown in figure \ref{image:LQR_sim_scheme}, while algorithm \ref{alg:LQR_sim_implementation} outlines the steps followed by the LQR algorithm while controlling the system.
+The overall control scheme is illustrated in figure \ref{image:LQR_sim_scheme}, while algorithm \ref{alg:LQR_sim_implementation} outlines the steps followed by the LQR algorithm while controlling the system.
 
 \begin{algorithm}
 \begin{algorithmic}[1]
@@ -906,12 +919,11 @@ The overall control scheme is the one shown in figure \ref{image:LQR_sim_scheme}
 \end{algorithm}
 
 
-\newpage
-\newpage
 \section{Model Predictive Control design}
-The main purpose of the Model Predictive Control scheme design lies in the possibility of including constraints, in the incorporation of a runner model inside the prediction one and in the simplification of the overall control scheme.
-The gain scheduling approach switching between two controllers depending on the operation conditions can be replaced with a single MPC controller.
-Explicitly including constraints in the MPC formulation enables the encoding of safety guarantees within the control scheme. Examples of such constraints include maintaining a minimum safety distance or imposing bounds on maximum velocities to mitigate the risk of injuries.
+The primary purpose of the Model Predictive Control scheme design lies in the possibility of including constraints, in the incorporation of a runner model within the predictive framework and in the simplification of the overall control architecture.
+The gain scheduling approach, which switches between two controllers depending on the operational conditions, can be replaced with a single MPC controller.
+Explicitly including constraints in the MPC formulation enables the encoding of safety guarantees within the control scheme. 
+Examples of such constraints include maintaining a minimum safety distance or imposing bounds on maximum velocities to mitigate the risk of injuries.
 
 \bigskip
 Consider the linear model approximation \eqref{Linear_system} for the go-kart dynamics, and introduce the following integrator model for the runner, considered as an autonomous system:
@@ -990,8 +1002,8 @@ where
 \label{Prediction_matrices}
 \end{equation}
 
-The runner actual acceleration $a_{r,t}$ is considered to be known and introduced in the prediction model as a linear affine term that allows the predictions to better fit with the real future runner behaviour.
-This term relative to the actual runner acceleration can be seen as the introduction of a known disturbance in the system, thus $a_t = [0, -dt a_{r,t}, 0]^\top$.
+The runner's actual acceleration $a_{r,t}$ is considered to be known and introduced in the prediction model as a linear affine term that allows the predictions to better fit with the real future runner behaviour.
+This term, relative to the actual runner acceleration can be seen as the introduction of a known disturbance in the system, thus $a_t = [0, -dt a_{r,t}, 0]^\top$.
 
 \bigskip
 The optimal control problem solved at each discrete time instant, in a receiding horizon fashion, has the following formulation:
@@ -1017,14 +1029,14 @@ where the reference values for the prediction states are the following
 and $d_{\text{safe}}$ is a minimum distance between go-kart and runner, ensuring a safe situation.
 
 \bigskip
-The parameter $N$ defines the prediction horizon thus the number of control intervals the controller must evaluate by prediction. 
-This parameter must be carefully selected since the complexity of solving the optimization problem increases when the prediction horizon increases. 
+The parameter $N$ defines the prediction horizon, representing the number of control intervals the controller must evaluate for prediction. 
+Selecting this parameter requires careful consideration, as increasing the lenght of the prediction horizon also increases the complexity of solving the optimization problem.
 This problem could have important consequences in systems having fast dynamics, where the number of prediction steps is limited by the processor power.
 At the same time the prediction horizon has to be chosen long enought to adequately capture the system dynamics.
-The optimal input sequence, found by repeatedly solving at each time step the optimizaton problem, is such that $\boldsymbol{u}^* \in \mathbb{R}^{m \times N}$.
+The optimal input sequence, obtained by repeatedly solving the optimizaton problem at each time step, is represented as $\boldsymbol{u}^* \in \mathbb{R}^{m \times N}$.
 
 \bigskip
-The weights in the cost function are much less sensible to changes with respect to the ones used in the LQR formulation and are chosen like:
+The weights in the cost function are less sensible to changes with respect to those used in the LQR formulation and are chosen as folloes:
 \begin{equation}
     Q =
     \begin{bmatrix}
@@ -1035,8 +1047,9 @@ The weights in the cost function are much less sensible to changes with respect 
     \quad
     R = [0.02]    
 \end{equation}
-The last element in the $Q$ matrix is chosen to be equal to zero since a reference for the absolute kart velocity is not present. 
-For this reason the third state is not taken into account in the cost function of the optimization problem but it is kept in the state vector because it makes possible to write the prediction model in an easier way.
+The last element in the $Q$ matrix is chosen to be equal to zero since there is no reference for the absolute kart velocity.
+Consequently, the third state is not taken into account in the cost function of the optimization problem.
+However it is kept in the state vector because it makes possible to write the prediction model in an easier way.
 
 \begin{figure}
 	\centering
@@ -1059,14 +1072,13 @@ For this reason the third state is not taken into account in the cost function o
 \end{algorithmic}
 \end{algorithm}
 \bigskip
-The overall MPC control scheme is shown in figure \ref{image:MPC_sim_scheme}.
-It is easy to understand the semplification in the architecture achieved with the MPC, with respect to the LQR case shown in figure \ref{image:LQR_sim_scheme}.
- Algorithm \ref{alg:MPC_sim_implementation} describes the points of the MPC implementation.
+The overall MPC control scheme is shown in figure \ref{image:MPC_sim_scheme}, and it offers an important semplification in the architecture, with respect to the LQR case in figure \ref{image:LQR_sim_scheme}.
+ Algorithm \ref{alg:MPC_sim_implementation} outlines the steps of the MPC implementation.
 
 \section{Offset-free Model Predictive Control and Disturbance Observer design}
-The MPC problem formulated in \eqref{MPC_formulation} employs as prediction model a linear approximation of the kart dynamics (see \eqref{Linear_system}), augmented with the runner model in \eqref{Runner_model}.
+The MPC problem, as formulated in \eqref{MPC_formulation} employs as prediction model a linear approximation of the kart dynamics (see \eqref{Linear_system}), augmented with the runner model in \eqref{Runner_model}.
 However, this prediction model does not take into account the nonlinear term arising from the drag coefficient present in the identified kart dynamic equations in \ref{Plant_simplified}.
-In particular the true nonlinear prediction model for the MPC should result in the following formulation:
+The true nonlinear prediction model for MPC, thus, should incorporate the additional nonlinear term, as in the following:
 
 \begin{equation}
 \begin{aligned}
@@ -1104,27 +1116,27 @@ In particular the true nonlinear prediction model for the MPC should result in t
 \label{Non-lin_prediction_model_MPC}
 \end{equation}
 
-where the last term includes the nonlinear, unmodelled drag effect, thus the $w$ term in \eqref{Plant_model_mismatch} representing the model-plant mismatch term within the offset-free MPC context.
+where the last term includes the nonlinear and unmodelled drag effect, represented by the $w$ term in \eqref{Plant_model_mismatch},  signifying the model-plant mismatch within the offset-free MPC context.
 
 \bigskip
-Since MPC derives its solution based on the linear model in \eqref{Prediction_model_MPC}, the performance of the controller are inherently tied to the magnitude of the unmodeled effects.
-Consequently, optimal closed-loop performance may not be achievable using the nominal MPC formulation. 
+Since MPC derives its solution based on the linear model in \eqref{Prediction_model_MPC}, the performance of the controller inherently depends on the magnitude of the unmodeled effects.
+Therefore, achieving optimal closed-loop performance using the nominal MPC formulation may be challenging.
 Offset-free MPC is designed to handle this kind of situations where there are discrepancies between the nominal model used for prediction and the actual plant dynamics. 
 
 \bigskip
-Data-driven control strategies, on the contrary, do not require models and can implicitly manage uncertainties in processes. 
-However, pure data-driven approaches, without any prior assumptions about process necessitate extensive data and typically employ slow exploratory techniques.
+Data-driven control strategies, on the contrary, do not rely on models and can implicitly manage uncertainties in processes. 
+However, pure data-driven approaches, without any prior assumption about the process, necessitate extensive data and typically employ slow exploratory techniques.
 Recent control methodologies blend model-based techniques with data-driven approaches to overcome these limitations.
-The reasoning used in this thesis to compensate for the model-plant mismatch term, combines a predictive control based on the linear prediction model, with a real-time estimation and compensation of the nonlinear term based on data from the system.
-This control strategy dynamically estimates for this discrepancy using the prediction errors, thus the difference between the model's predictions and the actual system response.
+The reasoning used in this thesis to compensate for the model-plant mismatch term, combines a predictive control based on the linear prediction model with a real-time estimation and compensation of the nonlinear term based on data from the system.
+This control strategy dynamically estimates discrepancies using the prediction errors, capturing the difference between the model's predictions and the actual system response.
 
-Although offset-free MPC can mitigate model-plant mismatch, estimating real-time the disturbance from measurement errors, the observer introduces a delay. 
-This delay has as a consequence the fact that the disturbance compensation may only be optimal at steady-state and not during transient when the disturbance varies.
+Although offset-free MPC can mitigate model-plant mismatch, estimating in real-time the disturbances via an observer introduces a delay. 
+This delay may result in disturbance compensation being optimal only at steady-state and not during transient phases when the disturbance varies.
 
 \bigskip
 Considering the problem statement presented in \eqref{MPC:offset-free}, the affine term that takes into account the runner acceleration, has been added, similar to the nominal MPC case.
 
-The augmented prediction model in \eqref{Augmented_model} necessary to the offset-free formulation is applied and it results to be:
+The augmented prediction model in \eqref{Augmented_model} ,necessary to the offset-free formulation is applied and it results to be:
 \begin{equation}
 \begin{aligned}
 	x_{p,t+1} & = A_p \, x_{p,t} + B_p \, u_t + a_t + B_d \, d_t \\
@@ -1252,46 +1264,49 @@ Fluid dynamics is a branch of physics that deals with the study of how fluids (l
 In the context of sports engineering, fluid dynamics plays a crucial role in understanding the interaction between athletes and the surrounding air or water during their performance.
 
 Aerodynamics, a subfield of fluid dynamics, specifically focuses on the study of how moving objects interact with the air. 
-Drag force, a key parameter in aerodynamics, quantifies the resistance encountered by an object as it moves through a fluid medium. 
+Th drag force, a key parameter in aerodynamics, quantifies the resistance encountered by an object as it moves through a fluid like the air. 
 It can be expressed mathematically using the drag equation:
 \begin{equation}
 	F_d = \frac{1}{2} C_d \rho A \, v^2
 \end{equation}
 where $F_d$ is the drag force, $\rho$ is the density of fluid (air in this case), $A$ is the frontal area of the object moving in the fluid, 
 $v$ is the velocity of the object ad $C_d$ the drag coefficient.
-One notable characteristic of drag force is its dependence on the square of the velocity $(v^2)$, indicating that the resistance experienced by an object increases exponentially with its speed. 
+One notable characteristic of drag force is its dependence on the square of the velocity $(v^2)$, indicating that the resistance experienced by the object increases exponentially with its speed. 
 
 \bigskip
-Recent fluid-dynamic studies and simulations, conducted using wind tunnels and advanced computational methods by \cite{Coni_article} has shown the effect of the aerodynamic shield on the variation of the aerodynamic force acting on a runner for a range of speeds between 5 and 13 meters per second.
+Recent fluid-dynamic studies and simulations, conducted using wind tunnels and advanced computational methods by \cite{Coni_article}, have investigated the impact of the aerodynamic shield on the variation of the aerodynamic force acting on a runner across speeds ranging from $5$ to $13$ meters per second.
 
 \begin{figure}[h!]
 	\centering
-	\includegraphics[width=0.6\textwidth]{Aerodynamics.png}
+	\includegraphics[width=0.7\textwidth]{Aerodynamics.png}
 	\caption{}
 	\label{image:Aerodynamic_studies}
 \end{figure}
 
-As depicted in figure \ref{image:Aerodynamic_studies}, when the air moving over the shield fails in following the curvature of a surface, it is reparated into two different flows.
-This leads to the formation of vortices and regions of recirculating flow, creating a large low-pressure region behind the shield.
-Interestingly, this aerodynamic configuration not only reduces air friction experienced by the athlete but also generates a pushing force from behind, aligning with the athlete's movement. Consequently, the athlete benefits from reduced air resistance and a propulsive force, potentially enhancing their speed and performance.
+As depicted in figure \ref{image:Aerodynamic_studies}, when the air moves over the shield fails in following the curvature of the surface, and results to be reparated into two different flows.
+This phenomenon is called flow separation.
+This results in the formation of vortices and regions of recirculating flow, creating a significant low-pressure region behind the shield.
+Interestingly, this aerodynamic configuration not only reduces air friction experienced by the athlete but also generates a pushing force from behind, aligning with the athlete's movement. 
+Consequently, the athlete benefits from both a reduced air resistance and a propulsive force, potentially enhancing its speed and performance.
 
 \bigskip
-For this reason the reference distance $d_{\text{des}}$ to be kept between the runner and the kart can be assumed to be around $2.5$ meters, thus the athlete should be able to run on the airshield border or in the slipstream up to a couple of meters further.
-In the following, for both the simulations and the real hardware test it is used $d_\text{des}$ of $2.5$ meters and $d_\text{safe}$ of $1.5$ meters.
+According to these results, the reference distance $d_{\text{des}}$ to be maintained between the runner and the kart can be assumed to be around $2.5$ meters, thus the athlete should be able to run on the airshield border or in the slipstream up to a couple of meters further.
+In the following, for both the simulations and the real hardware tests, a $d_\text{des}$ of $2.5$ meters and $d_\text{safe}$ of $1.5$ meters are utilized.
 
 
 \chapter{Numerical simulation results}
 %\addcontentsline{toc}{chapter}{Simulations and Hardware results}
 \markboth{}{SIMULATION RESULTS}
 \label{chapter:Simulations_results}
-The first purpose of this chapter is to present and analyze the results of Python simulations carried out on the non linear mathematical model of the go-kart with the airshield attached,  trying to follow a velocity profile simulating the runner behaviour during a competition or a training.
+The primary objective of this chapter is to present and analyze the results of Python simulations carried out on the nonlinear mathematical model of the go-kart with the airshield attached.
+The simulations aim to mimic the behaviour of a runner during a competition or a training by utilizing a proper velocity profile.
 The three controllers: Linear Quadratic Regulator, Model Predictive Control and Offset-Free Model Predictive Control have been tested and their performances are evaluated and compared.
-Specifically in section $3.1$, the data utilized for the controllers simulation tests are introduced.
-Additionally, it is described how they have been obtained from real competition results, together with a presentation of the parameters used for the comparison.
+Specifically, in section $3.1$, the data utilized for the controllers simulation tests are introduced.
+It describes how they have been obtained from real competition results, together with a presentation of the parameters used for the comparison.
 Section $3.2$ and $3.3$ are focused on finally evaluate and numerically compare the controllers performances in two distinct scenario.
 
 \section{Test data and comparison parameters}
-To assess the performance of the controllers and evaluate the application's behaviour, empirical data from two presigious Diamond League competitions \cite{diamondleague}  have been employed, focusing on the winners of the 100m sprint event both in the man's and women's categories. 
+To assess the performance of the controllers and evaluate the application's behaviour, empirical data from two presigious Diamond League competitions \cite{diamondleague} have been employed, focusing on the winners of the 100m sprint event both in the man's and women's categories. 
 
 \begin{table}[h!]
 	\centering
@@ -1343,22 +1358,22 @@ The detailed analysis of Coleman's performance and the corresponding average vel
 \label{Test_Velocities}
 \end{figure}
 
-The velocity profiles obtained by interpolating the average velocities are illustrated in figure \ref{Test_Velocities}.
+The velocity profiles, obtained by interpolating the average velocities along time, are illustrated in figure \ref{Test_Velocities}.
 The red dot denotes the moment when runners cross the finish line.
-Subsequent to this event, the velocities are assumed to remain constant until a simulation time of 15 seconds with the purpose of allowing for an evaluation of the controllers' steady-state performance.
+Subsequent to this event, the velocities are assumed to remain constant until a simulation time of $15$ seconds with the purpose of allowing for an evaluation of the controllers' steady-state performance.
 
-The parameters used for the evaluation and comparison of the controllers performances are the following:
+The parameters used for the evaluating and comparing of the controllers' performances are the following:
 \begin{itemize}
 	\item Mean error (position and velocity): represents the average difference between the desired reference value and the actual plant output over the simulation period. It provides a measure of the overall accuracy of the controller's tracking performance.
-	\item Integral Asbolute Error (position and velocity): measured the cumulative sum of the absolute errors between the desired reference value and the actual plant output. It provides insight into the total deviation od the system's response from the desired trajectory.
-	\item Minimum distance from kart: the concept is similar to the undershoot, thus the extent to which the system's response deviates from the desired trajectory. This parameter quantifies how close the runner goes to the kart during the performance.
-	\item Energy consumption: quantifies the amount of energy expended by the controller to achieve the desired tracking performance.
-	\item Stead-state error: characterized the residual errror between the actual output and the desired reference value once the system has reached a stable operating condition, thus a constant velocity of the kart tracking a constant velocity of the runner.
-	\item "Rise" time to reach the desired reference distance $d_\text{des}$: refers to the duration taken by the system's output to transition from the initial state to the desired position setpoint. It represents the speed at which the system responds to changes in the reference signal and it's indicative of the controller's dynamic responsiveness.
+	\item Integral Asbolute Error (position and velocity): measures the cumulative sum of the absolute errors between the desired reference value and the actual plant output. It provides insight into the total deviation od the system's response from the desired trajectory.
+	\item Minimum distance from kart: the concept is similar to the undershoot, thus it quantifies the extent to which the system's response deviates from the desired trajectory. This parameter quantifies how close the runner goes to the kart during the performance.
+	\item Energy consumption: quantifies the amount of energy expended by the system to achieve the desired tracking performance.
+	\item Stead-state error: characterizes the residual errror between the actual output and the desired reference value once the system has reached a stable operating condition, with the kart tracking a constant velocity of the runner.
+	\item "Rise" time to reach the desired reference distance $d_\text{des}$: refers to the duration taken by the system's output to transition from the initial state to the desired position setpoint. It represents the speed at which the system responds to changes in the reference signal and it is indicative of the controller's dynamic responsiveness.
 \end{itemize}
 
 \subsection*{CVXPY and OSQP solver}
-The quadratic optimization problems in the Model Predictive Control (MPC) formulations were tackled using the CVXPY library \cite{diamond2016cvxpy}, a mathematical framework used for solving optimization problems, along with the OSQP solver \cite{Stellato_2020}.
+The quadratic optimization problems in the Model Predictive Control (MPC) formulations have been tackled using the CVXPY library \cite{diamond2016cvxpy}, a mathematical framework for solving optimization problems, along with the OSQP solver \cite{Stellato_2020}.
 CVXPY facilitates the expression of convex optimization problems in a natural syntax that follows the mathematical formulations, which are then automatically converted into the standard form required by various solvers.
 OSQP (Operator Splitting Quadratic Program) is a high-performance solver specifically designed for convex quadratic programming problems, making it particularly suitable for applications in control systems, robotics, and machine learning.
 
@@ -1391,7 +1406,7 @@ The initial distance used for the simulation is $\bar{d} = 4$ meters.
 \bigskip
 Both Table \ref{tab:Ta_Lou} and figure \ref{fig:Women} clearly demonstrate that the LQR controller exibits poorer performance compared to the other controllers.
 Specifically, considering the minimum distance between runner and go-kart, the LQR performs significantly worse than the other two controllers and violates the safety distance state constraints $d_{\text{safe}}$ introduced in both the MPC formulations.
-The LQR also has the highest mean value of position deviation ($\Delta p$) and velocity deviation ($\Delta v$) indicating a less accurate tracking performance compared to MPC and MPC Offset-free.
+The LQR also has the highest mean values of position deviation ($\Delta p$) and velocity deviation ($\Delta v$), indicating a less accurate tracking performance compared to MPC and MPC Offset-free.
 Additionally, the fact that also the Integral of Absolute Error (IAE) metrics for both position and velocity are higher, suggests poorer tracking accuracy over the entire simulation period.
 It's noteworthy that the offset-free version of the predictive controller achieves an almost zero steady-state error, significantly smaller than the approximately 10-centimeter values obtained with the other controllers. 
 The three controllers show similar energy consumption over time.
@@ -1466,11 +1481,13 @@ In the case of the Christian Coleman velocity profile this value is set to $\bar
 
 When intializing the maneuver from a further distance compared to the previous scenario, higher values of mean position error and Integral Absolute Error are observed, as reported in table \ref{tab:Coleman}.
 The performance of the controllers can be graphically observed in figure \ref{fig:Men}.
-The value of the minimum distance reached between runner and go-kart is much smaller for the LQR with respect to the two MPC formulations also in this simulation, meaning that the athlete enters for a bigger distance inside the shield.
+The value of the minimum distance reached between the runner and the go-kart is much smaller for the LQR with respect to the two MPC formulations also in this simulation, indicating that the athlete enters a larger distance inside the shield. 
 The recorded LQR value of 1 meter and 8 centimeters violates the safety bound introduced in the MPC, similar to the observation made in the Ta Lou velocity profile case.
 Furthermore, it's worth noting that the offset-free MPC consistently outperforms both LQR and MPC in terms of steady-state error, achieving the lowest value among the three controllers.
 
 It should be noticed that, in both the scenario saturation phenomenon is present for a consistent part of the tracking with the LQR controller.
+Unlike MPC, which respects actuator limits, the LQR controller exhibits saturation, meaning that the control inputs are constrained to their maximum or minimum values for extended periods. 
+This can lead to suboptimal performance.
 
 \section{Disturbance observer results}
 
@@ -1501,15 +1518,15 @@ It should be noticed that, in both the scenario saturation phenomenon is present
 \label{Estimator}
 \end{figure}
 
-In this section, the output of the disturbance observer and state estimator, formulated in state space model in \eqref{Observer_real}, are presented.
-The observer has the capability to estimate simultaneously the states and the unknown disturbance, thus the model-plant mismatch.
+In this section, the output of the disturbance observer and state estimator, formulated in the state-space model in \eqref{Observer_real}, are presented.
+The observer has the capability to simultaneously estimate the states and the unknown disturbance, representing the model-plant mismatch.
 
-Figure \ref{Estimator} shows the three estimated state variables, alongside their actual values.
+Figure \ref{Estimator} shows the three estimated state variables alongside their actual values.
 It is important to notice the ability and precision of the estimator in producing estimated values with only minor differences with respect to the actual ones.
 Only minor delays, as highlighted in the subplot insets, are present when fast changes in the actual state variables occur.
 These delays stem from the Luenberger observer's mechanism, which updates the estimated state variables based on the prediction error.
 
-Focusing on subfigure \ref{state1}, the initial value for the estimator was set to $d_\text{des}$ without considering the $\bar{d}$ component relative and specific to the runner acceleration intensity. 
+Focusing on subfigure \ref{state1}, the initial value for the estimator was set to $d_\text{des}$ without considering the $\bar{d}$ component relative and specific to the runner's acceleration intensity. 
 However, the estimator quickly converges to the actual value and compensates for the incorrect initialization. 
 This rapid adjustment is facilitated by selecting appropriate observer gain matrices, enabling the observer dynamical system in \eqref{Observer_real} to have a proper trade-off between responsiveness and accuracy in estimation.
 
@@ -1518,7 +1535,8 @@ This estimated disturbance captures the model-plant mismatch between the nonline
 This term represents the component related to the drag effect in the go-kart dynamics.
 Furthermore, the magnitude of the estimated disturbance tends to be higher when the absolute velocity of the go-kart is elevated, gradually reaching a constant steady-state value as the system stabilizes.
 
-The effectiveness of the disturbance observer in capturing the model-plant mismatch term is crucial, especially in the context of implementing offset-free Model Predictive Control. By accurately estimating both the state variables and the disturbance, the system can effectively compensate for discrepancies between the actual plant behavior and the model predictions, ultimately enhancing control performance.
+The effectiveness of the disturbance observer in capturing the model-plant mismatch term is crucial, especially in the context of implementing offset-free Model Predictive Control. 
+By accurately estimating both the state variables and the disturbance, the system can effectively compensate for discrepancies between the actual plant behavior and the model predictions, ultimately enhancing control performance.
 
  \chapter{System Structure and Hardware-in-the-loop implementation and results}
 \markboth{}{HARDWARE TEST RESULTS}
@@ -1528,18 +1546,21 @@ Finally, some test developed on the real hardware are presented and their result
 
 \section{System structure}
 
-The system comprises a fully electric-powered go-kart with an attached airshield structure via a fixed joint. According to the CIK-FIA (International Karting Commission Federation International Automobile), a go-kart is a land vehicle with four non-aligned wheels in contact with the ground, two of which control steering while the others transmit power. Go-karts emerged after the post-war period of the 1950s, originally created by airmen as a pastime. Typically, go-kart chassis are constructed from steel pipes that provide both stiffness and flexibility to compensate for the lack of a suspension system and a differential.
+The system comprises a fully electric-powered go-kart with an attached airshield structure via a fixed joint. 
+According to the CIK-FIA (International Karting Commission Federation International Automobile), a go-kart is a single-seater land vehicle with four non-aligned wheels in contact with the ground, two of which control steering while the others transmit power. 
+Go-karts emerged after the post-war period of the 1950s, originally created by airmen as a pastime.
+Typically, go-kart chassis are constructed from steel pipes that provide both stiffness and flexibility to compensate for the lack of a suspension system and a differential.
 
 \subsection*{Electric-powered go-kart}
 The kart is a SinusIon purchased from the German company RiMO (originally Richter + Mohn). 
 
 \bigskip
-The battery on board is a lithium-iron-manganese-4-phosphate (LiFeMnPO4), used in order to reduce the battery pack weight.
+The onboard battery is a lithium-iron-manganese-4-phosphate (LiFeMnPO4), used in order to reduce the battery pack weight.
 
 \bigskip
 For what regards the motor it is a Heinzmann PMS 100, with air-cooled cooling technology. 
-This DC motor is a permanent magnet brush-less motor with a link voltage of 28V, a nominal speed of 6500 rpm and a rated torque of 3.82 Nm, representing respectively the rotational speed at which the motor is designed to operate optimally and the maximum rotational force that the motor can exert.
-Talking about efficiency this motor is characterized with high-efficiency and energy-saving capabilities, the rated power output is 2.6kW. 
+This DC motor is a permanent magnet brushless motor with a link voltage of 28V, a nominal speed of 6500 rpm and a rated torque of 3.82 Nm, representing respectively the rotational speed at which the motor is designed to operate optimally and the maximum rotational force that the motor can exert.
+In terms of efficiency, this motor is characterized with high efficiency and energy-saving capabilities, with a rated power output of 2.6kW. 
 This parameter reflects the motor's ability to convert electrical energy into mechanical power.
 The gearbox has a gear ratio of 1:7.
 
@@ -1556,7 +1577,7 @@ The computer on board is a AMD Ryzen MinisForum EliteMini X500 with an AMD Ryzen
 \end{figure}
 
 The shield has the structure shown in \ref{Shield_structure}.
-All the side and front panels are of plexiglass while the top part is an aluminium composite.
+All the side and front panels are made of plexiglass while the top part is an aluminium composite.
 
 The dimensions are reported in table \ref{tab:Shield_dimensions}.
 
@@ -1574,14 +1595,14 @@ Lenght & 2.95 m \\
 \caption{Aishield dimensions}
 \label{tab:Shield_dimensions}
 \end{table}
-The height can be adjusted inside a range of circa $13$ cm by simply moving a wheel bracket up or down, in order to better fit the height of the runner.
+The height can be adjusted within a range of approximately $13$ centimeters by simply moving a wheel bracket up or down, in order to better fit the height of the runner.
 
 \section{Perception}
 Autonomous vehicles sense and perceive the surrounding environment using measurements coming from sensors and then process the information in order to make informed decisions. 
-This is the fundamental principle behind closed loop control that relies on measurements of controlled variables, provided by an appropriate sensor.
+This is the fundamental principle behind closed-loop control that relies on measurements of controlled variables provided by an appropriate sensor.
 The perception systems used in autonomous vehicles are usually categorized in two groups:
 \begin{itemize}
-    \item Proprioceptive sensors (or internal state sensors) sensing the vehicle own state like wheel encoders or inertial measurement unit, location sensors like GPS, etc.
+    \item Proprioceptive sensors (or internal state sensors) sensing the vehicle's own state, like wheel encoders or inertial measurement unit, as well as location sensors like GPS, etc.
     \item Exteroceptive sensors (or external state sensors) gathering informations about the surrounding environment like cameras, LiDAR, RADARs, etc.
 \end{itemize}
 In this application the system is equipped with a LiDAR (Light Detection and Ranging), a camera, an inertial measurement unit and wheel encoders.
@@ -1590,33 +1611,43 @@ In this application the system is equipped with a LiDAR (Light Detection and Ran
 LiDAR (Light Detected and Ranging) is a remote sensing technology that measures distances to objects and surfaces using laser pulses. 
 The sensor consists of three main components: a laser emitter, a scanning mechanism, and a receiver.
 The laser emitter sends out short pulses of laser light, which travel towards surrounding objects. 
-When these pulses encounter an object they reflect off its surface and return to the LiDAR sensor.
-The receiver than detects the reflected light and measures the time it takes for the pulses to return, allowing to calculate the distance of the object based on the speed of light.
+When these pulses encounter an object, they reflect off its surface and return to the LiDAR sensor.
+The receiver than detects the reflected light and measures the time it takes for the pulses to return, allowing the calculation of the distance to the object based on the speed of light.
 Moreover, LiDAR rensors are capable of operating in various environmental conditions including darkness, rain, fow or low visibility, making them perfect for the application and highly reliable.
 
 The LiDAR mounted on the airshield is a Velodyne VLP-16, a compact sensor that features 16 laser channels arranged in a circular configuration to have an important field of view.
 
 The field of view (angular extension of a scene that is projected by the laser beam) is of 360$^\circ$ horizontal and 30$^\circ$ vertical.
-The range of the laser is up to 100 m. 
-Measures have an accuracy of +/- 3 cm and are acquired with a frequency of 20 Hz.
+The range of the laser is up to 100 meters. 
+Measurements have an accuracy of +/- 3 cm and are acquired with a frequency of 20 Hz.
 
 \subsection*{Camera}
 Cameras provide rich information about the surrounding environment and can be used in a variety of ways.
-On the airshield a ZED 2i Stereo Camera with polarized lens of 4mm is mounted.
+On the airshield, a ZED 2i Stereo Camera with polarized lens of 4 millimeters is mounted.
 
-The field of view is of 120$^\circ$ and the camera is able to sense ranges between 1.5 m and 35 m. 
-The depth accuracy is smaller of the 2\% of the distance up to 10 m while it increases up to the 7\% for distances up to 30m distance.
+The field of view is of 120$^\circ$ and the camera is able to sense ranges between 1.5 meters and 35 meters. 
+The depth accuracy is smaller of the 2\% of the distance up to 10 meters while it increases up to the 7\% for distances up to 30 meters distance.
 
 The camera is equipped with a Stereolab ZED Box Xavier NX 8GB, an industrial compact and powerful mini PC used for computing and processing camera data.
 It's powered with an NVIDIA Jetson embedded GPU.
 
-At the moment LiDAR measurement are prefered with respect to camera ones thanks to the higher accuracy.
+At the moment LiDAR measurements are prefered with respect to camera ones thanks to the higher accuracy.
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=0.5\textwidth]{Gesture.png}
+\caption{Gesture used to activate the automatic controller ones the runner is ready to start the sprint}
+\label{gesture}
+\end{figure}
+
 Camera remains responsible for the detection of the gesture to identify the moment in which the runner is able to start the performance. 
+The recognition of this gesture, in figure \ref{gesture}, produced the activation of the automatic controller for the system.
+
 
 \subsection*{Wheel Encoder}
-Rotary encoders are a type of sensor that measures the rotation of a mechanical shaft.
-Two wheel encoders, one for each wheel, are integrated in the PMS 100 motor as speed sensors providing the motor rotational speed.
-Then by knowing that the gear ratio is 1:7 and that the wheel diameter is $27.89$ cm the absolute go-kart speed can be evaluated as follows:
+Rotary encoders are a type of sensor that measure the rotation of a mechanical shaft.
+Two wheel encoders, one for each wheel, are integrated in the PMS 100 motor as speed sensors, providing the motor's rotational speed.
+Then, by knowing that the gear ratio is 1:7 and that the wheel diameter is $27.89$ centimeters the absolute go-kart speed can be evaluated using the following formula:
 
 \begin{equation}
     v_{\text{kart}} = \frac{\pi \cdot d \cdot \text{avg rate}}{60 \cdot \text{gear ratio}}
@@ -1635,20 +1666,20 @@ where avg rate is the average motor rate between left and right sides.
 \end{figure}
 
 Typically an IMU or Inertial Measurement Unit consists of a combination of accelerometers and a gyroscopes, and sometimes also magnetometers in order to measure the orientation, velocity and acceleration of an object.
-Thanks to the combination of accelerometers and gyroscopes the IMU is able to sense the object orientation or angular motion and acceleration with respect to some predefined axes.
+Thanks to the combination of accelerometers and gyroscopes, the IMU is able to sense the object's orientation or angular motion and acceleration with respect to some predefined axes.
 The IMU used in the go-kart is the IRIMU-V2 from Izze-Racing that outputs data at 200Hz via CAN protocol and has an accuracy of less than 1\% of full scale for the acceleration and less than 1.5\% for the angular acceleration.
 The position with respect to the go-kart centre of gravity is showed in \ref{IMU_pose}.
 
-
+\newpage
 \section{Controller design changes for hardware integration}
-In the context of the hardware control implementation the available informations are the one coming from sensors and it is not possible to rely on a full state knowledge for both runner and kart as hypotized in Chapter 2.
-For this reason we have to take into account the sensors present in the system and the measurement provided by them to control the system properly. 
-The Linear Quadratic Regulator and the nominal Model Predictive Control case are considered.
+In the context of the control implementation for the hardware-in-the-loop tests, the available informations are the one coming from sensors and it is not possible to rely on a full state knowledge for both runner and kart as hypotized in Chapter 2.
+For this reason we have to take into account the sensors present in the system and the measurements provided by them to control the system properly. 
+The changes occurred in the Linear Quadratic Regulator and in the nominal Model Predictive Control case are considered.
 
 \subsection*{LQR}
 Differently from the simulation context, where all the state variables both for runner and kart have been considered to be fully known, in the hardware-in-the-loop context, absolute position of both kart and runner, as well as the runner absolute velocity, result to be unknown.
 
-\begin{figure}
+\begin{figure} [h!]
 	\centering
 	\includegraphics[width=1.0\textwidth]{LQR_hard_scheme.png}
 	\caption{Linear Quadratic Regulator scheme with sensors}
@@ -1688,7 +1719,7 @@ where $\Delta p_t := p_{k,t} - p_{r,t}$ and $\Delta v_t := v_{k,t} - v_ {r,t}$, 
 \end{algorithm}
 
 \bigskip
-The closed loop control law in \eqref{Closed-loop_control_law} can be modified as follows to directly use the measurments provided by the LiDAR to evaluate the feedback error and compute the current control action:
+The closed loop control law in \eqref{Closed-loop_control_law} can be modified as follows, to directly use the measurments provided by the LiDAR to evaluate the feedback error and compute the current control action:
 \begin{equation}
     u_t^* = K (h_t - h_{\text{des}})
 \label{Closed-loop_control_law_sensors}
@@ -1714,7 +1745,7 @@ where
     \end{bmatrix}.
 \end{equation}
 
-The overall implementation of the LQR in the context of the real system in described by algorithm \ref{alg:LQR_hard_implementation}, while the control architecture using the sensors for taking the measurements is shown in figure \ref{image:MPC_hard_scheme}.
+The overall implementation of the LQR in the context of the real system is described by algorithm \ref{alg:LQR_hard_implementation}, while the control architecture using the sensors for taking the measurements is shown in figure \ref{image:MPC_hard_scheme}.
 
 \subsection*{MPC}
 \begin{figure}[h!]
@@ -1724,18 +1755,20 @@ The overall implementation of the LQR in the context of the real system in descr
 	\label{image:MPC_hard_scheme}
 \end{figure}
 
-In the context of the MPC formulation a similar scheme is employed, with the key difference that the absolute kart velocity $v_k$ information is directly incorporated and utilized in the prediction state, rather than solely for gain scheduling to switch among controllers, as was the case with the LQR formulation.
+In the context of the MPC formulation a similar scheme is employed, with the key difference that the absolute kart velocity $v_k$ information is directly incorporated and utilized in the prediction state, rather than solely by the gain scheduling to switch among controllers, as was the case with the LQR formulation.
 The overall scheme is illustrated in figure \ref{image:MPC_hard_scheme} highlighting a simplification of the control architecture compared to the LQR case in figure \ref{image:LQR_hard_scheme}.
 In particular, the clip block is removed, and actuator limits are introduced as constraints explicitly in the optimization problem.
 Moreover, the two distinct regulators are replaced with a single controller capable of effectively managing the system across various operating conditions.
-It is important to note that the actual absolute runner acceleration, added in the prediction model  \eqref{Prediction_model_MPC} as an affine term, is estimated. 
- Initially, the relative acceleration between the kart and runner $\Delta a$ is estimated, alongside the kart's absolute acceleration $a_k$.
-The absolute runner acceleration used is equal to $a_r = a_k - \Delta a$.
 
 \bigskip
-When handling with sensor data, such as distance measurements from a LiDAR sensor, it is important to recognize that these measurements are inherently noisy.
-In attempting to derive velocity and acceleration from these noisy distance measurements, the situation becomes even more complex since any noise present gets amplified by applying the process of differentiation itself.
-For this reason, even if a Kalman filterg tecnique for smoothing the absolute runner acceleration $a_r$ has been applied, the quality of the estimate results not accurate enought.
+It is important to notice that the actual absolute runner acceleration, added in the prediction model  \eqref{Prediction_model_MPC} as an affine term, is estimated. 
+Initially, the relative acceleration between the kart and runner $\Delta a$ is estimated, alongside the kart's absolute acceleration $a_k$.
+The absolute runner acceleration used is then calculated as $a_r = a_k - \Delta a$.
+
+\bigskip
+When handling sensor data, such as distance measurements from a LiDAR sensor, it is important to recognize that these measurements are inherently noisy.
+In attempting to derive velocity and acceleration from a noisy distance measurement, the situation becomes even more complex since any noise present gets amplified by applying the process of differentiation.
+For this reason, even if a Kalman filterg tecnique for smoothing the absolute runner acceleration $a_r$ has been applied, the quality of the estimation result is not accurate enought.
 This compromises the MPC's performance compared to simulation results. 
 However, despite these challenges, the controller still manages to achieve proper regulation performance concerning the relative distance and position variables.
 
@@ -1759,7 +1792,7 @@ However, despite these challenges, the controller still manages to achieve prope
 Algorithm \ref{alg:MPC_hard_implementation} explains the steps followed by the nominal MPC implementation on the hardware system.
 
 \section{Experimental tools}
-In this paragraph the tools used for the development of the controllers implementation on the system are briefly presented.
+In this paragraph the tools used for the development of the controllers implementation on the real hardware system are briefly presented.
 
 \subsection*{Robot Operating System}
 Robot Operating System (ROS) is an open-source middleware framework specifically designed for robotics research and development  \cite{ros} of robotic applications. 
@@ -1773,7 +1806,7 @@ In particular nodes can publish messages to topics (publisher) and other nodes c
 
 \bigskip
 ROS, and in particular its successor ROS2, offers numerous features and improvements that make it well-suited for driving autonomous systems and automated driving projects.
-At the core of ROS2's functionality lies the ability to run directly on the onboard computer of autonomous systems, having Ubuntu pre-installed, processing sensors raw data coming from sensors, processing them and executing the proper control algorithms.
+At the core of ROS2's functionality lies the ability to run directly on the onboard computer of autonomous systems, having Ubuntu pre-installed, processing raw data coming from sensors and executing the proper control algorithms.
 In this sense, one of the most notable innovations in ROS2 is its ability to support real-time capabilities, of fundamental importance when autonomous systems have to perform safety-critical and time-sensitive applications.
 
 
@@ -1806,16 +1839,15 @@ Finally, the go-kart core contains all the high level applications, such as the 
 Several C++ packages for estimation, control, or visualization exist in order to execute various tasks in a modular and reusable manner.
 
 \subsection*{CasADi and qrSQP solver}
-For the hardware implementation of the ROS2 package for controllers CasADI together with qrSQP solver were utilized.
+For the hardware implementation of the ROS2 controllers packages, CasADI together with qrSQP solver were utilized.
 CasADi (Computer Algebra System for Automatic Differentiation) \cite{Andersson2018} serves as a symbolic framework designed for automatic differentiation and numerical optimization.
 It facilitates the representation of mathematical expressions symbolically, crucial for modeling complex control systems efficiently.
-
 
 
 \section{Hardware-in-the-loop implementation and tests}
 In this section some hardware-in-the-loop tests developed are presented and analyzed.
 
-\begin{figure}[h!]
+\begin{figure} [h!]
     \centering
     \begin{subfigure}[b]{0.32\textwidth}
         \includegraphics[width=\textwidth]{Catch/Catch1.png}
@@ -1858,6 +1890,46 @@ In this section some hardware-in-the-loop tests developed are presented and anal
 
 \begin{figure}[h!]
     \centering
+    \begin{subfigure}[t]{0.7\textwidth}
+        \includegraphics[width=\textwidth]{Hardware_testMPC/Position.png}
+        \caption{Relative position between runner and go-kart}
+        \label{fig:Deltaphard}
+    \end{subfigure}
+    
+    \begin{subfigure}[t]{0.7\textwidth}
+        \includegraphics[width=\textwidth]{Hardware_testMPC/Velocity.png}
+        \caption{Relative velocity between runner and go-kart}
+        \label{fig:Deltavhard}
+    \end{subfigure}
+    
+    \begin{subfigure}[t]{0.7\textwidth}
+        \includegraphics[width=\textwidth]{Hardware_testMPC/Input.png}
+        \caption{Input effort (drive-train acceleration)}
+        \label{fig:Inputhard}
+    \end{subfigure}
+
+    \begin{subfigure}[t]{0.7\textwidth}
+        \includegraphics[width=\textwidth]{Hardware_testMPC/Acceleration.png}
+        \caption{Estimated Acceleration}
+        \label{fig:Est_acc}
+    \end{subfigure}
+    \caption{Hardware tests results}
+    \label{fig:Hardware_Test}
+\end{figure}
+
+The sequence of images in figure \ref{MPC_hard_img1} are taken from a video, recording the behaviour of the nominal Model Predictive Controller running on the real system.
+It can be noticed, from the first line of images, that the runner has started the sprint some meters further from the border of the airshield.
+Accorgingly, the focus of the test was on the first phase of the motion that is accomplished in a safe manner.
+
+\bigskip
+In figure \ref{fig:Hardware_Test} the plots related to this test are presented.
+The first two panels (\ref{fig:Deltaphard} and \ref{fig:Deltavhard}) demonstrate the controller's ability to regulate the system to the desired reference values: a $2.5$ meters reference distance between the go-kart and the runner and an almost zero velocity mismatch.
+Analyzing the third panel \ref{fig:Inputhard}, it can be noticed that the input is oscillating between the upper and lower actuator limits even after reaching the reference distance and velocity, thus when the system shoul be around a steady-state condition.
+This oscillatory behaviour was not evident during the developed numerical simulations.
+The primary reason of these oscillations is attributed to the inaccurate estimation of the absolute runner acceleration, as illustrated in figure \ref{fig:Est_acc}.
+
+\begin{figure}[h!]
+    \centering
     \begin{subfigure}[b]{0.32\textwidth}
         \includegraphics[width=\textwidth]{SteadyState/ss1.png}
     \end{subfigure}
@@ -1897,44 +1969,25 @@ In this section some hardware-in-the-loop tests developed are presented and anal
 \label{MPC_hard_img2}
 \end{figure}
 
-\begin{figure}[h!]
-    \centering
-    \begin{subfigure}[t]{0.7\textwidth}
-        \includegraphics[width=\textwidth]{Hardware_test/Position.png}
-        \caption{Relative position between runner and go-kart}
-        \label{fig:Deltaphard}
-    \end{subfigure}
-    
-    \begin{subfigure}[t]{0.7\textwidth}
-        \includegraphics[width=\textwidth]{Hardware_test/Velocity.png}
-        \caption{Relative velocity between runner and go-kart}
-        \label{fig:Deltavhard}
-    \end{subfigure}
-    
-    \begin{subfigure}[t]{0.7\textwidth}
-        \includegraphics[width=\textwidth]{Hardware_test/Input.png}
-        \caption{Input effort (drive-train acceleration)}
-        \label{fig:Inputhard}
-    \end{subfigure}
+\bigskip
+Additionally, as depicted in figure \ref{MPC_hard_img2}, the system demonstrates its capability to maintain a cruise condition once the runner has reached an almost constant speed.
+Following the completion of the catch-up maneuver, the controller maintains the cruise control with the runner moving at nearly constant velocity.
+This test serves to validate the system's robustness, particularly in the face of the challenging task of dealing with the innacurate runner acceleration estimate.
+Despite this limitation, the controller demonstrates a robust behaviour by avoiding evident oscillations in terms of the reference distance.
+The pratical behaviour of the system remains reliable in real-world scenarios, thanks to the ability of maintaining stable performance even under imperfect conditions.
 
-    \begin{subfigure}[t]{0.7\textwidth}
-        \includegraphics[width=\textwidth]{Hardware_test/Acceleration.png}
-        \caption{Estimated Acceleration}
-        \label{fig:Est_acc}
-    \end{subfigure}
-    \caption{Hardware tests results}
-    \label{fig:Hardware_Test}
-\end{figure}
 
-The sequence of images in figure \ref{MPC_hard_img1} are taken from a video recording the behaviour of the nominal Model Predictive Controller running on the real system.
-It can be noticed from the first line of images that the runner has stated some meters further from the border of the airshield so the focus is on the first phase of the motion that is accomplished in a safe manner.
+\bigskip
+Addressing the acceleration estimation issue could involve several approaches for improvement.
+One potential solution is the integration of an additional IMU sensor on the runner's body to provide direct measurements of the actual acceleration. 
+This approach would offer real-time data, potentially enhancing the accuracy of the control system and resembling the simulation context.
+Alternatively, leveraging data collected from runners' training sessions and competitions could facilitate an offline learning approach.
+By utilizing this data, a machine learning model could be trained to predict the typical acceleration trajectory during a sprint.
+Implementing such a model into the control system could help mitigate the effects of inaccurate acceleration estimation, leading to smoother and more precise control performance.
 
-Additionally, \ref{MPC_hard_img2} shows the capability of the system in maintaining of a cruise condition once the runner has reached an almost constant speed.
 
-In figure \ref{fig:Hardware_Test} the plots related to the first test are presented.
-The first two pannels (\ref{fig:Deltaphard} and \ref{fig:Deltavhard}) show the quality of the controller to regulate the system to the desired reference values: a $2.5$ meters reference distance between go-kart and runner and an almost zero velocity mismatch.
-Analyzing the third pannel \ref{fig:Inputhard} it can be noticed that the input is oscillating between the higher actuator limit e the lower one even once the reference distance and velocity have been obtained, thus the system shoul be in around a steady-state condition.
-The main reason of these oscillations is due to the bad absolute runner acceleration shown in figure \ref{fig:Est_acc}.
+
+
 
 
 \chapter*{Conclusions}
@@ -1956,5 +2009,8 @@ The main reason of these oscillations is due to the bad absolute runner accelera
 
 \addcontentsline{toc}{chapter}{Bibliography}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newpage
+
 
 \end{document}
