@@ -99,49 +99,65 @@ sorting=none
 
 \newpage
 \thispagestyle{empty}
+\mbox{}
 
 
+%%%%%FRONTESPIZIO%%%%%%
+\begin{center}   
+	\vspace{40mm}
+\end{center}
 
-%%%%%%FRONTESPIZIO%%%%%%
-%\begin{center}   
-%	\vspace{40mm}
-%\end{center}
-%
-%\begin{flushright}
-%\textit{
-%Alla versione più fragile di me stessa, \\
-%che in realtà si è sempre dimostrata \\
-%la più forte.}
-%\end{flushright} 
+\begin{flushright}
+\textit{
+Alla versione più fragile di me stessa, \\
+che in realtà si è sempre dimostrata \\
+la più forte.}
+\end{flushright} 
 
 %%%%%% ABSTRACT %%%%%%%%%%
 
-%\chapter*{Acknowledgements }
-%The author is grateful to professor G. Notarstefano
-%
-%The 
+\newpage
+\thispagestyle{empty}
+\mbox{}
+
+\chapter*{Acknowledgements }
+The results presented in this thesis are the outcome of my thesis activity at the Institute for Dynamic Systems and Control (IDSC) at the ETH (Eidgen\"ossische Technische Hochschule) of Z\"urich.
+The are numerous people who supported me and to whom I would like to express my gratitude.
+
+First of all, I thank my academic supervisor Prof. Giuseppe Notastefano for his constant and important support.
+Furthermore, I am grateful to the people that has supported me during the development of this thesis. 
+First of all Dr. Andrea Carron for the guidance throughout the whole project. 
+His suggestions during the meetings we had were crucial for every positive outcome of my master thesis.
+Moreover, I am grateful to Prof. Melanie Zeilinger and Prof. Emilio Frazzoli for having hosted me in ETH, giving me the possibility of working in their Institute during the last months.
+This has allowed me to make a great experience in a different country, as well as to experience both the theoretical and the practical work on MPC.
+
+
+\newpage
+\thispagestyle{empty}
 
 
 \chapter*{Abstract}
 % \addcontentsline{toc}{chapter}{Abstract}
-This thesis investigates the application of modern and advanced optimal control techniques within the realm of an innovative sport application. 
-The system comprises an autonomous electric go-kart towing a plexiglass airshield, utilized for isolating Olympic athletes performing the 100m event during the overspeed training phase. 
-The primary objective of this thesis is the deployment of a suitable controller for autonomously regulating the go-kart and the air shield in response to the position and velocity of the runner during a sprint performance. 
-Initially, a proper linear kinematic model approximation of the system, serving as a foundation for the controller design, implementation, and testing, has been established. 
-The main contribution of this work lies in the development of different controllers for addressing the desired task: a Gain Scheduling Linear Quadratic Regulator and a Linear Model Predictive Controller. 
-These controllers are strongly model-based, and non-perfectly modeled dynamics effects or unknown disturbances could lead to suboptimal performance of the control architecture. 
-To address this, an Offset-free Model Predictive Control scheme has been introduced as a third control formulation. 
-To demonstrate the effectiveness of the implemented controllers, a comparison of their performance is presented and analyzed within the framework of Python simulations. 
-For comparison purposes, data taken from 100-meter competitions have been utilized. 
-For Hardware-in-the-loop tests on the physical system, an implementation using the ROS2 environment has been conducted. 
+This thesis investigates the application of modern and advanced optimal control techniques within the realm of an innovative sports application. 
+Specifically, the application involves the use of an autonomous electric go-kart towing a plexiglass airshield, utilized to isolate Olympic athletes performing the 100 meters event from the drag influence during the overspeed training phase. 
+The primary objective of this thesis is the deployment of a suitable controller for autonomously regulating the go-kart and the airshield in response to the position and the velocity of the runner during a sprint performance. 
+The main contribution of this work lies in the development of different controllers to address the desired task: a Gain Scheduling Linear Quadratic Regulator and a Linear Model Predictive Controller. 
+However, since a linear kinematic model has been used as the foundation for the controllers design, the real dynamic behaviour of the go-kart with the airshield is not perfectly described.
+Specifically, the developed controllers are strongly model-based, and non-perfectly modeled dynamics effects or unknown disturbances could lead to suboptimal performance of the control architecture.  
+To address this issue, an Offset-free Model Predictive Control scheme has been introduced as a third control formulation. 
+To demonstrate the effectiveness of the implemented controllers, in this thesis they have been tested utilizing both Python simulations and hardware-in-the-loop tests.
+A comparison of the controllers performances is presented and analyzed within the framework of Python simulations utilizing data taken from 100 meters professional athletes' competitions. 
+For the hardware-in-the-loop tests on the physical system, an implementation based on the ROS 2 environment has been conducted. 
 Several on-field experiments have been carried out in real-world settings to understand the performances of the controllers when operating with information coming from sensor measurements. 
 This application holds significant potential for everyday use during training phases on the track and field racetrack.
 
 
 %%%%%% INDEX %%%%%%%%%%
 
+
 \tableofcontents
-\thispagestyle{empty}
+
+
 
 %%%%%%% BODY %%%%%%%%%
 
@@ -222,12 +238,12 @@ Accordingly to \cite{Disturbance_observer}, by appropriately including a disturb
 	
 \section*{Contributions}
 \addcontentsline{toc}{section}{Contributions}
-The main contribution of this thesis lies in the analysis and implementation of linear controllers for an innovative autonomous driving go-kart, which is utilized for towing the airshield during the training of Olympic athletes participating in the 100 meters event.
+The main contribution of this thesis lies in the analysis and implementation of linear controllers for an innovative autonomous driving go-kart, which is used to tow the airshield during the training of Olympic athletes participating in the 100 meters event.
 Specifically, the thesis proposes and compares three different control schemes in terms of performances and control architecture.
 
 \bigskip
-Initially, a non linear model that accurately captures the dynamics of the kart with the airshield attached is identified. 
-Later a good linear approximation is found and used as the basis for the design of the predictive controllers.
+A linear kinematic model approximating the go-kart and the airshield dynamic behaviour has been utilized as the basis for the design of the predictive controllers.
+This linear model approximates, based on simplifying assumptions, a more complex nonlinear model.
 The first step in control development involves the design of a Linear Quadratic Regulator (LQR) with a gain scheduling approach, where Q and R parameters vary depending on the motion phase. 
 This gain scheduling approach addresses the challenges associated with the different maximum accelerations of the kart and of the runner in the first phase of motion.
 Subsequently, a Model Predictive Control (MPC) is designed with the purpose of incorporating information on the runner's future expected behaviour into the linear prediction model.
@@ -1424,7 +1440,11 @@ The initial distance used for the simulation is $\bar{d} = 4$ meters.
 \bigskip
 Both Table \ref{tab:Ta_Lou} and figure \ref{fig:Women} clearly demonstrate that the LQR controller exibits poorer performance compared to the other controllers.
 Specifically, considering the minimum distance between runner and go-kart, the LQR performs significantly worse than the other two controllers and violates the safety distance state constraints $d_{\text{safe}}$ introduced in both the MPC formulations.
-The LQR also has the highest mean values of position deviation ($\Delta p$) and velocity deviation ($\Delta v$), indicating a less accurate tracking performance compared to MPC and MPC Offset-free.
+Graphically, the region between the $d_\text{safe}$ and the airshield border is indicated in figure \ref{fig:Deltapwomen} with a yellow area.
+This on represents an unsafe region for the controller to operate, since the distance between the runner and the go-kart to too small to guarantee a safety condition. 
+The border of the airshield, thus the point where it is attached to the go-kart itself, is represented by the grey area.
+
+The LQR has also the highest mean values of position deviation ($\Delta p$) and velocity deviation ($\Delta v$), indicating a less accurate tracking performance compared to MPC and MPC Offset-free.
 Additionally, the fact that also the Integral of Absolute Error (IAE) metrics for both position and velocity are higher, suggests poorer tracking accuracy over the entire simulation period.
 It's noteworthy that the offset-free version of the predictive controller achieves an almost zero steady-state error, significantly smaller than the approximately 10-centimeters values obtained with the other controllers. 
 The three controllers show similar energy consumption over time.
@@ -1556,7 +1576,7 @@ Furthermore, the magnitude of the estimated disturbance tends to be higher when 
 The effectiveness of the disturbance observer in capturing the model-plant mismatch term is crucial, especially in the context of implementing offset-free Model Predictive Control. 
 By accurately estimating both the state variables and the disturbance, the system can effectively compensate for discrepancies between the actual plant behavior and the model predictions, ultimately enhancing control performance.
 
- \chapter{System Structure and Hardware-in-the-loop implementation and results}
+ \chapter{Go-kart and Airshield Structure and Hardware-in-the-loop implementation}
 \markboth{}{HARDWARE TEST RESULTS}
 In this chapter an overview of the hardware structure and sensors equipment of the system is provided together with the changes in the controllers formulations with respect to the simulation environment. 
 Later, an overview of the technologies studied and used for the implementation on the hardware of the control algorithms.
@@ -1659,7 +1679,7 @@ At the moment LiDAR measurements are prefered with respect to camera ones thanks
 \end{figure}
 
 Camera remains responsible for the detection of the gesture to identify the moment in which the runner is able to start the performance. 
-The recognition of this gesture, in figure \ref{gesture}, produced the activation of the automatic controller for the system.
+The recognition of this gesture, in figure \ref{gesture}, produces the activation of the automatic controller for the system.
 
 
 \subsection*{Wheel Encoder}
@@ -1684,7 +1704,7 @@ where avg rate is the average motor rate between left and right sides.
 \end{figure}
 
 Typically an IMU or Inertial Measurement Unit consists of a combination of accelerometers and a gyroscopes, and sometimes also magnetometers in order to measure the orientation, velocity and acceleration of an object.
-Thanks to the combination of accelerometers and gyroscopes, the IMU is able to sense the object's orientation or angular motion and acceleration with respect to some predefined axes.
+Thanks to the combination of accelerometers and gycopes, the IMU is able to sense the object's orientation or angular motion and acceleration with respect to some predefined axes.
 The IMU used in the go-kart is the IRIMU-V2 from Izze-Racing that outputs data at 200Hz via CAN protocol and has an accuracy of less than 1\% of full scale for the acceleration and less than 1.5\% for the angular acceleration.
 The position with respect to the go-kart centre of gravity is showed in \ref{IMU_pose}.
 
@@ -1823,9 +1843,9 @@ In particular nodes can publish messages to topics (publisher) and other nodes c
 
 
 \bigskip
-ROS, and in particular its successor ROS2, offers numerous features and improvements that make it well-suited for driving autonomous systems and automated driving projects.
-At the core of ROS2's functionality lies the ability to run directly on the onboard computer of autonomous systems, having Ubuntu pre-installed, processing raw data coming from sensors and executing the proper control algorithms.
-In this sense, one of the most notable innovations in ROS2 is its ability to support real-time capabilities, of fundamental importance when autonomous systems have to perform safety-critical and time-sensitive applications.
+ROS, and in particular its successor ROS 2, offers numerous features and improvements that make it well-suited for driving autonomous systems and automated driving projects.
+At the core of ROS 2's functionality lies the ability to run directly on the onboard computer of autonomous systems, having Ubuntu pre-installed, processing raw data coming from sensors and executing the proper control algorithms.
+In this sense, one of the most notable innovations in ROS 2 is its ability to support real-time capabilities, of fundamental importance when autonomous systems have to perform safety-critical and time-sensitive applications.
 
 
 \subsection*{Docker}
@@ -1842,8 +1862,8 @@ The only thing preventing a container from being able to stand alone is that it 
 
 \subsection*{Go-kart repository}
 The autonomous go-kart repository consists of four different images. 
-The first one is the Ubuntu 20.04 base image with ROS2 installed and is the base for the other go-kart repositories stack.
-This layer manages the installation of the common libraries and the ROS2 communication between the hardware components (sensors and actuators) and the software applications contained in the other three higher-level images. 
+The first one is the Ubuntu 20.04 base image with ROS 2 installed and is the base for the other go-kart repositories stack.
+This layer manages the installation of the common libraries and the ROS 2 communication between the hardware components (sensors and actuators) and the software applications contained in the other three higher-level images. 
 The communication is achieved through the ad-hoc definition of messages.
 
 The go-kart logs is the repository responsible for data analysis. 
@@ -1857,7 +1877,7 @@ Finally, the go-kart core contains all the high level applications, such as the 
 Several C++ packages for estimation, control, or visualization exist in order to execute various tasks in a modular and reusable manner.
 
 \subsection*{CasADi and qrSQP solver}
-For the hardware implementation of the ROS2 controllers packages, CasADI together with qrSQP solver were utilized.
+For the hardware implementation of the ROS 2 controllers packages, CasADI together with qrSQP solver were utilized.
 CasADi (Computer Algebra System for Automatic Differentiation) \cite{Andersson2018} serves as a symbolic framework designed for automatic differentiation and numerical optimization.
 It facilitates the representation of mathematical expressions symbolically, crucial for modeling complex control systems efficiently.
 

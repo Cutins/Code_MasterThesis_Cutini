@@ -6,7 +6,7 @@ import numpy as np
 
 font = {'family' : 'serif',
         'weight' : 'normal',
-        'size' : '16'}
+        'size' : '18'}
 plt.rc('font', **font)
 
 cwd = os.getcwd()

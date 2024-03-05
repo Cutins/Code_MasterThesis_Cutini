@@ -5,7 +5,7 @@ from scipy.integrate import simps
 
 font = {'family' : 'serif',
         'weight' : 'normal',
-        'size' : '12'} # 16
+        'size' : '18'} # 16
 plt.rc('font', **font)
 
 Path_LQR = 'LQR/'
@@ -124,7 +124,7 @@ print("Steady state MPC: ", (ss_MPC - 2.5))
 print("Steady state MPCOF: ", (ss_MPCOF - 2.5))
 
 
-plt.figure("Relative position", figsize=(10,4.5))
+plt.figure("Relative position", figsize=(10,5))
 plt.plot(time_hor, 2.5 * np.ones(num_steps), label='Reference', linestyle='--', color='black', linewidth=1.0)
 plt.plot(time_hor, Error_traj_LQR[0], 'b', label='LQR', linewidth=1.5)
 plt.plot(time_hor, Error_traj_MPC[0], 'g', label='MPC', linewidth=1.5)
@@ -132,14 +132,14 @@ plt.plot(time_hor, Error_traj_MPCOF[0], 'r', label='MPC Offset Free', linewidth=
 # plt.scatter(t_rise_LQR, 2.6, marker='o', color='b', label='Rise time LQR')
 # plt.scatter(t_rise_MPC, 2.6, marker='o', color='g', label='Rise time MPC')
 # plt.scatter(t_rise_MPCOF, 2.6, marker='o', color='r', label='Rise time MPC Offset Free')
-plt.fill_between(time_hor, 0, -0.5, color=(0.7, 0.7, 0.7), where=(Error_traj_LQR[0] > -0.5), label='Go-Kart')
+plt.fill_between(time_hor, 0, -0.5, color=(0.7, 0.7, 0.7), where=(Error_traj_LQR[0] > -0.5)) #, label='Go-Kart')
 plt.fill_between(time_hor, 1.5, 0, color='orange', alpha=0.2, where=(Error_traj_LQR[0] > -0.5), label='Unsafe Area')
 plt.xlabel(r'Time[$s$]')
 plt.ylabel(r'$\Delta p$ [$m$]')
 plt.legend(loc="upper right")
 plt.grid(True)
 
-plt.figure("Relative velocity", figsize=(10,4.5))
+plt.figure("Relative velocity", figsize=(10,5))
 plt.plot(time_hor, np.zeros(num_steps), label='Reference', linestyle='--', color='black', linewidth=1.0)
 plt.plot(time_hor, Error_traj_LQR[1], 'b', label='LQR', linewidth=1.5)
 plt.plot(time_hor, Error_traj_MPC[1], 'g', label='MPC', linewidth=1.5)
@@ -149,7 +149,7 @@ plt.ylabel(r'$\Delta v$ [$\frac{m}{s}$]')
 plt.legend()
 plt.grid(True)
 
-plt.figure("Input (Energy consuption)", figsize=(10,4.5))
+plt.figure("Input (Energy consuption)", figsize=(10,5))
 plt.plot(time_hor_u, u_max, label='Input limits', linestyle='--', color='black', linewidth=1.0)
 plt.plot(time_hor_u, u_min, linestyle='--', color='black', linewidth=1.5)
 plt.plot(time_hor_u, Input_traj_LQR[0], 'b', label='LQR', linewidth=1.5)
