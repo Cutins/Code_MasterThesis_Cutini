@@ -102,34 +102,34 @@ sorting=none
 \mbox{}
 
 
-%%%%%FRONTESPIZIO%%%%%%
-\begin{center}   
-	\vspace{40mm}
-\end{center}
-
-\begin{flushright}
-\textit{
-Alla versione più fragile di me stessa, \\
-che in realtà si è sempre dimostrata \\
-la più forte.}
-\end{flushright} 
-
-%%%%%% ABSTRACT %%%%%%%%%%
-
-\newpage
-\thispagestyle{empty}
-\mbox{}
-
-\chapter*{Acknowledgements }
-The results presented in this thesis are the outcome of my thesis activity at the Institute for Dynamic Systems and Control (IDSC) at the ETH (Eidgen\"ossische Technische Hochschule) of Z\"urich.
-The are numerous people who supported me and to whom I would like to express my gratitude.
-
-First of all, I thank my academic supervisor Prof. Giuseppe Notastefano for his constant and important support.
-Furthermore, I am grateful to the people that has supported me during the development of this thesis. 
-First of all Dr. Andrea Carron for the guidance throughout the whole project. 
-His suggestions during the meetings we had were crucial for every positive outcome of my master thesis.
-Moreover, I am grateful to Prof. Melanie Zeilinger and Prof. Emilio Frazzoli for having hosted me in ETH, giving me the possibility of working in their Institute during the last months.
-This has allowed me to make a great experience in a different country, as well as to experience both the theoretical and the practical work on MPC.
+%%%%%%FRONTESPIZIO%%%%%%
+%\begin{center}   
+%	\vspace{40mm}
+%\end{center}
+%
+%\begin{flushright}
+%\textit{
+%Alla versione più fragile di me stessa, \\
+%che in realtà si è sempre dimostrata \\
+%la più forte.}
+%\end{flushright} 
+%
+%%%%%%% ABSTRACT %%%%%%%%%%
+%
+%\newpage
+%\thispagestyle{empty}
+%\mbox{}
+%
+%\chapter*{Acknowledgements }
+%The results presented in this thesis are the outcome of my thesis activity at the Institute for Dynamic Systems and Control (IDSC) at the ETH (Eidgen\"ossische Technische Hochschule) of Z\"urich.
+%The are numerous people who supported me and to whom I would like to express my gratitude.
+%
+%First of all, I thank my academic supervisor Prof. Giuseppe Notastefano for his constant and important support.
+%Furthermore, I am grateful to the people that has supported me during the development of this thesis. 
+%First of all Dr. Andrea Carron for the guidance throughout the whole project. 
+%His suggestions during the meetings we had were crucial for every positive outcome of my master thesis.
+%Moreover, I am grateful to Prof. Melanie Zeilinger and Prof. Emilio Frazzoli for having hosted me in ETH, giving me the possibility of working in their Institute during the last months.
+%This has allowed me to make a great experience in a different country, as well as to experience both the theoretical and the practical work on MPC.
 
 
 \newpage
@@ -255,25 +255,28 @@ The gain scheduling LQR, which switches between two different control gains depe
 Ultimately, this thesis culminates in a single MPC controller capable of governing the system under all possible operating conditions, integrating information about the future evolution of the runner's velocity profile into the prediction model to further enhance tracking performance.
 
 \bigskip
-Both controllers have been developed and tested in simulation using Python and on the real system using ROS2 environment.
+Both controllers have been developed and tested in simulation using Python and on the real system using ROS 2 environment.
 
 \section*{Organization}
 This section provides to the reader a guide to the organization of the thesis. 
 
 In Chapter 1 a theoretical background and an overview of the fundamental optimal control theory and methodologies used in the control design are presented. 
 
-Chapter 2 is focused on discussing the problem set-up, in presenting a proper linear approximation of the system dynamics and in the formulation of the optimal control techniques to accomplish the desired task, in particular the Linear Quadratic Regulator (LQR) and the Model Predictive Control (MPC), in the specific context of this application.
+Chapter 2 is focused on discussing the problem set-up, in presenting a proper linear approximation of the system dynamics and in the formulation of the optimal control techniques to accomplish the desired task.
+In particular a Gain Scheduling Linear Quadratic Regulator (LQR) and a Model Predictive Control (MPC), in the specific context of this application, are presented.
 
 Chapter 3 shows the numerical results of the controllers application obtained in Python simulation environment. A comparison of the performances in different scenarios is presented.
 
-Chapter 4 gives a description of the system mechanical structure, hardware and sensors. The hardware-in-the-loop tests based on a ROS2 implementation and conducted in a real-world scenario are presented and discussed.
-This demonstrate the real effectiveness of the proposed methodologies.
+Chapter 4 gives a description of the go-kart and airshield mechanical structure, hardware components and sensors. 
+The hardware-in-the-loop tests, based on a ROS 2 implementation and conducted in a real-world scenario, are presented and discussed.
+This demonstrates the real effectiveness of the proposed methodologies.
 
 \chapter{Optimal Control theory: Linear Quadratic Regulator and Model Predictive Control for controlling dynamical systems}
 %\addcontentsline{toc}{chapter}{Theoretical Background}
 \markboth{}{OPTIMAL CONTROL OF DYNAMICAL SYSTEMS}
 %\label{chapter:Theoretical_Background}
-In this chapter the aim is to provide the necessary theoretical background in optimal control before introducing the design process, as well as the main peculiarities and limitations of the implemented controllers: the Linear Quadratic Regulator (LQR) and the Model Predictive Control (MPC).
+In this chapter the aim is to provide the necessary theoretical background in optimal control before introducing the design choices and process.
+In particular, the main peculiarities and limitations of the implemented controllers: the Linear Quadratic Regulator (LQR) and the Model Predictive Control (MPC) are presented.
 
 Optimal control theory provides a mathematical framework for addressing control theory problems by optimizing control laws with respect to given cost functions, in order to achieve optimal system regulation.
 
@@ -284,7 +287,7 @@ In 1960, Kalman introduced for the first time the linear-quadratic feedback cont
 The LQR is a feedback control algorithm designed to stabilize and optimize the performance in cases where the dynamical system can be described by linear equations and the cost function is quadratic in terms of the states and inputs. 
 
 \bigskip
-Assuming that the process to be controlled can be described by a discrete-time LTI dynamical system, such as the following state-space form:
+Assume that the process to be controlled can be described by a discrete-time LTI dynamical system, such as the following state-space form:
 \begin{equation} 
 \begin{aligned}
     x_{t+1} &= A x_t + B u_t \\
@@ -371,7 +374,7 @@ where $x_{t,\text{des}} \in \mathbb{R}^n$ is the reference state value we want o
 
 The cost function quantifies the controlled system's performance, defined as a weighted sum of the deviations of the system's states from desired values and control effort.
 
-In the context of tracking a given desired state behaviour $x_{\text{des}}$ the optimal feedback control law is modified in the following way:
+In the context of tracking a given desired state behaviour $x_{t,\text{des}}$ at time $t$, the optimal feedback control law is modified in the following way:
 \begin{equation}
     u_t^* = K (x_t - x_{t,\text{des}})
 \label{Closed-loop_control_law}
@@ -392,9 +395,9 @@ MPC relies on the provided dynamic model to predict the behaviour of the system 
 A key aspect of MPC design is selecting a suitable model, one that adequately describes the system's dynamics while maintaining simplicity to ensure tractability and real-time solvability of the optimization problem.
 
 \bigskip
-The description of the linear discrete-time system prediction model is the same shown in \eqref{eq:Linear_model}.
+The description of the linear discrete-time system prediction model, used in the MPC formulation, is the same shown in \eqref{eq:Linear_model}.
 
-For what regards the states and inputs constraints they can be expressed as follows
+For what regards the states and inputs constraints they can be expressed as follows:
 \begin{align}
     x_t & \in \mathcal{X} \quad \quad \forall t = 0,1, \ldots \\
     u_t & \in \mathcal{U} \quad \quad \forall t = 0,1, \ldots
@@ -404,7 +407,7 @@ Usually, the sets are described with linear inequalities, and both sets are conv
 
 \bigskip
 Similarly to the LQR case, Model Predictive Control aims to minimize a cost function by defining positive definite matrices $Q$ and $R$. 
-The goal is to find the optimal control input that minimizes a cost function, taking the following form:
+The goal is to find the optimal control input that, at each time instant $t$, minimizes a cost function taking the following form:
 \begin{equation}
     J(\boldsymbol{x}, \boldsymbol{u}; x_t, t) = \sum_{i=t} ^{+ \infty} x_{i|t}^\top \, Q \, x_{i|t} + u_{i|t}^\top \, R \, u_{i|t}
 \end{equation}
@@ -436,7 +439,7 @@ For this reason, usually MPC formulations optimize only on a finite horizon $N$,
 
 \bigskip
 The control law is applied based on the receding horizon principle, which is a key feature of MPC.
-This principle dictates that at each time instance $t$, an open-loop optimal control problem is solved using the current state of the plant $x_{\text{meas}}$ as the initial state for the optimization problem, in order to obtain the control action. 
+This principle dictates that at each time instance $t$, the open-loop optimal control problem \eqref{MPC1} is solved using the current state of the plant $x_{\text{meas}}$ as the initial state for the optimization problem.
 All predicted states and inputs within a prediction horizon $N$ are optimized to find an optimal input sequence.
 However, only the first input of the optimal control sequence generated by the optimization is injected into the plant. 
 This input is used to control the system over the next time step.
@@ -449,7 +452,7 @@ This procedure is repeated, as illustrated in figure \ref{image:mpc}, at each ti
 Regulating nonlinear systems using a linear predictive control framework can be a complex task and the model-plant mismatch due to the unmodeled nonlinear dynamics effects, can result in suboptimal performances of the controller.
 
 \bigskip
-Even if MPC is able to react to small unmodeled dynamics effects through its receding-horizon fashion,it does not inherently incorporate them into its predictions or optimization.
+Even if MPC is able to react to small unmodeled dynamics effects through its receding-horizon fashion, it does not inherently incorporate them into its predictions or optimization.
 As a consequence, MPC solves an optimal control problem at each time step using the nominal model of the controlled process. 
 Only when the actual plant behavior closely matches the nominal model can the feedback control scheme be guaranteed to stabilize the system and achieve precise tracking of desired setpoints without any offset.
 
@@ -656,7 +659,7 @@ where $\hat{y}_t := C(A \hat{x}_{t-1} + B u_{t-1})$.
 The difference $(y_{m,t} - \hat{y}_t)$ is referred to as the estimation error or correction term, and $L \in \mathbb{R}^{n \times p}$ is the observer gain.
 
 \bigskip
-If the pair $(A_e,C_e)$ in \eqref{eq:Estimator_and_observer} is observable, than the eigenvalues of $(A_e+LC_e)$ can be placed arbitrarily to ensure stability of the estimator dynamical system.
+If the pair $(A_e,C_e)$ in \eqref{eq:Estimator_and_observer} is observable, then the eigenvalues of $(A_e+LC_e)$ can be placed arbitrarily to ensure stability of the estimator dynamical system.
 Typically, the desired eigenvalues for $(A_e+LC_e)$, i.e. the poles of the estimator dynamical system, are chosen to be smaller than those of the controlled stabilized system to ensure the estimator to be faster than the controller.
 
 \chapter{Design of Optimization-based Controller for autonomous airshield}
@@ -943,7 +946,7 @@ The overall control scheme is illustrated in figure \ref{image:LQR_sim_scheme}, 
 		\Else 
 			\State $u^* = - K_{\text{cruise}} (x_{k,t} - x_{k,t,des}) $;
 		\EndIf
-		\State Clip input according to limit saturation limits $\tilde{u}^* = \text{sat}_{[a_{\min}, a_{\max}]} (u^*)$;
+		\State Clip input according to saturation limits $\tilde{u}^* = \text{sat}_{[a_{\min}, a_{\max}]} (u^*)$;
 		\State Inject $\tilde{u}^*$ in the plant;
 	\EndFor
 \caption{LQR implementation}
@@ -1097,7 +1100,7 @@ However it is kept in the state vector because it makes possible to write the pr
 	\State Set initial runner position with a proper distance $\bar{d}$ from kart;
 	\For{$t=0,1,2,...$}
 		\State Take prediction state information $x_{p,t} = [\Delta p_t, \Delta v_t, v_{k,t}]^\top$;
-		\State Solve the constrained QP and get $\boldsymbol{u}^* = \{u_0, u_1, \cdots, u_N\}$; 
+		\State Solve the constrained QP and get $\boldsymbol{u}^* = \{u_0^*, u_1^*, \cdots, u_N^*\}$; 
 		\State Inject the first element of the optimal input sequence $u_0^*$ in the plant;
 	\EndFor
 \caption{MPC implementation}
@@ -1278,7 +1281,7 @@ where $\bar{x}_t \in \mathbb{R}^n$ and $\bar{u}_t \in \mathbb{R}^m$ are solution
 	\State Initialize estimator $\hat{x}_{p,0} = [d_{\text{des}}, 0, 0]^\top$ and $\hat{d}_0 = 0$;
 	\For{$t=0,1,2,... $}
 		\State Take state estimator and disturbance observer information $\hat{x}_{p,t}$ and $\hat{d}_t$;
-		\State Solve the constrained QP and get $\boldsymbol{u}^* = \{u_0, u_1, \cdots, u_N\}$; 
+		\State Solve the constrained QP and get $\boldsymbol{u}^* = \{u_0^*, u_1^*, \cdots, u_N^*\}$; 
 		\State Inject the first element of the optimal input sequence $u_0^*$ in the plant;
 		\State Update state estimator and disturbance observer 
 	\EndFor
@@ -1399,7 +1402,7 @@ Subsequent to this event, the velocities are assumed to remain constant until a 
 The parameters used for the evaluation and comparison of the controllers' performances are the following:
 \begin{itemize}
 	\item Mean error (position and velocity): represents the average difference between the desired reference value and the actual plant output over the simulation period. It provides a measure of the overall accuracy of the controller's tracking performance.
-	\item Integral Absolute Error (position and velocity): measures the cumulative sum of the absolute errors between the desired reference value and the actual plant output. It provides insight into the total deviation od the system's response from the desired trajectory.
+	\item Integral Absolute Error (position and velocity): measures the cumulative sum of the absolute errors between the desired reference value and the actual plant output. It provides insight into the total deviation of the system's response from the desired trajectory.
 	\item Minimum distance from kart: the concept is similar to the undershoot, thus it quantifies the extent to which the system's response deviates from the desired trajectory. This parameter quantifies how close the runner goes to the kart during the performance.
 	\item Energy consumption: quantifies the amount of energy expended by the system to achieve the desired tracking performance.
 	\item Stead-state error: characterizes the residual errror between the actual output and the desired reference value once the system has reached a stable operating condition, with the kart tracking a constant velocity of the runner.
@@ -1441,7 +1444,7 @@ The initial distance used for the simulation is $\bar{d} = 4$ meters.
 Both Table \ref{tab:Ta_Lou} and figure \ref{fig:Women} clearly demonstrate that the LQR controller exibits poorer performance compared to the other controllers.
 Specifically, considering the minimum distance between runner and go-kart, the LQR performs significantly worse than the other two controllers and violates the safety distance state constraints $d_{\text{safe}}$ introduced in both the MPC formulations.
 Graphically, the region between the $d_\text{safe}$ and the airshield border is indicated in figure \ref{fig:Deltapwomen} with a yellow area.
-This on represents an unsafe region for the controller to operate, since the distance between the runner and the go-kart to too small to guarantee a safety condition. 
+This one represents an unsafe region for the controller to operate, since the distance between the runner and the go-kart is too small to guarantee a safe condition. 
 The border of the airshield, thus the point where it is attached to the go-kart itself, is represented by the grey area.
 
 The LQR has also the highest mean values of position deviation ($\Delta p$) and velocity deviation ($\Delta v$), indicating a less accurate tracking performance compared to MPC and MPC Offset-free.
@@ -1494,7 +1497,7 @@ The three controllers show similar energy consumption over time.
     \label{fig:Men}
 \end{figure}
 
-It is reasonable that by intensifying the difficulty of the velocity profile from the one of a female runner to the one of male, the required initial distance from the go-kart is going to increase.
+It is reasonable that by intensifying the difficulty of the velocity profile from the one of a female runner to the one of a male, the required initial distance from the go-kart is going to increase.
 In the case of the Christian Coleman velocity profile this value is set to $\bar{d} = 13$ meters.
 
 \begin{table}[h!]
@@ -1523,6 +1526,7 @@ The value of the minimum distance reached between the runner and the go-kart is 
 The recorded LQR value of 1 meter and 8 centimeters violates the safety bound introduced in the MPC, similar to the observation made in the Ta Lou velocity profile case.
 Furthermore, it's worth noting that the offset-free MPC consistently outperforms both LQR and MPC in terms of steady-state error, achieving the lowest value among the three controllers.
 
+\bigskip
 It should be noticed that, in both the scenario saturation phenomenon is present for a consistent part of the tracking with the LQR controller.
 Unlike MPC, which respects actuator limits, the LQR controller exhibits saturation, meaning that the control inputs are constrained to their maximum or minimum values for extended periods. 
 This can lead to suboptimal performance.
@@ -1578,11 +1582,11 @@ By accurately estimating both the state variables and the disturbance, the syste
 
  \chapter{Go-kart and Airshield Structure and Hardware-in-the-loop implementation}
 \markboth{}{HARDWARE TEST RESULTS}
-In this chapter an overview of the hardware structure and sensors equipment of the system is provided together with the changes in the controllers formulations with respect to the simulation environment. 
-Later, an overview of the technologies studied and used for the implementation on the hardware of the control algorithms.
+In this chapter an overview of the hardware structure and sensors equipment of the go-kart and the airshield is provided together with the changes in the controllers formulations with respect to the simulation environment. 
+Later, an overview of the technologies studied and used for the implementation on the hardware of the control algorithms is presented.
 Finally, some test developed on the real hardware are presented and their results are shown and analyzed.
 
-\section{System structure}
+\section{Go-kart and Airshield structure}
 
 The system comprises a fully electric-powered go-kart with an attached airshield structure via a fixed joint. 
 According to the CIK-FIA (International Karting Commission Federation International Automobile), a go-kart is a single-seater land vehicle with four non-aligned wheels in contact with the ground, two of which control steering while the others transmit power. 
@@ -1618,7 +1622,6 @@ The shield has the structure shown in \ref{Shield_structure}.
 All the side and front panels are made of plexiglass while the top part is an aluminium composite.
 
 The dimensions are reported in table \ref{tab:Shield_dimensions}.
-
 \begin{table}[h]
 \centering
 \begin{tabular}{|p{1.5cm}|p{1.5cm}|p{1.5cm}|}
@@ -1819,7 +1822,7 @@ However, despite these challenges, the controller still manages to achieve prope
 		\State Take absolute kart velocity $v_{k,t}$ from wheel encoders;
  		\State Estimate the absolute runner acceleration $a_{r,t}$
 		\State $x_{p,t} = [\Delta p_t, \Delta v_t, v_{k,t}]^\top$;
-		\State Solve the constrained QP and get $\boldsymbol{u}^* = \{u_0, u_1, \cdots, u_N\}$; 
+		\State Solve the constrained QP and get $\boldsymbol{u}^* = \{u_0^*, u_1^*, \cdots, u_N^*\}$; 
 		\State Inject the first element of the optimal input sequence $u_0^*$ in the plant;
 	\EndFor
 \caption{MPC implementation on hardware system}
@@ -1844,7 +1847,7 @@ In particular nodes can publish messages to topics (publisher) and other nodes c
 
 \bigskip
 ROS, and in particular its successor ROS 2, offers numerous features and improvements that make it well-suited for driving autonomous systems and automated driving projects.
-At the core of ROS 2's functionality lies the ability to run directly on the onboard computer of autonomous systems, having Ubuntu pre-installed, processing raw data coming from sensors and executing the proper control algorithms.
+At the core of ROS 2 functionality lies the ability to run directly on the onboard computer of autonomous systems, having Ubuntu pre-installed, processing raw data coming from sensors and executing the proper control algorithms.
 In this sense, one of the most notable innovations in ROS 2 is its ability to support real-time capabilities, of fundamental importance when autonomous systems have to perform safety-critical and time-sensitive applications.
 
 
@@ -2033,7 +2036,7 @@ Implementing such a model into the control system could help mitigate the effect
 \addcontentsline{toc}{chapter}{Conclusions}
 
 In conclusion, this thesis has presented the development and implementation of a controller for an innovative application of an autonomous driving go-kart in the realm of sport, with the goal of improving the training of Olympics athletes.
-Specifically, the study has proposed three different optimal mode-based control approaches.
+Specifically, the study has proposed three different optimal model-based control approaches.
 Initially, a mathematical formulation of the system dynamics and a proper linear approximation was found.
 
 In the control development workflow, the first approach utilized was a Gain Scheduling Linear Quadratic Regulator technique, employing two differen regulators that can be used depending on the operational conditions.
@@ -2045,8 +2048,8 @@ A comparative analysis of the three controllers, implemented in Python simulatio
 Globally, when implemented and tested on the real hardware in real-world contexts, both the Linear Quadratic Regulator and the Model Predictive Controller exhibited satisfactory performance, enshuring that the system functions as expected and achieves its intended objectives.
 With this work, a powerful tool has been developed that can be used to enchance the overspeed training results in the track and field context.
 Despite these successes, during hardware testing with the MPC controller, oscillations in the actuators were observed due to inaccurate estimation of the runner's acceleration. 
-This highlights an area for potential improvement and future development.
-The issue has proposed some possible ways of future development for this work, for example the usage of an additional sensor or the introduction of a learning approach technique to improve the estimation could lead to an enhancement of the system's performances.
+The issue has proposed some possible ways of future development for this work.
+An example could be the usage of an additional sensor or the introduction of a learning approach technique to improve the estimation in order to have an enhancement of the system's performances.
 
 
 	
