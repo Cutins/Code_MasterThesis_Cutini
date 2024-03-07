@@ -1654,7 +1654,7 @@ The sensor consists of three main components: a laser emitter, a scanning mechan
 The laser emitter sends out short pulses of laser light, which travel towards surrounding objects. 
 When these pulses encounter an object, they reflect off its surface and return to the LiDAR sensor.
 The receiver than detects the reflected light and measures the time it takes for the pulses to return, allowing the calculation of the distance to the object based on the speed of light.
-Moreover, LiDAR rensors are capable of operating in various environmental conditions including darkness, rain, fow or low visibility, making them perfect for the application and highly reliable.
+Moreover, LiDAR sensors are capable of operating in various environmental conditions including darkness, rain, fog or low visibility, making them perfect for the application and highly reliable.
 
 The LiDAR mounted on the airshield is a Velodyne VLP-16, a compact sensor that features 16 laser channels arranged in a circular configuration to have an important field of view.
 
@@ -1667,7 +1667,7 @@ Cameras provide rich information about the surrounding environment and can be us
 On the airshield, a ZED 2i Stereo Camera with polarized lens of 4 millimeters is mounted.
 
 The field of view is of 120$^\circ$ and the camera is able to sense ranges between 1.5 meters and 35 meters. 
-The depth accuracy is smaller of the 2\% of the distance up to 10 meters while it increases up to the 7\% for distances up to 30 meters distance.
+The depth accuracy is smaller of the 2\% of the distance up to 10 meters while it increases up to the 7\% for distances up to 30 meters.
 
 The camera is equipped with a Stereolab ZED Box Xavier NX 8GB, an industrial compact and powerful mini PC used for computing and processing camera data.
 It's powered with an NVIDIA Jetson embedded GPU.
@@ -1686,7 +1686,7 @@ The recognition of this gesture, in figure \ref{gesture}, produces the activatio
 
 
 \subsection*{Wheel Encoder}
-Rotary encoders are a type of sensor that measure the rotation of a mechanical shaft.
+Rotary encoders are a type of sensor that measures the rotation of a mechanical shaft.
 Two wheel encoders, one for each wheel, are integrated in the PMS 100 motor as speed sensors, providing the motor's rotational speed.
 Then, by knowing that the gear ratio is 1:7 and that the wheel diameter is $27.89$ centimeters the absolute go-kart speed can be evaluated using the following formula:
 
@@ -1740,7 +1740,8 @@ where $\Delta p_t := p_{k,t} - p_{r,t}$ and $\Delta v_t := v_{k,t} - v_ {r,t}$, 
 	\State Set initial runner position with a proper distance $\bar{d}$ from kart;
 	\State Define desired system behaviour  $h_{\text{des}} = [d_{\text{des}}, 0]^T$;
 	\For{$t=0,1,2,...$};
-		\State Take LiDAR information $h_t = [\Delta p_t, \Delta v_t]^T$;
+		\State Take LiDAR information $\Delta p_t$ and estimate $\Delta v_t$;
+		\State $h_t = [\Delta p_t, \Delta v_t]^T$
 		\State Take absolute kart velocity $v_{k,t}$ from wheel encoders;
 		\State Evaluate absolute runner velocity $v_{r,t} = v_{k,t} - \Delta v_t $;
 		\If{$v_{k,t} \geq 0.8 \, v_{r,t}$ \textbf{and} catched = false}
@@ -1811,17 +1812,17 @@ When handling sensor data, such as distance measurements from a LiDAR sensor, it
 In attempting to derive velocity and acceleration from a noisy distance measurement, the situation becomes even more complex since any noise present gets amplified by applying the process of differentiation.
 For this reason, even if a Kalman filtering tecnique for smoothing the absolute runner acceleration $a_r$ has been applied, the quality of the estimation result is not accurate enought.
 This compromises the MPC's performance compared to simulation results. 
-However, despite these challenges, the controller still manages to achieve proper regulation performance concerning the relative distance and position variables.
+However, despite these challenges, the controller still manages to achieve proper regulation performance concerning the relative distance and velocity variables.
 
 \begin{algorithm}
 \begin{algorithmic}[1]
 	\State Define desired prediction state $x_{p,\text{des}} = [d_{\text{des}}, 0, 0]^\top$;
 	\State Set initial runner position with a proper distance $\bar{d}$ from kart;
 	\For{$t=0,1,2,...$}
-		\State Take LiDAR information $\Delta p_t$ and $\Delta v_t$;
+		\State Take LiDAR information $\Delta p_t$ and estimate $\Delta v_t$;
 		\State Take absolute kart velocity $v_{k,t}$ from wheel encoders;
- 		\State Estimate the absolute runner acceleration $a_{r,t}$
 		\State $x_{p,t} = [\Delta p_t, \Delta v_t, v_{k,t}]^\top$;
+ 		\State Estimate the absolute runner acceleration $a_{r,t}$
 		\State Solve the constrained QP and get $\boldsymbol{u}^* = \{u_0^*, u_1^*, \cdots, u_N^*\}$; 
 		\State Inject the first element of the optimal input sequence $u_0^*$ in the plant;
 	\EndFor
@@ -1837,7 +1838,7 @@ In this paragraph the tools used for the development of the controllers implemen
 
 \subsection*{Robot Operating System}
 Robot Operating System (ROS) is an open-source middleware framework specifically designed for robotics research and development  \cite{ros} of robotic applications. 
-Despite the name it is not a real operating system but it's a collection of libraries, tools and conventions that allows robotic developers to share, re-use and manage the applications.
+Despite the name it is not a real operating system but it's a collection of libraries, tools and conventions that allow robotic developers to share, re-use and manage the applications.
 Being a communication and middleware layer it serves as an important intermediary layer between the operating system and software applications.
 One of the key features of ROS is its modular architecture, which promotes code reuse and modularity by breaking down robot applications into smaller, reusable components called "nodes." 
 A node is an individual specific and independent program written in Python or C++ that executes a specific task or function within the framework of a more complex application.
@@ -1859,14 +1860,15 @@ The only thing preventing a container from being able to stand alone is that it 
 \begin{figure}
 	\centering
 	\includegraphics[width=0.5\textwidth]{Docker.png}
-	\caption{Docker}
+	\caption{Organization of go-kart repository and docker container}
 	\label{image:Docker}
 \end{figure}
 
 \subsection*{Go-kart repository}
-The autonomous go-kart repository consists of four different images. 
+In image \ref{image:Docker} a graphical representation of the layers starting from the computer's infrastructures and the operating system, up to the repository, is shown.
+In particular, the autonomous go-kart repository consists of four different images. 
 The first one is the Ubuntu 20.04 base image with ROS 2 installed and is the base for the other go-kart repositories stack.
-This layer manages the installation of the common libraries and the ROS 2 communication between the hardware components (sensors and actuators) and the software applications contained in the other three higher-level images. 
+This layer manages the installation of the common libraries, the ROS 2 communication between the hardware components (sensors and actuators) and the software applications contained in the other three higher-level images. 
 The communication is achieved through the ad-hoc definition of messages.
 
 The go-kart logs is the repository responsible for data analysis. 
@@ -1880,7 +1882,7 @@ Finally, the go-kart core contains all the high level applications, such as the 
 Several C++ packages for estimation, control, or visualization exist in order to execute various tasks in a modular and reusable manner.
 
 \subsection*{CasADi and qrSQP solver}
-For the hardware implementation of the ROS 2 controllers packages, CasADI together with qrSQP solver were utilized.
+For the hardware implementation of the ROS 2 controllers packages, CasADi together with qrSQP solver were utilized.
 CasADi (Computer Algebra System for Automatic Differentiation) \cite{Andersson2018} serves as a symbolic framework designed for automatic differentiation and numerical optimization.
 It facilitates the representation of mathematical expressions symbolically, crucial for modeling complex control systems efficiently.
 
@@ -2035,21 +2037,25 @@ Implementing such a model into the control system could help mitigate the effect
 \chapter*{Conclusions}
 \addcontentsline{toc}{chapter}{Conclusions}
 
-In conclusion, this thesis has presented the development and implementation of a controller for an innovative application of an autonomous driving go-kart in the realm of sport, with the goal of improving the training of Olympics athletes.
+In conclusion, this thesis has presented the development and implementation of a controller for the innovative application of an autonomous driving go-kart in the realm of sport, with the goal of improving the training of Olympics athletes.
 Specifically, the study has proposed three different optimal model-based control approaches.
+
 Initially, a mathematical formulation of the system dynamics and a proper linear approximation was found.
 
-In the control development workflow, the first approach utilized was a Gain Scheduling Linear Quadratic Regulator technique, employing two differen regulators that can be used depending on the operational conditions.
-Subsequently, a Model Predictive Control appoach was introduced with the purpose of explicitly incorporate constraints in the formulation, along with a model for the runner used in the optimization and for the predictions.
-Additionally, an Offset-free Model Predictive Control formulation, based on a disturbance observer, was introduced to compensate for the model-plant mismatch present when controlling a nonlinear system with a linear prediction model.
+In the control development workflow, the first approach utilized was a Gain Scheduling Linear Quadratic Regulator technique, employing two different regulators that can be used depending on the operational conditions.
+Subsequently, a Model Predictive Control approach was introduced with the purpose of explicitly incorporate constraints in the formulation, along with a model for the runner used in the optimization and for the predictions.
+Additionally, an Offset-free Model Predictive Control formulation, based on a disturbance observer, was introduced to compensate for the model-plant mismatch present when controlling a nonlinear system according to a linear prediction model.
 
 A comparative analysis of the three controllers, implemented in Python simulation environment, revealed the Offset-free Model Predictive Controller to outperform the other controllers in terms of tracking error, particularly at steady state.
 
 Globally, when implemented and tested on the real hardware in real-world contexts, both the Linear Quadratic Regulator and the Model Predictive Controller exhibited satisfactory performance, enshuring that the system functions as expected and achieves its intended objectives.
+It's important to highlight the higher computational effort required by the Model Predictive Controller, running an optimal control 
+problem at runtime, with respect to the Linear Quadratic Regulation utilizing a precomputed error-state feedback control law.
+
 With this work, a powerful tool has been developed that can be used to enchance the overspeed training results in the track and field context.
 Despite these successes, during hardware testing with the MPC controller, oscillations in the actuators were observed due to inaccurate estimation of the runner's acceleration. 
 The issue has proposed some possible ways of future development for this work.
-An example could be the usage of an additional sensor or the introduction of a learning approach technique to improve the estimation in order to have an enhancement of the system's performances.
+An example could be the usage of an additional sensor or the introduction of a learning techniques to improve the estimation, in order to have an enhancement of the system's performances.
 
 
 	
