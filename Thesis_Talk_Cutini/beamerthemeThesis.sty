@@ -1,0 +1,117 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%   Latex-beamer style file
+%
+%   Mar 2021
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\RequirePackage{tikz,calc}
+
+\mode<presentation>
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%   Font
+\usefonttheme[onlymath]{serif} % Math as in papers
+
+
+
+%   Colors
+\definecolor{blue@Thesis}{RGB}{0, 41, 69}
+\definecolor{emph@Thesis}{RGB}{0, 93, 137}
+\definecolor{red@Thesis}{RGB}{127,0,0}
+\definecolor{gray@Thesis}{RGB}{112, 112, 112}
+
+\setbeamercolor{header}{bg=white, fg=blue@Thesis}
+\setbeamercolor{footer}{bg=white, fg=gray@Thesis}
+
+\setbeamercolor{head/foot}{bg=white, fg=blue@Thesis}
+\setbeamercolor{caption name}{fg=blue@Thesis}
+\setbeamercolor{title color}{fg=blue@Thesis,bg=blue@Thesis!4}
+\setbeamercolor{bgcolor}{fg=blue@Thesis,bg=blue@Thesis!4}
+
+\setbeamercolor{author in head/foot}{fg=blue@Thesis}
+
+
+%%%%%%%%%%%%%%
+%  Environements
+
+% \setbeamertemplate{enumerate item}{\color{emph@Thesis}$\bullet$}
+\setbeamercolor{item projected}{bg=emph@Thesis}
+\setbeamercolor{local structure}{fg=emph@Thesis}
+\setbeamertemplate{itemize item}{\color{emph@Thesis}$\bullet$}
+\setbeamertemplate{itemize subitem}{\color{emph@Thesis}$\blacktriangleright$}
+
+% No Navigation Symbols
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{section in toc}[ball unnumbered]
+\setbeamercolor{section in toc}{fg=blue@Thesis}
+\setbeamercolor{section number projected}{bg=blue@Thesis,fg=white}
+
+\setbeamertemplate{subsection in toc}[square]
+\setbeamercolor{subsection in toc}{fg=blue@Thesis}
+\setbeamercolor{subsection number projected}{bg=blue@Thesis,fg=white}
+
+
+
+
+% Frame Title
+\setbeamertemplate{frametitle}
+{%
+  \leavevmode%
+  \hbox{%    
+     \begin{beamercolorbox}[wd=\paperwidth]{header}%
+%        \raggedright\vskip2pt\hspace{0.00cm}%
+        \begin{tikzpicture}[remember picture, overlay]
+          \fill[red@Thesis, line width=1pt, line cap=round] 
+          (0,-0.3cm) -- ++ (0,0.05cm) -- ++(2.5cm,0) -- ++ (0,-0.05cm) -- cycle;
+        \end{tikzpicture}%
+      \hspace{0.2cm} \insertframetitle
+      \hfill%
+    \end{beamercolorbox}%
+    }%
+  \vskip2pt%
+}
+
+
+
+% Foot Line
+\setbeamertemplate{footline}
+{%
+  \leavevmode%
+  \vskip2pt%
+  \hbox{%
+  \begin{beamercolorbox}[wd=\paperwidth]{footer}
+    \raggedleft%
+    %
+    \begin{tikzpicture}[baseline]
+              \fill[red@Thesis, line width=1pt, line cap=round] 
+          (0,0.1cm) -- ++ (0,0.05cm) -- ++(-2.5cm,0) -- ++ (0,-0.05cm) -- cycle;
+    \end{tikzpicture}
+    
+    \hspace{.6cm}
+    \textit{\insertshortauthor} --
+    \textbf{\insertshorttitle} --
+    \insertshortdate \hspace{0.15cm}%
+    \insertframenumber $\,|\!$ \inserttotalframenumber%
+    \hspace{0.2cm}
+  \end{beamercolorbox}%
+  }
+  \vskip1pt%
+}
+
+
+
+\setbeamercolor{block title}{use=structure,fg=white,bg=emph@Thesis}
+\setbeamercolor{block title alerted}{use=alerted text,fg=white,bg=red@Thesis}
+\setbeamercolor{block title example}{use=example text,fg=white,bg=example text.fg!75!black}
+
+\setbeamercolor{block body}{parent=normal text,use=block title,bg=block title.bg!4!bg}
+\setbeamercolor{block body alerted}{parent=normal text,use=block title alerted,bg=block title alerted.bg!4!bg}
+\setbeamercolor{block body example}{parent=normal text,use=block title example,bg=block title example.bg!4!bg}
+
+\setbeamertemplate{blocks}[rounded][shadow=false]
+
+
+\mode
+<all>
