@@ -97,40 +97,29 @@ sorting=none
 
 \vfill
 
-\newpage
-\thispagestyle{empty}
-\mbox{}
+
 
 
 %%%%%%FRONTESPIZIO%%%%%%
-%\begin{center}   
-%	\vspace{40mm}
-%\end{center}
-%
-%\begin{flushright}
-%\textit{
-%Alla versione più fragile di me stessa, \\
-%che in realtà si è sempre dimostrata \\
-%la più forte.}
-%\end{flushright} 
-%
+\newpage
+\thispagestyle{empty}
+\mbox{}
+\begin{center}   
+	\vspace{40mm}
+\end{center}
+
+\begin{flushright}
+\textit{
+Alla versione più fragile di me stessa, \\
+che in realtà si è sempre dimostrata \\
+la più forte.}
+\end{flushright} 
+
 %%%%%%% ABSTRACT %%%%%%%%%%
 %
-%\newpage
-%\thispagestyle{empty}
-%\mbox{}
-%
-%\chapter*{Acknowledgements }
-%The results presented in this thesis are the outcome of my thesis activity at the Institute for Dynamic Systems and Control (IDSC) at the ETH (Eidgen\"ossische Technische Hochschule) of Z\"urich.
-%The are numerous people who supported me and to whom I would like to express my gratitude.
-%
-%First of all, I thank my academic supervisor Prof. Giuseppe Notastefano for his constant and important support.
-%Furthermore, I am grateful to the people that has supported me during the development of this thesis. 
-%First of all Dr. Andrea Carron for the guidance throughout the whole project. 
-%His suggestions during the meetings we had were crucial for every positive outcome of my master thesis.
-%Moreover, I am grateful to Prof. Melanie Zeilinger and Prof. Emilio Frazzoli for having hosted me in ETH, giving me the possibility of working in their Institute during the last months.
-%This has allowed me to make a great experience in a different country, as well as to experience both the theoretical and the practical work on MPC.
-
+\newpage
+\thispagestyle{empty}
+\mbox{}
 
 \newpage
 \thispagestyle{empty}
@@ -150,6 +139,30 @@ A comparison of the controllers performances is presented and analyzed within th
 For the hardware-in-the-loop tests on the physical system, an implementation based on the ROS 2 environment has been conducted. 
 Several on-field experiments have been carried out in real-world settings to understand the performances of the controllers when operating with information coming from sensor measurements. 
 This application holds significant potential for everyday use during training phases on the track and field racetrack.
+
+
+\chapter*{Acknowledgements }
+The results presented in this thesis are the outcome of my activity at the Institute for Dynamic Systems and Control (IDSC) at the ETH (Eidgen\"ossische Technische Hochschule) of Z\"urich.
+The are numerous people who supported me and to whom I would like to express my gratitude.
+
+\bigskip
+First of all, I would like to express my special thank to my academic supervisor Prof. Giuseppe Notastefano for his constant and important support and guidance.
+Furthermore, I am grateful to the people that has supported me during the development of this thesis. 
+First of all Dr. Andrea Carron for the guidance throughout the whole project. 
+His suggestions during the meetings we had were crucial for every positive outcome of my master thesis.
+Moreover, I am grateful to Prof. Melanie Zeilinger and Prof. Emilio Frazzoli for having hosted me in ETH, giving me the possibility of working in their Institute during the last months.
+This has allowed me to make a great experience in a different country, as well as to experience both the theoretical and the practical work on dynamical systems control.
+
+\bigskip
+Finally, I would like to thank friends and family for supporting me with love all these years. Their support was more than important, it has been fundamental. 
+They inspired me, encouraged me and helped me follow my way.
+
+\begin{flushright}
+\vspace{10mm}
+\textit{March 2024 \\
+\vspace{3mm}
+Giulia}
+\end{flushright}
 
 
 %%%%%% INDEX %%%%%%%%%%
@@ -1410,9 +1423,9 @@ The parameters used for the evaluation and comparison of the controllers' perfor
 \end{itemize}
 
 \subsection*{CVXPY and OSQP solver}
-The quadratic optimization problems in the Model Predictive Control (MPC) formulations have been tackled using the CVXPY library \cite{diamond2016cvxpy}, a mathematical framework for solving optimization problems, along with the OSQP solver \cite{Stellato_2020}.
+The quadratic optimization problems in the Model Predictive Control (MPC) formulations have been tackled using the CVXPY library \cite{diamond2016cvxpy}, a mathematical framework for solving optimization problems, along with the OSQP  (Operator Splitting Quadratic Program) solver \cite{Stellato_2020}.
 CVXPY facilitates the expression of convex optimization problems in a natural syntax that follows the mathematical formulations, which are then automatically converted into the standard form required by various solvers.
-OSQP (Operator Splitting Quadratic Program) is a high-performance solver specifically designed for convex quadratic programming problems, making it particularly suitable for applications in control systems, robotics, and machine learning.
+OSQP is a high-performance solver specifically designed for convex quadratic programming problems, making it particularly suitable for applications in control systems, robotics, and machine learning.
 
 \section{Test on women velocity profile of Ta Lou}
 \begin{figure}[h!]
@@ -2050,7 +2063,7 @@ A comparative analysis of the three controllers, implemented in Python simulatio
 
 Globally, when implemented and tested on the real hardware in real-world contexts, both the Linear Quadratic Regulator and the Model Predictive Controller exhibited satisfactory performance, enshuring that the system functions as expected and achieves its intended objectives.
 It's important to highlight the higher computational effort required by the Model Predictive Controller, running an optimal control 
-problem at runtime, with respect to the Linear Quadratic Regulation utilizing a precomputed error-state feedback control law.
+problem at runtime, with respect to the Linear Quadratic Regulator utilizing a precomputed error-state feedback control law.
 
 With this work, a powerful tool has been developed that can be used to enchance the overspeed training results in the track and field context.
 Despite these successes, during hardware testing with the MPC controller, oscillations in the actuators were observed due to inaccurate estimation of the runner's acceleration. 
