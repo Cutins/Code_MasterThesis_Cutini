@@ -1763,7 +1763,7 @@ where $\Delta p_t := p_{k,t} - p_{r,t}$ and $\Delta v_t := v_{k,t} - v_ {r,t}$, 
 		\If{catched = false}
 			\State $u^* = - K_{\text{catch}} (h_t - h_{\text{des}}) $;
 		\Else 
-			\State $u^* = - K_{\text{reg}} (h_t - h_{\text{des}}) $;
+			\State $u^* = - K_{\text{cruise}} (h_t - h_{\text{des}}) $;
 		\EndIf
 		\State Clip input according to limit saturation limits $\tilde{u}^* = \text{sat}_{[a_{\min}, a_{\max}]} (u^*)$;
 		\State Inject $\tilde{u}^*$ in the plant;

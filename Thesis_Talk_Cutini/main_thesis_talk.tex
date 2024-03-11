@@ -1,7 +1,8 @@
-\documentclass[10pt, aspectratio=169]{beamer}
+\documentclass[9pt, aspectratio=169]{beamer}
 \usetheme{Thesis}
 
-\usepackage[latin1]{inputenc}
+%\usepackage[latin1]{inputenc}
+\usepackage[utf8]{inputenc}
 \usepackage{amsmath,amsfonts,amssymb}
 \usepackage{graphics}
 \usepackage{graphicx}
@@ -11,12 +12,15 @@
 \usepackage{multimedia}
 \usepackage{media9}
 \usepackage{hyperref}
+\usepackage{algorithm}
+\usepackage{algorithmic}
 \usepackage{tikz}
 \usetikzlibrary{arrows,shapes,shadows,calc}
 
 \setbeamertemplate{itemize/enumerate body begin}{\small}
 \setbeamertemplate{itemize/enumerate subbody begin}{\footnotesize}
 %\setbeamercovered{transparent}
+%\setbeamercolor{block body}{bg=gray}
 
 \setlength{\itemsep}{1ex}
 
@@ -31,7 +35,7 @@
 \newcommand{\myred}[1]{{\color{red@Thesis}#1}}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\title[Control of an autonomous aerodynamic airshield]
+\title[Control of an autonomous aerodynamic airshield for training Olympics 100m sprint athletes]
   {\Large Control of an autonomous aerodynamic airshield \\
 for training Olympics 100m sprint athletes}
 \author[Giulia Cutini]{Giulia Cutini}
@@ -50,89 +54,107 @@ for training Olympics 100m sprint athletes}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{frame}[plain,noframenumbering,t]
-\centering
 
+\begin{columns}
+\begin{column}{0.15\textwidth}
+\begin{tikzpicture}[remember picture,overlay,opacity=0.9]
+\node[anchor=north west,inner sep=0pt] at (current page.north west) {
+    \includegraphics[height=9cm]{Pista}
+};
+\end{tikzpicture}
+%\vspace{-1.0cm} \hspace{-1.0cm} \begin{column}{0.15\textwidth}
+%	\begin{center}
+%  		\includegraphics[width=3.5\textwidth]{Pista}
+%	\end{center}
+\end{column}
+
+\begin{column}{0.85\textwidth}
+\centering
+\fontsize{9}{11}\selectfont
 \vspace{0.8cm}
 \begin{columns}
 \begin{column}{1.1\textwidth}
-\centering \footnotesize
+\centering \small
 \textsc{Alma Mater Studiorum Universit\`{a} di Bologna}\\
 \textsc{Department of Electrical, Electronic and Information Engineering}
 \\
-\vspace{0.2cm}
+\vspace{0.1cm}
 \textsc{Master's Degree in Automation Engineering}
 \end{column}
 \end{columns}
 
-\vspace{0.5cm}
+\vspace{0.7cm}
 
-\textcolor{blue@Thesis}{\Large \bf \inserttitle}
+\textcolor{blue@Thesis}{\bf \inserttitle}
 
 \vspace{1cm}
 
 \begin{columns}[t]
 \begin{column}{0.5\textwidth}
-	\myemph{Candidate:}
-	
-	\hspace{0.5cm} Giulia Cutini
+    \myemph{Candidate:}
+    
+    \hspace{0.5cm} Giulia Cutini
 \end{column}
 
 \begin{column}{0.4\textwidth}
-	\myemph{Advisor:}
-	
-		\hspace{0.5cm} Prof.~Giuseppe Notarstefano
-		
-		\vspace{.4cm}
-		\myemph{Co-Advisors:}
-	
-		\hspace{0.5cm} Prof.~Melanie Zeilinger \\
-		\hspace{0.5cm} Dr.~Andrea Carron \\
-		\hspace{0.5cm} Ing.~Lorenzo Sforni
+    \myemph{Advisor:}
+    
+        \hspace{0.5cm} Prof.~Giuseppe Notarstefano
+        
+        \vspace{.4cm}
+        \myemph{Co-Advisors:}
+    
+        \hspace{0.5cm} Prof.~Melanie Zeilinger \\
+        \hspace{0.5cm} Dr.~Andrea Carron \\
+        \hspace{0.5cm} Ing.~Lorenzo Sforni
 \end{column}
-	
 \end{columns}
 
 \begin{tikzpicture}[remember picture,overlay]
-\node[anchor=south west,inner sep=0pt] at (current page.south west) {
-	\hspace{1cm} \includegraphics[height=1.5cm]{Logo_unibo}
-};
 \node[anchor=south east,inner sep=0pt] at (current page.south east) {
-	\includegraphics[height=0.8cm]{Logo_ETH}  \hspace{1cm} 
+    \hspace{2cm} \includegraphics[height=1.5cm]{Logo_unibo}
+};
+\end{tikzpicture}
+\begin{tikzpicture}[remember picture,overlay,opacity=0.7]
+\node[anchor=south east,inner sep=0pt] at (current page.south east) {
+    \includegraphics[height=0.8cm]{Logo_ETH} \hspace{2.6cm}
 };
 \end{tikzpicture}
 
-\vspace{0.5cm}
+\vspace{0.8cm}
 \begin{center}
-\scriptsize
-  \textcolor{emph@Thesis}{Bologna, 18 March 2024}
+\small
+ \hspace{-2.5cm} \textcolor{emph@Thesis}{Bologna, 18 March 2024}
 \end{center}
+\end{column}
+\end{columns}
 \end{frame}
 
 
-\begin{frame}
-\frametitle{Table of Contents}
-\begin{itemize}
-	\footnotesize
-	\item[$\blacktriangleright$]<1-> Introduction
-		\begin{itemize}
-			\footnotesize
-			\setstretch{1.2}
-			\item[$\triangleright$]<1-> Motivations
-			\item[$\triangleright$]<1-> Contributions
-		\end{itemize}
-	\item[$\blacktriangleright$]<2-> Modeling of the go-kart with the airshield attached
-	\item[$\blacktriangleright$]<3-> Control design
-		\begin{itemize}
-			\footnotesize
-			\setstretch{1.2}
-			\item[$\triangleright$]<3-> Gain Scheduling Linear Quadratic Regulator
-			\item[$\triangleright$]<3-> Model Predictive Control
-			\item[$\triangleright$]<3-> Offset-free Model Predictive Control
-		\end{itemize}
-	\item[$\blacktriangleright$]<4-> Simulation test and numerical controllers comparison
-	\item[$\blacktriangleright$]<5-> Hardware-in-the-loop tests
-\end{itemize}
-\end{frame}
+%\begin{frame}
+%\frametitle{Table of Contents}
+%\begin{itemize}
+%	\footnotesize
+%	\item[$\blacktriangleright$]<1-> Introduction
+%		\begin{itemize}
+%			\footnotesize
+%			\setstretch{1.2}
+%			\item[$\triangleright$]<1-> Motivations
+%			\item[$\triangleright$]<1-> Contributions
+%		\end{itemize}
+%	\item[$\blacktriangleright$]<2-> Modeling of the go-kart with the airshield attached
+%	\item[$\blacktriangleright$]<3-> Control design
+%		\begin{itemize}
+%			\footnotesize
+%			\setstretch{1.2}
+%			\item[$\triangleright$]<3-> Gain Scheduling Linear Quadratic Regulator
+%			\item[$\triangleright$]<3-> Model Predictive Control
+%			\item[$\triangleright$]<3-> Offset-free Model Predictive Control
+%		\end{itemize}
+%	\item[$\blacktriangleright$]<4-> Simulation test and numerical controllers comparison
+%	\item[$\blacktriangleright$]<5-> Hardware-in-the-loop tests
+%\end{itemize}
+%\end{frame}
 
 %%% First frame
 \begin{frame}[t]
@@ -147,7 +169,7 @@ for training Olympics 100m sprint athletes}
 
 \begin{columns}
 \hspace{0.2cm}
-\begin{column}{0.48\textwidth}
+\begin{column}{0.38\textwidth}
 \footnotesize
 \setstretch{0.4}
 \onslide <2,3>The usage of an \textbf{autonomous go-kart} improves:
@@ -157,7 +179,8 @@ for training Olympics 100m sprint athletes}
 		\item[$\blacktriangleright$] <2->the reliability and the reusability 
 	\end{itemize}
 \end{column}
-\begin{column}{0.52\textwidth}
+\begin{column}{0.62\textwidth}
+\vspace{0.3cm}
 	\begin{center}
   		\includegraphics[width=0.48\textwidth]{Jacobs} 
 		\includegraphics[width=0.47\textwidth]{Windshield} 
@@ -167,7 +190,7 @@ for training Olympics 100m sprint athletes}
 \vspace{0.3cm}
 
 \onslide <3> \textcolor{emph@Thesis}{\textbf{\small{Contributions}}} \\
-\vspace{0.1cm}
+\vspace{0.3cm}
 \footnotesize
 \begin{itemize}
 	\setstretch{1.0}
@@ -182,44 +205,45 @@ for training Olympics 100m sprint athletes}
 %%% Second frame
 \begin{frame}[t]
 \frametitle{Modeling of the go-kart with the aishield attached}
-%\vspace{0.2cm}
 \begin{columns}
 \begin{column}{0.4\textwidth}
 	\begin{center}
   		\includegraphics[width=0.75\textwidth]{Bycicle_scheme} 
 	\end{center}
 \end{column}
-%\vspace{0.1cm}
 \begin{column}{0.6\textwidth}
-\onslide <1,2,3,4,5,6,7> \textbf{Non linear kinematic byclicle model}
+\onslide <1,2,3,4,5,6,7> \hspace{0.5cm} \textbf{Non linear kinematic byclicle model}
 	\begin{equation*}
 	\begin{cases}
  		\begin{aligned}
 			\dot{x}(t) &= v(t) \cos(\psi(t) + \beta(t)) \\
 			\dot{y}(t) &= v(t) \sin(\psi(t) + \beta(t)) \\
 			\dot{\psi}(t) &= \frac{v(t)}{l_r} \sin(\beta(t)) \\
-			\dot{v}(t) &= \frac{F_x(t)}{m} = \frac{1}{m} (C_{m1}a(t) - C_f v(t) - \alert<5,6>{C_d v^2(t) - C_{roll}}) \\
+			\dot{v}(t) &= \frac{F_x(t)}{m} = \frac{1}{m} (C_{m1}a(t) - C_f v(t) - \alert<6>{C_d v^2(t) - C_{roll}}) \\
 		\end{aligned}
 	\end{cases}
 	\end{equation*}
 \end{column}
 \end{columns}
-
-\vspace{0.4cm}
-
+\vspace{0.1cm}
 \begin{columns}
-\begin{column}{0.5\textwidth}
-\hspace{0.8cm} 
+\begin{column}{0.40\textwidth}
+\onslide <2,3,4,5,6,7> \begin{block}{}
+\centering
 \onslide <2,3,4,5,6,7> The runners are interested in executing \\
-\hspace{0.9cm} only 50-80 meters overspeed training 
+only 50-80 meters overspeed training 
+\end{block}
 \end{column}
-\begin{column}{0.1\textwidth}
+\begin{column}{0.05\textwidth}
+\centering
 \onslide <3,4,5,6,7> $\Rightarrow$
 \end{column}
-\begin{column}{0.4\textwidth}
-\hspace{-0.5cm}
+\begin{column}{0.35\textwidth}
+\onslide <4,5,6,7>\begin{block}{}
+\centering
 \onslide <4,5,6,7> The model can be simplified \\
-\hspace{-0.6cm} by not considering the steering
+ by not considering the steering
+\end{block}
 \end{column}
 \end{columns}
 
@@ -228,7 +252,7 @@ for training Olympics 100m sprint athletes}
 \begin{columns}
 \hspace{0.8cm}
 \begin{column}{0.4\textwidth}
-\vspace{-0.5cm}
+\vspace{-0.9cm}
 \onslide <5,6,7>\begin{equation*}
 	\begin{cases}
  	\begin{aligned}
@@ -240,6 +264,7 @@ for training Olympics 100m sprint athletes}
 \end{column}
 
 \begin{column}{0.6\textwidth}
+\onslide<7> \hspace{2.5cm}\textbf{Linear time-invariant system}
 \onslide<7>\begin{equation*}
     \begin{aligned}
     	x_{k,t+1} = 
@@ -262,81 +287,372 @@ for training Olympics 100m sprint athletes}
     		& = A \, x_{k,t} + B \, u_t
     \end{aligned}
 \end{equation*}
-\onslide<7> \hspace{2.5cm}\textbf{Linear time-invariant system}
 \end{column}
 \end{columns}
-\hspace{0.4cm}
-\vspace{0.4cm}
-\onslide<6>The non linear term can be removed
-
+\begin{columns}
+\begin{column}{0.4\textwidth}
+\vspace{-0.4cm}
+\onslide<6,7> \begin{block}{}
+\centering
+\onslide<6,7> The non linear term can be removed \\
+being minor with respect to the other terms
+\end{block}
+\end{column}
+\begin{column}{0.49\textwidth}
+\end{column}
+\end{columns}
 \end{frame}
 
-\section{Control design}
-\subsection{Linear Quadratic Regulator}
+
+%%% Third frame
 \begin{frame}[t]
-\frametitle{Gain Scheduling Linear Quadratic Regulator}
+\frametitle{Application setup}
+
+\onslide<1,2,3,4,5,6,7>\begin{columns}
+\begin{column}{0.67\textwidth}
+Aerodynamics studies $^1$ have shown that, by running in the slipstream of a shield:
+\begin{itemize}
+	\footnotesize
+	\item[$\blacktriangleright$] Runner results to be isolated from the drag resistance
+	\item[$\blacktriangleright$] A pushing force from behind enhancing the speed
+	\item[$\blacktriangleright$] Reference distance: $d_\text{des} = 2.5$ meters
+\end{itemize}
+\vspace{0.3cm}
+{\color{gray} 
+$^1$ Italian National Olympic Committee (CONI) Institute of Sports Science \\
+\hspace{0.1cm} “Aerodynamic Shield – new training support technologies”}
+\end{column}
+\begin{column}{0.32\textwidth}
+	\begin{center}
+  		\hspace{-0.9cm}\includegraphics[width=1.2\textwidth]{Aerodynamics} 
+	\end{center}
+\end{column}
+\end{columns}
+
+\vspace{0.2cm}
+\begin{columns}
+\begin{column}{0.2\textwidth}
+\onslide<2,3,4,5,6,7>\begin{block}{}
+\centering
+\textcolor{emph@Thesis}{\textbf{\small{Controller \\ objective}}}
+\end{block}
+\end{column}
+\begin{column}{0.8\textwidth}
+\onslide<3,4,5,6,7>\begin{block}{}
+\begin{itemize}
+	\footnotesize
+	\item[$\blacktriangleright$]<3-> Maintain the airshield at the reference distance with respect to the runner position
+	\item[$\blacktriangleright$]<4-> Regulate the go-kart velocity to match the runner's one
+\end{itemize}
+\end{block}
+\end{column}
+\end{columns}
+
+\vspace{0.5cm}
+\begin{columns}
+\onslide<5,6,7>\begin{column}{0.3\textwidth}
+	\begin{center}
+  		\includegraphics[width=0.25\textwidth]{Wheel_Encoder} 
+	\end{center}
+\centering
+\textbf{Wheel Encoders} \\
+Absolute kart velocity $v_k$
+\end{column}
+
+\onslide<6,7>\begin{column}{0.3\textwidth}
+	\begin{center}
+  		\includegraphics[width=0.25\textwidth]{Lidar} 
+	\end{center}
+\centering
+\textbf{LiDAR (Velodyne)} \\
+Relative distance $\Delta p = p_k - p_r$
+\end{column}
+
+\onslide<7>\begin{column}{0.4\textwidth}
+\hspace{1.5cm} \textbf{Estimated}:
+\begin{itemize}
+	\footnotesize
+	\item[$\blacktriangleright$] Relative velocity  $\Delta v = v_k - v_r$
+	\item[$\blacktriangleright$] Absolute runner acceleration  $a_r$
+\end{itemize}
+\end{column}
+\end{columns}
 \end{frame}
 
 
-\subsection{Model Predictive Control}
+
+%%% Fourth frame
+\begin{frame}
+\frametitle{Gain Scheduling Linear Quadratic Regulator}
+
+\begin{columns}
+\begin{column}{0.4\textwidth}
+\centering
+
+\begin{columns}
+\onslide <1,2,3,4>\begin{column}{0.6\textwidth}
+\centering
+\begin{block}{}
+\begin{equation*}
+    h_t =
+    \begin{bmatrix}
+        \Delta p_t  \\
+        \Delta v_t
+    \end{bmatrix}
+	=
+    \begin{bmatrix}
+        p_{k,t} - p_{r,t} \\
+        v_{k,t} - v_{r,t}
+    \end{bmatrix}
+\end{equation*}
+
+\end{block}
+\end{column}
+
+\begin{column}{0.3\textwidth}
+\centering
+\begin{block}{}
+\begin{equation*}
+    h_{\text{des}} =
+    \begin{bmatrix}
+        d_{\text{des}} \\
+        0
+    \end{bmatrix}
+\end{equation*}
+\end{block}
+\end{column}
+\end{columns}
+
+\end{column}
+
+\onslide<1,2,3,4>\begin{column}{0.6\textwidth}
+\centering
+\begin{itemize}
+	\footnotesize
+	\item[$\blacktriangleright$] Compute the Linear Quadratic Regulator: $K$
+	\item[$\blacktriangleright$] Control the system using the state feedback $u^* = - K (h_t - h_{\text{des}}) $
+\end{itemize}
+\end{column}
+\end{columns}
+
+\vspace{1.0cm}
+\centering
+\onslide<2,3,4>\textcolor{emph@Thesis}{\textbf{\small{Gain Scheduling Approach}}} 
+
+\begin{columns}
+\begin{column}{0.5\textwidth}
+\vspace{0.2cm}
+\onslide<2,3,4>\begin{block}{}
+\centering
+\textbf{Catch-up maneuver $K_\text{catch}$} \\
+\end{block}
+\onslide<3,4>In the first couple of seconds the runner has an acceleration exceeding the maximum go-kart capabilities.
+\onslide<3,4>\begin{itemize}
+\vspace{0.1cm}
+\footnotesize
+	\item[$\blacktriangleright$] Ask the runner to start the sprint at $\Delta p_\text{init} = d_\text{des} + \bar{d}$
+	\item[$\blacktriangleright$] Control using $u^* = - K_\text{catch} (h_t - h_{\text{des}}) $
+	\item[$\blacktriangleright$] Match the velocities with a safe distance bigger than $d_\text{des}$
+\end{itemize}
+
+\end{column}
+\begin{column}{0.5\textwidth}
+\vspace{0.3cm}
+\onslide<2,3,4>\begin{block}{}
+\centering
+\textbf{Cruise control maneuver $K_\text{cruise}$} \\
+\end{block}
+\onslide<4>Once the runner and go-kart velocities are matched at 80\%
+\onslide<4>\begin{itemize}
+\vspace{0.1cm}
+\footnotesize
+	\item[$\blacktriangleright$] Reduce the distance up to the reference $d_\text{des}$
+	\item[$\blacktriangleright$] Control using $u^* = - K_\text{cruise} (h_t - h_{\text{des}}) $
+	\item[$\blacktriangleright$] Maintain the desired reference distance
+	\item[$\blacktriangleright$] Maintain to zero the relative velocity
+\end {itemize}
+\end{column}
+\end{columns}
+
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Gain Scheduling Linear Quadratic Regulator}
+\begin{columns}
+\begin{column}{0.40\textwidth}
+	\begin{center}
+  		\includegraphics[width=1.2\textwidth]{LQR_scheme} 
+	\end{center}
+\vspace{-0.2cm}
+\onslide<2,3,4,5,6>\begin{block}{}
+\centering
+\textbf{Pros LQR controller}
+\begin{itemize}
+\footnotesize
+	\item[$\blacktriangleright$]<2-> Reduced computational effort required
+\end{itemize}
+\end{block}
+\vspace{-0.2cm}
+\onslide<3,4,5,6>\begin{block}{}
+\centering
+\textbf{Cons of LQR controller} \\
+\begin{itemize}
+\footnotesize
+	\item[$\blacktriangleright$]<3-> Impossibility of directly including constraints
+	\item[$\blacktriangleright$]<4-> Clip block required to respect actuator limits $a_\text{min} \leq u \leq a_\text{max}$
+	\item[$\blacktriangleright$]<5-> Impossibility of including state constraint (i.e. $\Delta p \leq d_\text{safe}$)
+	\item[$\blacktriangleright$]<6-> Maintain to zero the relative velocity
+\end{itemize}
+
+\end{block}
+
+\end{column}
+\hspace{0.4cm}
+\onslide<1,2,3,4,5,6>\begin{column}{0.50\textwidth}
+	\begin{center}
+  		\includegraphics[width=1\textwidth]{LQR_alg} 
+	\end{center}
+\end{column}
+\end{columns}
+
+\end{frame}
+
+%%% Fifth frame
 \begin{frame}
 \frametitle{Model Predictive Control}
+\centering
+\begin{columns}
+\begin{column}{0.6\textwidth}
+\begin{equation*}
+\begin{aligned}
+        \begin{bmatrix}
+            \Delta p_{t+1}  \\
+            \Delta v_{t+1} \\
+            v_{k,t+1}
+        \end{bmatrix}
+        & =
+        \begin{bmatrix}
+            1 & dt & 0 \\
+            0 & 1 & -dt\frac{C_f}{m} \\
+            0 & 0 & 1-dt\frac{C_f}{m}
+        \end{bmatrix}
+        x_{p,t}
+        +
+        \begin{bmatrix}
+            0 \\
+            dt \frac{C_{m1}}{m} \\
+            dt \frac{C_{m1}}{m}
+        \end{bmatrix}
+        u_t + 
+	 \alert<3>{
+        \begin{bmatrix}
+        0 \\
+        - dt a_{r,t} \\
+        0
+        \end{bmatrix} }\\
+        & = A_p \, x_{p,t} + B_p \, u_t + a_t
+\end{aligned}
+\end{equation*}
+\end{column}
+
+\begin{column}{0.4\textwidth}
+
+\begin{itemize}
+\vspace{0.1cm}
+\footnotesize
+	\item[$\blacktriangleright$] <2-> The prediction model is augmented with the kart velocity state
+	\item[$\blacktriangleright$] <3-> Runner acceleration considered in the predictions
+\end{itemize}
+\end{column}
+\end{columns}
+
+\begin{columns}
+\begin{column}{0.4\textwidth}
+	\begin{center}
+  		\includegraphics[width=1.2\textwidth]{MPC_scheme} 
+	\end{center}
+\end{column}
+
+\begin{column}{0.6\textwidth}
+
+\begin{equation*}
+\begin{alignedat}{2}
+	\min_{\substack{\boldsymbol{x}, \boldsymbol{u}}}\quad &\sum_{i=t}^{t+N-1} \|(x_{p,i|t} - x_{p,\text{des}})\|_Q \, +  \|u_{i|t}\|_R &&   \\
+	\text{subj. to} & \quad x_{p,i+1|t}  = A_p \, x_{p,i|t} + B_p \, u_{i|t} + a_t  && \\
+    &\quad a_{\text{min}} \leq u_{i|t} \leq a_{\text{max}}&& \\
+    &\quad d_{\text{safe}}\leq \Delta p_{i|t} &&  \\
+    &\quad x_{p,t|t} = x_{p,\text{meas}} &&
+\end{alignedat}
+\end{equation*}
+
+\begin{block}{}
+\begin{itemize}
+\vspace{0.1cm}
+\footnotesize
+	\item[$\blacktriangleright$] Possibility of explicitly including constraints in the optimization
+	\item[$\blacktriangleright$] Possibility of having safety guarantees
+	\item[$\blacktriangleright$] Possibility of including a runner model in the prediction model
+\end{itemize}
+\end{block}
+\end{column}
+\end{columns}
+
+
+
+
+
 \end{frame}
 
 
-\subsection{Offset-free Model Predictive Control}
+%%% Sixth frame
 \begin{frame}
 \frametitle{Offset-free Model Predictive Control}
 Cio
 \end{frame}
 
-\section{Simulation tests and Controllers comparison}
+%%% Seventh frame
 \begin{frame}
 \frametitle{Simulation tests and Controllers comparison}
 \end{frame}
 
-
+%%% Eight frame
 \begin{frame}
 \frametitle{Hardware-in-the-loop tests}
-%\begin{centering}
-%	\movie[externalviewer,loop,poster]{\includegraphics[width=0.8\textwidth, keepaspectratio]{Poster}}{video.mp4}
-%\end{centering}
-
+\centering
+Focus on the catch-up maneuver
 \begin{center}
 \href{video.mp4}{
 \includegraphics[scale=0.25]
 {Poster}}
 \end{center}
 \end{frame}
+
+%%% Ninth frame
+\begin{frame}
+\frametitle{Hardware-in-the-loop tests}
+\centering
+Focus on maintaining a constant distance with the runner having an almost constant velocity
+\begin{columns}
+\begin{column}{0.50\textwidth}
+\begin{center}
+\href{video.mp4}{
+\includegraphics[scale=0.18]
+{Poster}}
+\end{center}
+\end{column}
+
+\begin{column}{0.50\textwidth}
+\begin{center}
+\href{video1.mp4}{
+\includegraphics[scale=0.18]
+{Poster}}
+\end{center}
+\end{column}
+\end{columns}
+\end{frame}
+
 \end{document}
 
-\begin{columns}
-\begin{column}{0.5\linewidth}
-
-
-Some text
-%
-\begin{itemize}
-\item Bullet 1
-\item Bullet 2
-\item Bullet 3
-\end{itemize}
-
-\end{column}
-%
-\begin{column}{0.5\textwidth}
-
-\begin{center}
-  \includegraphics[scale=1]{example_figure.pdf}
-\end{center}
-
-\end{column} 
-\end{columns}
-
-\vspace{1cm}
-An equation
-\begin{align*}
-\dot{x} = f(x,u)
-\end{align*}
 
 
