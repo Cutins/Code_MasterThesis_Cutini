@@ -48,8 +48,11 @@ class Estimator():
         # plt.plot(eigenAp, np.zeros(eigenAp.shape), 'bx', label='A poles')
         # plt.plot(eigenAaug, np.zeros(eigenAaug.shape), 'rx', label='A_e poles')
         # plt.plot(eigenControlled, np.zeros(eigenControlled.shape), 'mx', label='A_{est} poles')
+        # plt.plot(eigenAp, np.zeros(eigenAp.shape), 'bx', label='Ap poles')
+        # # plt.plot(eigenAaug, np.zeros(eigenAaug.shape), 'rx', label='Ae poles')
+        # plt.plot(eigenControlled, np.zeros(eigenControlled.shape), 'mx', label='ACrtl poles')
         # plt.grid()
-        # # plt.axis([-1.1, 1.1, -1.1, 1.1])
+        # plt.axis([-1.1, 1.1, -1.1, 1.1])
         # plt.legend(loc="lower left")
         # plt.show()
 

@@ -6,7 +6,7 @@ import numpy as np
 
 font = {'family' : 'serif',
         'weight' : 'normal',
-        'size' : '16'}
+        'size' : '18'}
 plt.rc('font', **font)
 
 cwd = os.getcwd()
@@ -28,7 +28,7 @@ nsp = 3
 
 def main():
     params = Params()
-    t_end = 18.0
+    t_end = 15.0
     t_hor = 1.0
     num_steps = int(t_end/params.dt)
     num_steps_mpc = int(t_hor/params.dt)
@@ -59,15 +59,32 @@ def main():
     h_meas = np.zeros(nsp)
 
     # LQR profile
-    speed_profile = [0, 7, 8, 9, 10, 10, 10]  
-    time_profile = [0, 2, 4, 8, 10, 13, 16]
-    init_distance = 5
+    # Saturation profile
+    # speed_profile = [0, 7, 8, 9, 10, 10, 10]  
+    # time_profile = [0, 2, 4, 8, 10, 13, 16]
+    # init_distance = 5
+
+    # No saturation profile
+    # speed_profile = [0, 2, 4.5, 6, 7, 7, 7, 7]  
+    # time_profile = [0, 1, 2, 4, 8, 10, 13, 16]
+    # init_distance = 0.5
+
+    # Marie-Josèe Ta-Lou (Diamond League Lausanne 30th June 2023)
+    time_profile = [0, 1.97, 3.1, 4.11, 5.08, 6.03, 6.99, 7.94, 8.9, 9.88, 10.88]
+    speed_profile = [0, 5.07, 8.85, 9.9, 10.31, 10.53, 10.42, 10.53, 10.42, 10.2, 10]
+    init_distance = 4
+
+    # # Christian Coleman (Diamond League Eugene 16th September 2023)
+    # time_profile = [0, 1.87, 2.89, 3.8, 4.67, 5.52, 6.36, 7.21, 8.07, 8.93, 9.83]
+    # speed_profile = [0, 5.35, 9.80, 10.99, 11.49, 11.76, 11.90, 11.76, 11.63, 11.63, 11.11]
+    # init_distance = 13
+
     xk[0,0] = params.offset_ref + init_distance
 
-        # Initialize State and Disturbance Estimator
+    # Initialize State and Disturbance Estimator
     Est = Estimator(parameters=params)
     x_est = np.zeros((nsp, num_steps)) # Estimated state
-    x_est[0,0] = init_distance + params.offset_ref
+    x_est[0,0] = params.offset_ref #+ init_distance
     d_est = np.zeros((1, num_steps)) # Estimated disturbance
 
     position, velocity, acceleration = create_runner_profile(speed_profile, time_profile, params.dt, t_end)
@@ -162,7 +179,12 @@ def main():
     plt.legend()
     plt.grid(True)
 
-    plt.figure("Observed disturbance", figsize=(10,8))
+    for t in range(0,8):
+        mismatch[1,t] = mismatch[1,0]
+
+    mismatch[1,-1] = mismatch[1,-2]
+
+    plt.figure("Observed disturbance", figsize=(10,5))
     plt.plot(time_hor, mismatch[1], 'k-', label='MPM', linewidth=2.0)
     plt.plot(time_hor, d_est[0], label='Estimated', linestyle='--', color='red', linewidth=1.5)
     plt.xlabel('Time[s]')
@@ -170,30 +192,51 @@ def main():
     plt.legend()
     plt.grid(True)
 
-    plt.figure("Real State VS Estimated State", figsize=(10,8))
-    plt.subplot(3,1,1)
-    plt.plot(time_hor, xk[0]-position, 'k-', label='Real')
+
+    plt.figure("Real State VS Estimated State 1",  figsize=(10,5))
+    plt.plot(time_hor, xk[0]-position, 'k-', label='Relative position')
     plt.plot(time_hor, x_est[0], label='Estimated', linestyle='--', color='red', linewidth=1.5)
-    plt.xlabel('Time[s]')
-    plt.ylabel('Distance [m]')
+    plt.xlabel(r'Time[$s$]')
+    plt.ylabel(r'Relative Distance [$m$]')
     plt.legend(loc="upper right")
     plt.grid(True)
 
-    plt.subplot(3,1,2)
+    ax_zoom = plt.axes([0.6, 0.4, 0.25, 0.25])
+    ax_zoom.plot(time_hor, xk[0]-position, 'k-')
+    ax_zoom.plot(time_hor, x_est[0], linestyle='--', color='red')
+    ax_zoom.set_xlim(-0.1, 0.4)
+    ax_zoom.set_ylim(2.0, 7.0)
+    ax_zoom.grid(True)
+
+    plt.figure("Real State VS Estimated State 2",  figsize=(10,5))
     plt.plot(time_hor, xk[1]-velocity, 'k-', label='Relative velocity')
     plt.plot(time_hor, x_est[1], label='Estimated', linestyle='--', color='red', linewidth=1.5)
-    plt.xlabel('Time[s]')
+    plt.xlabel(r'Time[$s$]')
+    plt.ylabel(r'Relative Velocity [$\frac{m}{s}$]')
+    plt.legend()
+    plt.grid(True)
+
+    ax_zoom = plt.axes([0.6, 0.4, 0.25, 0.25])
+    ax_zoom.plot(time_hor, xk[1]-velocity, 'k-')
+    ax_zoom.plot(time_hor, x_est[1], linestyle='--', color='red')
+    ax_zoom.set_xlim(2.5, 4.0)
+    ax_zoom.set_ylim(-1.7, -0.6)
+    ax_zoom.grid(True)
+
+    plt.figure("Real State VS Estimated State 3",  figsize=(10,5))
+    plt.plot(time_hor, xk[1], 'k-', label='Absolute kart velocity')
+    plt.plot(time_hor, x_est[2], label='Estimated', linestyle='--', color='red', linewidth=1.5)
+    plt.xlabel(r'Time[$s$]')
     plt.ylabel(r'Velocity [$\frac{m}{s}$]')
     plt.legend()
     plt.grid(True)
 
-    plt.subplot(3,1,3)
-    plt.plot(time_hor, xk[1], 'k-', label='Relative velocity')
-    plt.plot(time_hor, x_est[2], label='Estimated', linestyle='--', color='red', linewidth=1.5)
-    plt.xlabel('Time[s]')
-    plt.ylabel(r'Velocity [$\frac{m}{s}$]')
-    plt.legend()
-    plt.grid(True)
+    ax_zoom = plt.axes([0.6, 0.4, 0.25, 0.25])
+    ax_zoom.plot(time_hor, xk[1], 'k-')
+    ax_zoom.plot(time_hor, x_est[2], linestyle='--', color='red')
+    ax_zoom.set_xlim(6.0, 6.5)
+    ax_zoom.set_ylim(10.5, 10.6)
+    ax_zoom.grid(True)
         
 
     plt.show()
