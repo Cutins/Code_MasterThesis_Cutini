@@ -164,16 +164,17 @@ for training Olympics 100m sprint athletes}
 %\end{frame}
 
 %%%%%% INTRODUCTION %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}[t]
+\begin{frame}
+\vspace{0.05cm}
 \frametitle{Introduction}
-\vspace{0.1cm}
+\vspace{0.2cm}
 \textcolor{emph@Thesis}{\textbf{\small{Motivations}}} \\
-\vspace{0.3cm}
+\vspace{0.2cm}
 
 \onslide<1,2,3>In athletics, the \textbf{overspeed training} makes possible to enhance the competition performances.
 
 \setstretch{1.3}
-\onslide <1,2,3>It can be achieved by isolating the runner from the air resistance using an \textbf{airshield}.
+\onslide <1,2,3>Innovative technique: isolating the runner from the air resistance using an \textbf{airshield}.
 
 \begin{columns}
 \hspace{0.2cm}
@@ -194,16 +195,16 @@ for training Olympics 100m sprint athletes}
 	\end{itemize}
 \end{column}
 \end{columns}
-\vspace{0.3cm}
+\vspace{0.7cm}
 
 \onslide <3> \textcolor{emph@Thesis}{\textbf{\small{Contributions}}} \\
-\vspace{0.2cm}
+\vspace{0.1cm}
 \footnotesize
 \begin{itemize}
 	\setstretch{1.0}
 	\footnotesize
 	\item[$\blacktriangleright$] <3->Approximated model for the go-kart with the airshield attached
-	\item[$\blacktriangleright$] <3->Design a controller for to regulate the shield with respect to the runner
+	\item[$\blacktriangleright$] <3->Design a controller to regulate the shield with respect to the runner
 	\item[$\blacktriangleright$] <3->Implement and test the controller in simulation and hardware-in-the-loop
 \end{itemize}
 \end{frame}
@@ -242,7 +243,7 @@ for training Olympics 100m sprint athletes}
  	 \footnotesize
 	\setstretch{0.8}
 	\item[$\blacktriangleright$] High energy-demanding training
-	\item[$\blacktriangleright$] Only 50-80 meters Executed
+	\item[$\blacktriangleright$] Only 50-80 meters executed
 \end{itemize}
 \end{block}
 \end{column}
@@ -283,7 +284,6 @@ for training Olympics 100m sprint athletes}
 \onslide<7> \hspace{2.5cm}\textbf{Linear time-invariant system}
 \onslide<7>\begin{equation*}
     \begin{aligned}
-    	x_{k,t+1} = 
     		\begin{bmatrix}
     			p_{k,t+1} \\
     			v_{k,t+1}
@@ -404,7 +404,7 @@ $^1$ Italian National Olympic Committee (CONI) Institute of Sports Science \\
 \begin{columns}
 \onslide<6,7>\begin{column}{0.3\textwidth}
 	\begin{center}
-  		\includegraphics[width=0.25\textwidth]{Wheel_Encoder} 
+  		\includegraphics[width=0.23\textwidth]{Wheel_Encoder} 
 	\end{center}
 \centering
 \textbf{Wheel Encoders} \\
@@ -413,7 +413,7 @@ Absolute kart velocity $v_k$
 
 \onslide<6,7>\begin{column}{0.3\textwidth}
 	\begin{center}
-  		\includegraphics[width=0.25\textwidth]{Lidar} 
+  		\includegraphics[width=0.23\textwidth]{Lidar} 
 	\end{center}
 \centering
 \textbf{LiDAR (Velodyne)} \\
@@ -484,7 +484,7 @@ Relative distance $\Delta p = p_k - p_r$
 \begin{itemize}
 	\footnotesize
 	\item[$\blacktriangleright$] Offline: Compute the Linear Quadratic Regulator: $K$
-	\item[$\blacktriangleright$] Control the system using the state feedback $u^* = - K (h_t - h_{\text{des}}) $
+	\item[$\blacktriangleright$] Control the system using the feedback $u^* = - K (h_t - h_{\text{des}}) $
 \end{itemize}
 \end{column}
 \end{columns}
@@ -511,7 +511,7 @@ Relative distance $\Delta p = p_k - p_r$
 
 \end{column}
 \begin{column}{0.5\textwidth}
-\vspace{0.3cm}
+\vspace{-0.1cm}
 \onslide<2,3,4>\begin{block}{}
 \centering
 \textbf{Cruise control maneuver $K_\text{cruise}$} \\
@@ -520,10 +520,9 @@ Relative distance $\Delta p = p_k - p_r$
 \onslide<4>\begin{itemize}
 \vspace{0.1cm}
 \footnotesize
-	\item[$\blacktriangleright$] Reduce the distance up to the reference $d_\text{des}$
 	\item[$\blacktriangleright$] Control using $u^* = - K_\text{cruise} (h_t - h_{\text{des}}) $
-	\item[$\blacktriangleright$] Maintain the desired reference distance
-	\item[$\blacktriangleright$] Maintain to zero the relative velocity
+	\item[$\blacktriangleright$] Reduce the distance up to the reference $d_\text{des}$
+	\item[$\blacktriangleright$] Maintain the steady state condition
 \end {itemize}
 \end{column}
 \end{columns}
@@ -657,8 +656,8 @@ Relative distance $\Delta p = p_k - p_r$
 \begin{alignedat}{2}
 	\min_{\substack{\boldsymbol{x}, \boldsymbol{u}}}\quad &\sum_{i=t}^{t+N-1} \|(x_{p,i|t} - x_{p,\text{des}})\|_Q \, +  \|u_{i|t}\|_R &&   \\
 	\text{subj. to} & \quad x_{p,i+1|t}  = A_p \, x_{p,i|t} + B_p \, u_{i|t} + a_t  && \\
-    &\alert<3>{\quad a_{\text{min}} \leq u_{i|t} \leq a_{\text{max}}} && \\
-    &\alert<4>{\quad d_{\text{safe}}\leq \Delta p_{i|t}} &&  \\
+    &\alert<4>{\quad a_{\text{min}} \leq u_{i|t} \leq a_{\text{max}}} && \\
+    &\alert<5>{\quad d_{\text{safe}}\leq \Delta p_{i|t}} &&  \\
     &\quad x_{p,t|t} = x_{p,\text{meas}} &&
 \end{alignedat}
 \end{equation*}
@@ -681,13 +680,13 @@ Relative distance $\Delta p = p_k - p_r$
 \frametitle{Offset-free Model Predictive Control $^1$}
 \begin{columns}
 \begin{column}{0.55\textwidth}
-\onslide<1,2,3,4,5,6,7>\begin{block}{}
+\onslide<1,2,3,4,5>\begin{block}{}
 \centering
 \textcolor{red}{\textbf{Cons of MPC controller}} 
 \begin{itemize}
 \footnotesize
-	\item[$\blacktriangleright$] <1-> A nonlinear system is controlled using a linear prediction model
-	\item[$\blacktriangleright$] <2->\textbf{Model-plant mismatch} can lead to suboptimal performances
+	\item[$\blacktriangleright$]  A nonlinear system is controlled using a linear prediction model
+	\item[$\blacktriangleright$] \textbf{Model-plant mismatch} can lead to suboptimal performances
 \end{itemize}
 \end{block}
 \end{column}
@@ -695,17 +694,17 @@ Relative distance $\Delta p = p_k - p_r$
 \begin{column}{0.02\textwidth}
 \centering
 \vspace{0.1cm}
-\onslide<3,4,5,6,7>$\Rightarrow$
+\onslide<2,3,4,5>$\Rightarrow$
 \end{column}
 \hspace{-0.2cm}
 \begin{column}{0.46\textwidth}
-\onslide<3,4,5,6,7>\begin{block}{}
+\onslide<2,3,4,5>\begin{block}{}
 \centering
 \textcolor{mygreen}{\textbf{Pros of Offset-free MPC controller}} 
 \begin{itemize}
 \footnotesize
-	\item[$\blacktriangleright$]<3-> Estimate the non linearity via Luemberger observer
-	\item[$\blacktriangleright$]<4-> Modify the MPC formulation to achieve offset-free
+	\item[$\blacktriangleright$] Estimate the non linearity via Luemberger observer
+	\item[$\blacktriangleright$] Modify the MPC formulation to achieve offset-free
 \end{itemize}
 \end{block}
 \end{column}
@@ -714,12 +713,12 @@ Relative distance $\Delta p = p_k - p_r$
 \begin{columns}
 \begin{column}{0.6\textwidth}
 	\begin{center}
-  		\onslide<5,6,7>\includegraphics[width=1.05\textwidth]{MPC_ofhard_scheme} 
+  		\onslide<3,4,5>\includegraphics[width=1.05\textwidth]{MPC_ofhard_scheme} 
 	\end{center}
 \end{column}
 \hspace{0.2cm}
 \begin{column}{0.43\textwidth}
-\onslide<6,7>\begin{block}{}
+\onslide<4,5>\begin{block}{}
 \centering
 \textcolor{orange}{\textbf{Optimizer}} 
 \begin{equation*}
@@ -741,7 +740,7 @@ Relative distance $\Delta p = p_k - p_r$
 \vspace{0.1cm}
 \begin{columns}
 
-\onslide<7>\begin{column}{0.7\textwidth}
+\onslide<5>\begin{column}{0.7\textwidth}
 \begin{block}{}
 \centering
 \textcolor{emph@Thesis}{\textbf{Disturbance Observer}} 
@@ -786,7 +785,7 @@ Relative distance $\Delta p = p_k - p_r$
 
 \vspace{1cm}
 
-\onslide<1,2,3,4,5,6,7> \color{gray} \scriptsize $^1$ U. Maeder, F. Borrelli, M. Morari \\ 
+\onslide<1,2,3,4,5> \color{gray} \scriptsize $^1$ U. Maeder, F. Borrelli, M. Morari \\ 
 “Linear offset-free Model Predictive Control”
 \end{column}
 \end{columns}
@@ -799,28 +798,28 @@ Relative distance $\Delta p = p_k - p_r$
 \begin{columns}
 \begin{column}{0.57\textwidth}
 \centering
-\begin{block}{}
+\onslide<1,2,3>\begin{block}{}
 \begin{itemize}
 \footnotesize
 	\setstretch{0.8}
-	\item[$\blacktriangleright$] Simulation implementation of the controllers
-	\item[$\blacktriangleright$] Tests on the same velocity profile (elite athlete)
+	\item[$\blacktriangleright$] Simulation implementation of the three controllers
+	\item[$\blacktriangleright$] Tests on the same velocity profile (professional athlete)
 \end{itemize}
 \end{block}
 \vspace{-0.2cm}
 	\begin{center}
-  		\includegraphics[width=0.6\textwidth]{Test_Velocities} 
+  		\onslide<1,2,3>\includegraphics[width=0.6\textwidth]{Test_Velocities} 
 	\end{center}
-\textbf{Initial distance:}
+\onslide<2,3>\textbf{Initial distance:}
 \centering
-$\Delta p_\text{init} = d_\text{des} + \bar{d}, \quad \bar{d}= 4$m
+\onslide<2,3>$\Delta p_\text{init} = d_\text{des} + \bar{d}, \quad \bar{d}= 4$m
 	\begin{center}
-  		\includegraphics[width=0.7\textwidth]{Ta_Lou/Table} 
+  		\onslide<3>\includegraphics[width=0.7\textwidth]{Ta_Lou/Table} 
 	\end{center}
 
 
 \end{column}
-\begin{column}{0.43\textwidth}
+\onslide<3>\begin{column}{0.43\textwidth}
 	\begin{center}
   		\includegraphics[width=1\textwidth]{Ta_Lou/Deltap} 
 	\end{center}
@@ -863,52 +862,7 @@ Focus on maintaining a constant distance with the runner having an almost consta
 
 \end{frame}
 
-%%%%%% HARDWARE TESTS PLOTS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}
-\frametitle{Linear Model Predictive Controller Hardware-in-the-loop tests}
-\begin{columns}
 
-\begin{column}{0.43\textwidth}
-	\begin{center}
-  		\includegraphics[width=1\textwidth]{Hardware_test/Position} 
-	\end{center}
-	\vspace{-0.4cm}
-	\begin{center}
-  		\includegraphics[width=1\textwidth]{Hardware_test/Velocity} 
-	\end{center}
-	\vspace{-0.4cm}
-	\begin{center}
-  		\includegraphics[width=1\textwidth]{Hardware_test/Input} 
-	\end{center}
-\end{column}
-
-\begin{column}{0.6\textwidth}
-\vspace{-0.4cm}
-\begin{block}{}
-\centering
-\textcolor{red}{Oscillations around steady state condition especially in the input variable}
-\end{block}
-\vspace{0.2cm}
-	\begin{center}
-  		\onslide<2,3>\includegraphics[width=0.8\textwidth]{Hardware_test/Acceleration} 
-	\end{center}
-
-\onslide<3>The system results reliable in the usage on the track and field racetrack
-
-\vspace{0.1cm}
-\onslide<3>\begin{block}{}
-Runner absolute acceleration estimation can be improved by:
-\begin{itemize}
-	\footnotesize
-	\item[$\blacktriangleright$] adding an IMU on the runner's body 
-	\item[$\blacktriangleright$] introducing a learning approach
-\end{itemize}
-\end{block}
-
-\end{column}
-\end{columns}
-
-\end{frame}
 
 
 %%%%%% CONCLUSIONS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -986,6 +940,54 @@ Runner absolute acceleration estimation can be improved by:
 
 
 \backupbegin
+
+%%%%%% HARDWARE TESTS PLOTS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}
+\frametitle{Linear Model Predictive Controller Hardware-in-the-loop tests}
+\begin{columns}
+
+\begin{column}{0.43\textwidth}
+	\begin{center}
+  		\includegraphics[width=1\textwidth]{Hardware_test/Position} 
+	\end{center}
+	\vspace{-0.4cm}
+	\begin{center}
+  		\includegraphics[width=1\textwidth]{Hardware_test/Velocity} 
+	\end{center}
+	\vspace{-0.4cm}
+	\begin{center}
+  		\includegraphics[width=1\textwidth]{Hardware_test/Input} 
+	\end{center}
+\end{column}
+
+\begin{column}{0.6\textwidth}
+\vspace{-0.4cm}
+\begin{block}{}
+\centering
+\textcolor{red}{Oscillations around steady state condition, especially in the input variable}
+\end{block}
+\vspace{0.2cm}
+	\begin{center}
+  		\onslide<2,3>\includegraphics[width=0.8\textwidth]{Hardware_test/Acceleration} 
+	\end{center}
+
+\onslide<3>The system results reliable in the usage on the track and field racetrack
+
+\vspace{0.1cm}
+\onslide<3>\begin{block}{}
+Runner absolute acceleration estimation can be improved by:
+\begin{itemize}
+	\footnotesize
+	\item[$\blacktriangleright$] adding an IMU on the runner's body 
+	\item[$\blacktriangleright$] introducing a learning approach
+\end{itemize}
+\end{block}
+
+\end{column}
+\end{columns}
+
+\end{frame}
+
 %%%%%% TA-LOU SIMULATION %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}
 \frametitle{Female athlete simulation results - Controllers comparison}
