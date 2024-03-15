@@ -7,6 +7,7 @@ from matplotlib.animation import FuncAnimation
 
 import sys, os
 import signal
+import time as ttime
 
 cwd = os.getcwd()
 sys.path.append(os.getcwd())
@@ -82,6 +83,7 @@ def main():
     x_err = np.zeros((ns, num_steps))
 
     mismatch = []
+    times = []
 
     ###### Initialize Controller ######
     LQR = LQRController(parameters=params)
@@ -106,7 +108,13 @@ def main():
         x_err[0,t] = xk[0,t] - xr[0,t] - params.offset_ref
         x_err[1,t] = xk[1,t] - xr[1,t]
 
+        start_time = ttime.time()
         uk_unconstrained[t], uk[:,t], speed_matched = LQR.track_LQR(Calculate_opt, u_opt=u_opt[t], error=x_err[:,t], car_speed=xk[1,t], input_limits=[u_min[t], u_max[t]])
+        end_time = ttime.time()
+
+        exec_time = end_time - start_time
+        times.append(exec_time*1000)
+        print("Iter ", t, "time {:.12f}".format(exec_time*1000), "ms")
 
         # Understand when catch-up maneuver is finished for plots
         if speed_matched == True and speed_matched_before == False:
@@ -126,6 +134,8 @@ def main():
 
     avg_model_mismatch = np.mean(mismatch)
     print(avg_model_mismatch)
+
+    print("Average execution time controller", np.mean(times))
 
     ### Save trajectories for comparison
     x_err[0,-1] = xk[0,-1] - xr[0,-1] - params.offset_ref

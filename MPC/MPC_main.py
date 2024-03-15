@@ -3,6 +3,7 @@ import sys, os
 import signal
 from matplotlib.animation import FuncAnimation
 import numpy as np
+import time as ttime
 
 font = {'family' : 'serif',
         'weight' : 'normal',
@@ -79,7 +80,7 @@ def main():
     # speed_profile = [0, 5.35, 9.80, 10.99, 11.49, 11.76, 11.90, 11.76, 11.63, 11.63, 11.11]
     # init_distance = 13
 
-
+    times = []
 
     xk[0,0] = params.offset_ref + init_distance
 
@@ -93,13 +94,19 @@ def main():
 
         ar = acceleration[t]
 
-        print("\nMeasured variables:\n"
-              "Relative distance: {:.2f}\n"
-              "Relative velocity: {:.2f}\n"
-              "Absolute kart velocity: {:.2f}\n"
-              "Actual runner acceleration: {:.2f}".format(h_meas[0], h_meas[1], h_meas[2], acceleration[t]))
+        # print("\nMeasured variables:\n"
+        #       "Relative distance: {:.2f}\n"
+        #       "Relative velocity: {:.2f}\n"
+        #       "Absolute kart velocity: {:.2f}\n"
+        #       "Actual runner acceleration: {:.2f}".format(h_meas[0], h_meas[1], h_meas[2], acceleration[t]))
 
+        start_time = ttime.time()
         h_opt, uk_opt = MPC.solve_optcon_problem(x_meas=h_meas, ar = ar, x_tar=h_ref[:,t])
+        end_time = ttime.time()
+
+        exec_time = end_time - start_time
+        times.append(exec_time*1000)
+        print("Iter ", t, "time {:.12f}".format(exec_time*1000), "ms")
 
         uk[:,t] = uk_opt[:,0] # Drive-train acceleration
         print("Optimal input: ", uk[:,t], "\n\n")
@@ -166,6 +173,8 @@ def main():
             
     avg_model_mismatch = np.mean(mismatch)
     print("Average model mismatch", avg_model_mismatch)
+
+    print("Average execution time controller", np.mean(times))
 
     ### Save trajectories for comparison
     Path = 'MPC/'

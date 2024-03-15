@@ -4,6 +4,8 @@ import signal
 from matplotlib.animation import FuncAnimation
 import numpy as np
 
+import time as ttime
+
 font = {'family' : 'serif',
         'weight' : 'normal',
         'size' : '18'}
@@ -87,6 +89,8 @@ def main():
     x_est[0,0] = params.offset_ref #+ init_distance
     d_est = np.zeros((1, num_steps)) # Estimated disturbance
 
+    times = []
+
     position, velocity, acceleration = create_runner_profile(speed_profile, time_profile, params.dt, t_end)
 
     for t in range(0, num_steps-1):
@@ -100,7 +104,13 @@ def main():
         # State and disturbance estimation
         Est.observer() # Build L matrix with poles-placement
 
+        start_time = ttime.time()
         h_opt, uk_opt = MPC.solve_optcon_problem(x_est=x_est[:,t], d_est=d_est[:,t], ar = ar, u_max=u_max[t], u_min=u_min[t], h_ref=h_ref[:,t])
+        end_time = ttime.time()
+
+        exec_time = end_time - start_time
+        times.append(exec_time*1000)
+        print("Iter ", t, "time {:.12f}".format(exec_time*1000), "ms")
 
         # print("Optimal input: ", uk_opt[:,0])
 
@@ -120,6 +130,8 @@ def main():
     Path = 'MPC_offset_free/'
     np.save(Path+'Error_traj_MPCOF.npy', np.vstack([xk[0]-position, xk[1]-velocity]).squeeze())
     np.save(Path+'Input_traj_MPCOF.npy', uk)
+
+    print("Average execution time controller", np.mean(times))
 
     time_hor = np.linspace(0, t_end, num=num_steps)
     time_hor_u = np.linspace(0, t_end-params.dt, num=num_steps-1)
